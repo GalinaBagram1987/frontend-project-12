@@ -15,8 +15,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build --prefix frontend",
-    "start": "npx start-server -s ./frontend/dist",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "echo '=== Starting server with contents:' && ls -la frontend/dist/ && npx start-server -s ./frontend/dist -p $PORT",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd frontend && npm ci"
   },
