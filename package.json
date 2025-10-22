@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd frontend && npm install && npm run build",
-    "start": "npx serve -s ./frontend/dist -l $PORT",
+    "start": "npx start-server -s ./frontend/dist -l $PORT",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd frontend && npm ci"
   },
