@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "npx start-server -s ./dist",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.1.1",
