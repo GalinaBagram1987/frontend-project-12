@@ -1,25 +1,20 @@
-const express = require('express');
 const path = require('path');
+const express = require('express');
+const http = require('http');
 const { createServer } = require('@hexlet/chat-server');
-
 const app = express();
 const PORT = process.env.PORT || 5001;
-
-// Middleware для парсинга JSON
-app.use(express.json());
-
-// Подключаем chat-server как middleware к API routes
-app.use('/api', createServer());
-
-// Serve static files from frontend/dist
+// Создаем httpServer, к которому будут подключаться и express, и socket.io
+const httpServer = http.createServer(app);
+const chatApp = createServer({ server: httpServer });
+app.use(chatApp); // Монтируем на корень, чтобы сокеты были на /socket.io
+// Статика
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
-
-// Handle SPA - all routes go to index.html
+// SPA
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
 });
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`API available at http://localhost:${PORT}/api`);
+httpServer.listen(PORT, () => {
+  console.log(Server running on port ${PORT});
+  console.log('WebSocket available at /socket.io');
 });
