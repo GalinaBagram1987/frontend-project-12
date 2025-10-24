@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const http = require('http');
-const { createServer } = require('@hexlet/chat-server');
+const { createServer } = require('@hexlet/chat-server/src/plugin.js');
 const app = express();
 const PORT = process.env.PORT || 5001;
 // Создаем httpServer, к которому будут подключаться и express, и socket.io
