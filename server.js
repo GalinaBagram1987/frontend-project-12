@@ -15,6 +15,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
 });
 httpServer.listen(PORT, () => {
-  console.log(Server running on port ${PORT});
+  console.log(`Server running on port ${PORT}`);
   console.log('WebSocket available at /socket.io');
 });
