@@ -9,7 +9,7 @@ async function start() {
   const httpServer = http.createServer(app);
   const chatApp = createServer({ server: httpServer });
   app.use(chatApp); // Монтируем на корень, чтобы сокеты были на /socket.io
-  // Статика
+  // Статика.
   app.use(express.static(path.join(__dirname, 'frontend/dist')));
   // SPA
   app.get('*', (req, res) => {
