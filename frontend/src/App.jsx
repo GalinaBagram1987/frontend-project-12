@@ -12,9 +12,9 @@ const App = () => {
       <Routes>
         {/* подстановочный путь */}
         <Route path="/" element={<MainPage />} />
-        <Route path='/pageOne' element={<PageOne />} />
-        <Route path="/logo" element={<PageLogin />} />
-        <Route path='/page404' element={<Page404 />} />
+        <Route path='/PageOne' element={<PageOne />} />
+        <Route path="/login" element={<PageLogin />} />
+        <Route path='/Page404' element={<Page404 />} />
         <Route path='*' element={<Page404 />} />
       </Routes>
     </BrowserRouter>
