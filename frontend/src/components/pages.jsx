@@ -1,13 +1,13 @@
 import { loremIpsum } from 'lorem-ipsum';
 
-const BuildPage = ({index, name}) => (
+const BuildPage = ({index, name, children}) => (
   <>
     <header>
         <h1>{name || `Page ${index}`}</h1>
     </header>
     <main>
-        <p>{name ? `${name} content` : `Page ${index} content`}: {loremIpsum({ count: Math.floor(Math.random() * 5) + 3, // 3-7 предложений
-  units: 'sentences'})}</p>
+        { children || <p>{name ? `${name} content` : `Page ${index} content`}: {loremIpsum({ count: Math.floor(Math.random() * 5) + 3, // 3-7 предложений
+  units: 'sentences'})}</p> }
     </main>
   </>
 );
