@@ -11,10 +11,12 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         {/* подстановочный путь */}
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<MainPage />} >
+        <Route index element={<div>Home Page - Select a page above</div>} />
         <Route path='/PageOne' element={<PageOne />} />
         <Route path="/PageLogin" element={<PageLogin />} />
         <Route path='/Page404' element={<Page404 />} />
+        </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>
     </BrowserRouter>

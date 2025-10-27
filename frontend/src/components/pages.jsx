@@ -1,4 +1,5 @@
 import { loremIpsum } from 'lorem-ipsum';
+import { Formik} from 'formik'; 
 
 const BuildPage = ({index, name, children}) => (
   <>
@@ -12,9 +13,9 @@ const BuildPage = ({index, name, children}) => (
   </>
 );
 
-export const PageOne = () => BuildPage(1);
+export const PageOne = () => <BuildPage index={1} name={PageOne}/>;
 export const PageLogin = () => (
-  <BuildPage>
+  <BuildPage index={2} name={PageLogin}>
     <Formik>
       <Form>
         {/* здесь остальной код */}
