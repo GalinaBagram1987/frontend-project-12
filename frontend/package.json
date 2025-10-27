@@ -11,8 +11,13 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "formik": "^2.4.6",
+    "lodash": "^4.17.21",
+    "lorem-ipsum": "^2.0.8",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.4",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
