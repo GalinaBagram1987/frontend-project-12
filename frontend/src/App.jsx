@@ -4,7 +4,7 @@
 // import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { PageOne, PageLogin, Page404 } from './components/pages.jsx';
-import MainPage from './components/mainPage.js';
+import MainPage from './components/mainPage.jsx';
 
 const App = () => {
   return (
