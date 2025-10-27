@@ -13,7 +13,7 @@ const App = () => {
         {/* подстановочный путь */}
         <Route path="/" element={<MainPage />} />
         <Route path='/PageOne' element={<PageOne />} />
-        <Route path="/login" element={<PageLogin />} />
+        <Route path="/PageLogin" element={<PageLogin />} />
         <Route path='/Page404' element={<Page404 />} />
         <Route path='*' element={<Page404 />} />
       </Routes>
