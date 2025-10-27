@@ -13,19 +13,27 @@ const BuildPage = ({index, name, children}) => (
   </>
 );
 
-export const PageOne = () => <BuildPage index={1} name={PageOne}/>;
+export const PageOne = () => <BuildPage index={1} name="Page One"/>;
 export const PageLogin = () => (
-  <BuildPage index={2} name={PageLogin}>
+  <BuildPage index={2} name="Log in">
     <Formik>
       <Form>
-        {/* здесь остальной код */}
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" />
+        </div>
+      <button type="submit">Login</button>
       </Form>
     </Formik>
   </BuildPage>
 );
 
 export const Page404 = () => (
-    <BuildPage>
+    <BuildPage index={3} name="Error">
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <h2>404</h2>
         <p>Запрашиваемая страница не существует</p>
