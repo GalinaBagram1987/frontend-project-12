@@ -16,7 +16,6 @@ const BuildPage = ({index, name, children}) => (
 export const PageOne = () => <BuildPage index={1} name="Page One"/>;
 export const PageLogin = () => (
   <BuildPage index={2} name="Log in">
-    <Formik>
       <Form>
         <div>
           <label>Email:</label>
@@ -28,12 +27,11 @@ export const PageLogin = () => (
         </div>
       <button type="submit">Login</button>
       </Form>
-    </Formik>
   </BuildPage>
 );
 
 export const Page404 = () => (
-    <BuildPage index={3} name="Error">
+    <BuildPage index={404} name="Page not found">
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <h2>404</h2>
         <p>Запрашиваемая страница не существует</p>
