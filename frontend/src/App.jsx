@@ -3,15 +3,18 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { PageOne, PageTwo } from './components/pages.jsx';
+import { PageOne, PageLogin, Page404 } from './components/pages.jsx';
+import MainPage from './components/mainPage.js';
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* подстановочный путь */}
-        <Route path="/" element={<PageOne />} />
-        <Route path="/logo" element={<PageTwo />} />
+        <Route path="/" element={<MainPage />} />
+        <Route path="/logo" element={<PageLogin />} />
+        <Route path='/404 not found' element={<Page404 />} />
+        <Route path='*' element={<MainPage />} />
       </Routes>
     </BrowserRouter>
   );
