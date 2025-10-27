@@ -16,17 +16,7 @@ const BuildPage = ({index, name, children}) => (
 export const PageOne = () => <BuildPage index={1} name="Page One"/>;
 export const PageLogin = () => (
   <BuildPage index={2} name="Log in">
-      <Form>
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" name="password" />
-        </div>
-      <button type="submit">Login</button>
-      </Form>
+    <h1>здесь должна быть форма из формик. но я ее еще не написала</h1>
   </BuildPage>
 );
 
