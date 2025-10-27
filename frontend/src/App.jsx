@@ -3,7 +3,7 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { PageOne, PageTwo } from './Components/Pages';
+import { PageOne, PageTwo } from './Components/Pages.jsx';
 
 const App = () => {
   return (
