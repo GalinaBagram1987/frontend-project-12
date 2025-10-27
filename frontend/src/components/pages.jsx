@@ -6,7 +6,8 @@ const BuildPage = ({index, name}) => (
         <h1>{name || `Page ${index}`}</h1>
     </header>
     <main>
-        <p>{name ? `${name} content` : `Page ${index} content`}: {loremIpsum({ count: 5 })}</p>
+        <p>{name ? `${name} content` : `Page ${index} content`}: {loremIpsum({ count: Math.floor(Math.random() * 5) + 3, // 3-7 предложений
+  units: 'sentences'})}</p>
     </main>
   </>
 );
