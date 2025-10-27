@@ -14,10 +14,10 @@ const MainPage = () => {
       <nav>
         <ul>
           <li>
-            <button onClick={() => navigate('/PageOne', { replace: false })}>Page One</button>
+            <button onClick={() => navigate('/pageOne', { replace: false })}>Page One</button>
           </li>
           <li>
-            <button onClick={() => navigate('/PageLogin', { replace: false })}>Login Page</button>
+            <button onClick={() => navigate('/pageLogin', { replace: false })}>Login Page</button>
           </li>
         </ul>
       </nav>
