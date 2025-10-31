@@ -1,60 +1,34 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { PageOne, PageLogin, Page404 } from './components/pages.jsx';
-import MainPage from './components/mainPage.jsx';
+import { Layout } from './layout/layout.jsx';
+import Chat from './pages/chat.jsx';
+import Home from './pages/home.jsx'
+import Login from './pages/login.jsx'
+import Page404 from './pages/page404.jsx'
+import Registration from '.pages/registration/jsx'
+
+import { useEffect } from 'react';
 
 const App = () => {
+  // Добавляем классы body
+  useEffect(() => {
+  document.body.classList.add('h-100', 'bg-light');
+}, []);
   return (
     <BrowserRouter>
       <Routes>
-        {/* подстановочный путь */}
-        <Route path="/" element={<MainPage />} >
-        <Route index element={<div>Home Page - Select a page above</div>} />
-        <Route path='/PageOne' element={<PageOne />} />
-        <Route path="/PageLogin" element={<PageLogin />} />
-        <Route path='/Page404' element={<Page404 />} />
+        {/* Все страницы внутри Layout */}
+        <Route element={<Layout />}>
+          <Route path='/home' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='registration' element={<Registration />} />
+          <Route path='chat' element={<Chat />} />
         </Route>
+        {/* Страницы без Layout */}
         <Route path='*' element={<Page404 />} />
+        <Route path='/Page404' element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
-
-
-
-
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
 
 export default App
