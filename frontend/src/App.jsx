@@ -4,7 +4,7 @@ import Chat from './components/pages/chat.jsx';
 import Home from './components/pages/home.jsx'
 import Login from './components/pages/login.jsx'
 import Page404 from './components/pages/page404.jsx'
-import Registration from './components/pages/registration/jsx'
+import Registration from './components/pages/registration.jsx'
 
 import { useEffect } from 'react';
 
