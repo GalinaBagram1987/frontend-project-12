@@ -24,3 +24,10 @@
 
 //  <div className = 'container-fluid h-100'>
 //             <div className='row justify-content-center allign-content-center h-100'></div>
+
+
+const Login = () => {
+<h1> Test page login</h1>
+};
+
+export default Login;
