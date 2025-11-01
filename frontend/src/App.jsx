@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './layout/layout.jsx';
-import Chat from './pages/chat.jsx';
-import Home from './pages/home.jsx'
+import Layout from './layout/layout.jsx'
+import Chat from './pages/chat.jsx'
 import Login from './pages/login.jsx'
 import Page404 from './pages/page404.jsx'
 import Registration from './pages/registration.jsx'
 
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 const App = () => {
   // Добавляем классы body
