@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Layout } from './components/layout/layout.jsx';
-import Chat from './components/pages/chat.jsx';
-import Home from './components/pages/home.jsx'
-import Login from './components/pages/login.jsx'
-import Page404 from './components/pages/page404.jsx'
-import Registration from './components/pages/registration.jsx'
+import { Layout } from './layout/layout.jsx';
+import Chat from './pages/chat.jsx';
+import Home from './pages/home.jsx'
+import Login from './pages/login.jsx'
+import Page404 from './pages/page404.jsx'
+import Registration from './pages/registration.jsx'
 
 import { useEffect } from 'react';
 
@@ -18,7 +18,7 @@ const App = () => {
       <Routes>
         {/* Все страницы внутри Layout */}
         <Route element={<Layout />}>
-          <Route path='/home' element={<Home />} />
+          <Route path='/' element={<Login />} />
           <Route path='/login' element={<Login />} />
           <Route path='/registration' element={<Registration />} />
           <Route path='/chat' element={<Chat />} />
