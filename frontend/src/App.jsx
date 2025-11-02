@@ -21,10 +21,10 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/registration' element={<Registration />} />
           <Route path='/chat' element={<Chat />} />
+          <Route path='/Page404' element={<Page404 />} />
         </Route>
         {/* Страницы без Layout */}
         <Route path='*' element={<Page404 />} />
-        <Route path='/Page404' element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );

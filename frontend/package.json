@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "npx start-server -s ./dist",
     "build": "rm -rf dist && vite build",
-    "serve": "vite preview",
+    "serve": "vite preview --host",
     "lint": "eslint ."
   },
   "dependencies": {

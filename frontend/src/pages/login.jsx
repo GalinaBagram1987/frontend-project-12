@@ -27,7 +27,7 @@
 
 
 const Login = () => {
-<h1> Test page login</h1>
+return <h1> Test page login</h1>
 };
 
 export default Login;

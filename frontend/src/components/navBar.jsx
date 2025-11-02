@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
   const location = useLocation();
@@ -14,9 +14,10 @@ const NavBar = () => {
   <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
     <div className="container">
       {!isPathWithExit ? (
-        <Link className="navbar-brand" to="/">
+        <span className="navbar-brand"
+          onClick={handleLogout}>
           Hexlet Chat
-        </Link>
+          </span>
       ) : (
         <>
           <span className="navbar-brand">Hexlet Chat</span>
