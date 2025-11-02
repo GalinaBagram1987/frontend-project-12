@@ -16,12 +16,12 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         {/* Все страницы внутри Layout */}
-        <Route element={<Layout />}>
-          <Route path='/' element={<Login />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/registration' element={<Registration />} />
-          <Route path='/chat' element={<Chat />} />
-          <Route path='/Page404' element={<Page404 />} />
+        <Route path="/" element={<Layout />} >
+          <Route index element={<Login />} />
+          <Route path='login' element={<Login />} />
+          <Route path='registration' element={<Registration />} />
+          <Route path='chat' element={<Chat />} />
+          <Route path='Page404' element={<Page404 />} />
         </Route>
         {/* Страницы без Layout */}
         <Route path='*' element={<Page404 />} />
