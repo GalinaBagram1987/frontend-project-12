@@ -1,6 +1,6 @@
 const Page404 = () => {
 return (
-  <div className='text-center'>
+  <div className='text-center flex-grow-1 d-flex flex-column justify-content-center'>
     <img alt='Страница не найдена'
       className='img-fluid h-25'
       src='/assets/images/404_slack.svg' />
