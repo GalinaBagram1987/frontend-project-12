@@ -13,7 +13,8 @@ const App = () => {
   document.body.classList.add('h-100', 'bg-light');
 }, []);
   return (
-    <BrowserRouter>
+    <div className="min-vh-100 d-flex flex-column" id="chat">
+      <BrowserRouter>
       <Routes>
         {/* Все страницы внутри Layout */}
         <Route path="/" element={<Layout />} >
@@ -26,6 +27,8 @@ const App = () => {
         </Route>
       </Routes>
     </BrowserRouter>
+    </div>
+    
   );
 }
 

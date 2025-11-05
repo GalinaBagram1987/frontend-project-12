@@ -3,13 +3,12 @@ import NavBar from '../components/navBar';
 
 const Layout = () => {
   return (
-    <div className='h-100'>
-      <div className='h-100' id='chat'>
-        <div className='d-flex flex-column h-100'>
-          <NavBar />
-          <Outlet />
-        </div>
+    <div className="min-vh-100 d-flex flex-column" id="chat">
+      <NavBar />
+      <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+        <Outlet />
       </div>
+      <div class="Toastify"></div>
     </div>
   );
 }
