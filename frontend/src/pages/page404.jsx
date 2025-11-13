@@ -1,6 +1,6 @@
 const Page404 = () => {
 return (
-  <div className='text-center'>
+  <div className='text-center h-100'>
     <img alt='Страница не найдена'
       className='img404'
       style={{ maxWidth: '300px', height: 'auto' }}

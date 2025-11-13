@@ -5,13 +5,7 @@ import Login from './pages/login.jsx'
 import Page404 from './pages/page404.jsx'
 import Registration from './pages/registration.jsx'
 
-import { useEffect } from 'react'
-
 const App = () => {
-  // Добавляем классы body
-  useEffect(() => {
-  document.body.classList.add('h-100', 'bg-light');
-}, []);
   return (
     <BrowserRouter>
       <Routes>
