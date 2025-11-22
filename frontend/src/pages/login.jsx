@@ -1,7 +1,11 @@
 
 import { useFormik } from 'formik';
+import { useDispath } from 'react-redux';
+import { loginSuccess } from '../store/authSlice';
+import { baseUrl } from '../api/routes.js'
 
 const Login = () => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -9,8 +13,9 @@ const Login = () => {
     },
     //сюда надо будет вставть схему валидации
       // validate,
-      onSubmit: values => {
+      onSubmit: (values) => {
         alert(JSON.stringify(values, null, 2));
+
       },
     });
     return(
