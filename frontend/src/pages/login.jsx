@@ -1,11 +1,15 @@
 
 import { useFormik } from 'formik';
-import { useDispath } from 'react-redux';
-import { loginSuccess } from '../store/authSlice';
-import { baseUrl } from '../api/routes.js'
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../store/authSlice.js';
+import { authAPI } from '../api/api.js';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Хук для навигации
+  
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -13,9 +17,28 @@ const Login = () => {
     },
     //сюда надо будет вставть схему валидации
       // validate,
-      onSubmit: (values) => {
-        alert(JSON.stringify(values, null, 2));
-
+      onSubmit: async (values, { setSubmitting, setErrors }) => {
+        try {
+        // Отправляем запрос на сервер
+        const response = await authAPI.login(values);
+        
+        // Сохраняем в Redux и LocalStorage
+        dispatch(loginSuccess({
+          token: response.token,
+          user: response.user
+        }));
+        
+        // Редирект в чат
+        navigate('/chat');
+      } catch (error) {
+        console.error('Login failed:', error);
+        // Показываем ошибку пользователю
+        setErrors({ 
+          password: error.response?.data?.message || 'Ошибка авторизации' 
+        });
+      } finally {
+        setSubmitting(false);
+      }
       },
     });
     return(
@@ -28,9 +51,9 @@ const Login = () => {
             <img src="/assets/images/main_slack.jpg" className="rounded-circle" alt="Аватар" />
           </div>
             <form class='col-12 col-md-6 mt-3 mt-md-0'
-              onSubmit={formik.handleSubmit}>
-              <h1 class='text-center mb-4'>Войти</h1>
-              <div class='form-floating mb-3'>
+              onSubmit={formik.onSubmit}>
+              <h1 className='text-center mb-4'>Войти</h1>
+              <div className='form-floating mb-3'>
                 <input
                   id='username'
                   name="username"
@@ -49,7 +72,8 @@ const Login = () => {
                   name='password'
                   autoComplete='current-password'
                   type='password'
-                  required placeholder='Пароль'
+                  required 
+                  placeholder='Пароль'
                   class='form-control' 
                   onChange={formik.handleChange}
                   value={formik.values.password}
@@ -59,7 +83,7 @@ const Login = () => {
               </div>
               <button
                 type='submit'
-                class='w-100 mb-3 btn btn-outline-primary'
+                className='w-100 mb-3 btn btn-outline-primary'
                 >
                 Войти
               </button>
@@ -68,7 +92,7 @@ const Login = () => {
             <div className='card-footer p-4 mt-auto w-100'>
               <div className='text-center'>
                 <span>Нет аккаунта? </span>
-                <a href='/registration'>Регистрация</a>
+                <Link href='/registration'>Регистрация</Link>
               </div>
             </div>
           </div>

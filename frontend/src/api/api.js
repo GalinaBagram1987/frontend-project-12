@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL, API_ENDPOINTS } from './routes';
 
-const instance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
@@ -10,7 +10,7 @@ const instance = axios.create({
 export const authAPI = {
   login: async (username, password) => {
     try {
-      const response = await instance.post(API_ENDPOINTS.LOGIN, { username, password });
+      const response = await axiosInstance.post(API_ENDPOINTS.LOGIN, { username, password });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -20,7 +20,7 @@ export const authAPI = {
   },
   registr: async (username, password) => {
     try {
-      const response = await instance.post(API_ENDPOINTS.REGISTR, { username, password });
+      const response = await axiosInstance.post(API_ENDPOINTS.REGISTR, { username, password });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -33,7 +33,7 @@ export const authAPI = {
 export const chatAPI = {
   getChannels: async (token) => {
     try {
-      const response = await instance.get(API_ENDPOINTS.GET_CHANNELS, {
+      const response = await axiosInstance.get(API_ENDPOINTS.GET_CHANNELS, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -47,7 +47,7 @@ export const chatAPI = {
 
   addChannel: async (token, newChannel) => {
     try {
-      const response = await instance.post(API_ENDPOINTS.ADD_CHANNEL, newChannel, {
+      const response = await axiosInstance.post(API_ENDPOINTS.ADD_CHANNEL, newChannel, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +61,7 @@ export const chatAPI = {
 
   editChannel: async (token, newNameChannel) => {
     try {
-      const response = await instance.patch(API_ENDPOINTS.EDIT_CHANNEL, newNameChannel, {
+      const response = await axiosInstance.patch(API_ENDPOINTS.EDIT_CHANNEL, newNameChannel, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,7 +75,7 @@ export const chatAPI = {
 
   removeChannel: async (token) => {
     try {
-      const response = await instance.delete(API_ENDPOINTS.REMOVE_CHANNEL, {
+      const response = await axiosInstance.delete(API_ENDPOINTS.REMOVE_CHANNEL, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -89,7 +89,7 @@ export const chatAPI = {
 
   getMessage: async (token) => {
     try {
-      const response = await instance.get(API_ENDPOINTS.GET_MESSAGE, {
+      const response = await axiosInstance.get(API_ENDPOINTS.GET_MESSAGE, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -103,7 +103,7 @@ export const chatAPI = {
 
   addMessage: async (token, newMessage) => {
     try {
-      const response = await instance.post(API_ENDPOINTS.ADD_MESSAGE, newMessage, {
+      const response = await axiosInstance.post(API_ENDPOINTS.ADD_MESSAGE, newMessage, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -117,7 +117,7 @@ export const chatAPI = {
 
   editMessage: async (token, newNameMessage) => {
     try {
-      const response = await instance.patch(API_ENDPOINTS.EDIT_MESSAGE, newNameMessage, {
+      const response = await axiosInstance.patch(API_ENDPOINTS.EDIT_MESSAGE, newNameMessage, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -131,7 +131,7 @@ export const chatAPI = {
 
   removeMessage: async (token) => {
     try {
-      const response = await instance.delete(API_ENDPOINTS.REMOVE_MESSAGE, {
+      const response = await axiosInstance.delete(API_ENDPOINTS.REMOVE_MESSAGE, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
