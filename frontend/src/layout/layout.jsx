@@ -6,7 +6,7 @@ const Layout = () => {
     <div className="h-100 d-flex flex-column" id="chat">
       <NavBar />
       <Outlet />
-      <div class="Toastify"></div>
+      <div className="Toastify"></div>
     </div>
   );
 }

@@ -50,7 +50,7 @@ const Login = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
             <img src="/assets/images/main_slack.jpg" className="rounded-circle" alt="Аватар" />
           </div>
-            <form class='col-12 col-md-6 mt-3 mt-md-0'
+            <form className='col-12 col-md-6 mt-3 mt-md-0'
               onSubmit={formik.onSubmit}>
               <h1 className='text-center mb-4'>Войти</h1>
               <div className='form-floating mb-3'>
@@ -74,7 +74,7 @@ const Login = () => {
                   type='password'
                   required 
                   placeholder='Пароль'
-                  class='form-control' 
+                  className='form-control' 
                   onChange={formik.handleChange}
                   value={formik.values.password}
                 />

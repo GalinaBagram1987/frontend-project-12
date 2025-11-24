@@ -7,6 +7,10 @@ export default defineConfig({
   base: '/',
   server: {
     port: 5002,
+    host: '0.0.0.0', // Добавьте эту строку
+    hmr: {
+      overlay: false, // Отключить overlay при ошибках HMR
+    },
     proxy: {
       // Проксируем запросы к API
       '/api': {
