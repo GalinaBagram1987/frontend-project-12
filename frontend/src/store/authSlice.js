@@ -4,7 +4,7 @@ import { storage } from '../utils/localStorage.js';
 const initialState = {
   token: storage.getToken(),
   user: storage.getUserData(),
-  isAuthenticated: storage.isAuthenticated(),
+  authenticated: storage.isAuthenticated(),
 };
 
 const authSlice = createSlice({
