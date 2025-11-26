@@ -13,7 +13,7 @@ import { loginSuccess } from './store/authSlice.js';
 const App = () => {
 
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(state  => state.authenticated);
+  const { isAuthenticated } = useSelector(state  => state.auth);
 
   // При загрузке приложения проверяем токен
   useEffect(() => {

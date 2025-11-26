@@ -4,7 +4,7 @@ import { storage } from '../utils/localStorage.js';
 const initialState = {
   token: storage.getToken(),
   user: storage.getUserData(),
-  authenticated: storage.isAuthenticated(),
+  isAuthenticated: storage.isAuthenticated(),
 };
 
 const authSlice = createSlice({
@@ -40,5 +40,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, LogOut, updateUser } = authSlice.actions;
+export const { loginSuccess, Logout, updateUser } = authSlice.actions;
 export default authSlice.reducer;

@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
 import { authAPI } from '../api/api.js';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -92,7 +92,7 @@ const Login = () => {
             <div className='card-footer p-4 mt-auto w-100'>
               <div className='text-center'>
                 <span>Нет аккаунта? </span>
-                <Link href='/registration'>Регистрация</Link>
+                <a href='/registration'>Регистрация</a>
               </div>
             </div>
           </div>
