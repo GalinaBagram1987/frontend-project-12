@@ -19,7 +19,12 @@ const Registration = () => {
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
         // Отправляем запрос на сервер
-        const response = await authAPI.registr(values);
+        if (values.password !== values.confirmPassword) {
+          setErrors({ confirmPassword: 'Пароли не совпадают' });
+          return;
+        }
+        const { username, password } = values;
+        const response = await authAPI.registr(username, password);
         
         // Сохраняем в Redux и LocalStorage
         dispatch(loginSuccess({
@@ -32,9 +37,14 @@ const Registration = () => {
       } catch (error) {
         console.error('Login failed:', error);
         // Показываем ошибку пользователю
-          
+        let errorMessage = error.response.data.message;
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.code === 'ERR_NETWORK') {
+          errorMessage = 'Сервер недоступен. Проверьте подключение.';
+        }
         setErrors({ 
-          password: error.response?.data?.message || 'Ошибка авторизации' 
+          password: errorMessage 
         });
       } finally {
         setSubmitting(false);

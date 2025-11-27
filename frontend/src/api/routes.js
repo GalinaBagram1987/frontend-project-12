@@ -1,11 +1,11 @@
 export const BASE_URL = import.meta.env.PROD
   ? 'https://testslackbagram.onrender.com' // Production URL
-  : 'http://localhost:5001'; // Development URL
+  : ''; // Development URL
 
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/api/v1/login',
-    REGISTR: 'POST /api/v1/signup',
+    REGISTR: '/api/v1/signup',
   },
   CHAT: {
     GET_CHANNELS: '/api/v1/channels',
