@@ -51,7 +51,7 @@ const Login = () => {
             <img src="/assets/images/main_slack.jpg" className="rounded-circle" alt="Аватар" />
           </div>
             <form className='col-12 col-md-6 mt-3 mt-md-0'
-              onSubmit={formik.onSubmit}>
+              onSubmit={formik.handleSubmit}>
               <h1 className='text-center mb-4'>Войти</h1>
               <div className='form-floating mb-3'>
                 <input
