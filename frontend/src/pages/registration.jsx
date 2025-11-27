@@ -10,7 +10,7 @@ return(
     <div className='row justify-content-center align-content-center h-100'>
       <div className='col-12 col-md-8 col-xxl-6'>
         <div className='card shadow-sm'>
-          <div className='card-body d-flex flex-column flex-md-row jstify-content-around align-items p-5'>
+          <div className='card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5'>
             <div>
               <img src="/assets/images/registrat_slack.jpg" className="rounded-circle" alt="Регистрация" />
             </div>
@@ -34,12 +34,43 @@ return(
               </div>
               <div className='form-floating mb-3'>
                 <input
+                  placeholder='Не менее 6 символов'
+                  name='password'
+                  aria-describedby='passwordHelpBlock'
+                  required
+                  autoComplete='new-password'
+                  type='password'
+                  id='password'
+                  className='form-control'
+                  value
+                  onChange
+                  aria-autocomplete='list'
                 />
+                <label className='form-label' for='password'>
+                  Пароль
+                </label>
+                <div className='invalid-tooltip'></div>
               </div>
               <div className='form-floating mb-4'>
                 <input
+                  placeholder='Пароли должны совпадать'
+                  name='password'
+                  required
+                  autoComplete='new-password'
+                  type='password'
+                  id='confirmPassword'
+                  className='form-control'
+                  value
+                  onChange
                 />
+                <label className='form-label' for='confirmPasword'>
+                  Подтвердите пароль
+                </label>
+                <div className='invalid-tooltip'></div>
               </div>
+              <button type='submit' className='btn btn-outline-primary'>
+                Зарегистрироваться
+              </button>
             </form>
           </div>
         </div>
