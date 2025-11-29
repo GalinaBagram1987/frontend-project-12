@@ -20,21 +20,29 @@ const Login = () => {
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
         // Отправляем запрос на сервер
-        const response = await authAPI.login(values);
+        const response = await authAPI.login(values.username, values.password)
         
         // Сохраняем в Redux и LocalStorage
         dispatch(loginSuccess({
           token: response.token,
-          user: response.user
+          username: response.username,
         }));
         
         // Редирект в чат
         navigate('/chat');
       } catch (error) {
-        console.error('Login failed:', error);
+        let errorMessage = 'Ошибка авторизации';
+    
+      if (error.response?.status === 401) {
+        errorMessage = 'Неверное имя пользователя или пароль';
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.code === 'ERR_NETWORK') {
+        errorMessage = 'Сервер недоступен';
+      }
         // Показываем ошибку пользователю
         setErrors({ 
-          password: error.response?.data?.message || 'Ошибка авторизации' 
+          password: errorMessage 
         });
       } finally {
         setSubmitting(false);

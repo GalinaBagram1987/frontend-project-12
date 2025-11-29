@@ -5,7 +5,7 @@ import Chat from './pages/chat.jsx'
 import Login from './pages/login.jsx'
 import Page404 from './pages/page404.jsx'
 import Registration from './pages/registration.jsx'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { PrivateRoute } from './components/privateRoad.jsx';
 import { storage } from './utils/localStorage.js';
 import { loginSuccess } from './store/authSlice.js';
@@ -13,7 +13,6 @@ import { loginSuccess } from './store/authSlice.js';
 const App = () => {
 
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(state  => state.auth);
 
   // При загрузке приложения проверяем токен
   useEffect(() => {
@@ -30,9 +29,7 @@ const App = () => {
       <Routes>
         {/* Все страницы внутри Layout */}
         <Route path="/" element={<Layout />} >
-          <Route index element={
-            !isAuthenticated ? <Login /> : <Chat />
-          } />
+          <Route index element={ <Login /> } />
           <Route path='login' element={<Login />} />
           <Route path='registration' element={<Registration />} />
           <Route path='chat' element={

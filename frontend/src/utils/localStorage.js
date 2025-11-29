@@ -20,20 +20,42 @@ export const storage = {
   },
   // Сохранить данные пользователя
   setUserData: (userData) => {
+    console.log('setUserData called with:', userData);
+    if (!userData || typeof userData !== 'object') {
+      console.error('Invalid user data for storage:', userData);
+      return;
+    }
     localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
+    console.log('userData saved to localStorage');
   },
   // Получить данные пользователя
   getUserData: () => {
-    const userData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
-    return userData ? JSON.parse(userData) : null;
+    try {
+      const userData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
+      console.log('getUserData:', userData);
+
+      if (!userData) {
+        return null;
+      }
+      const parsedData = JSON.parse(userData);
+      return parsedData && typeof parsedData === 'object' ? parsedData : null;
+    } catch (error) {
+      console.error('Error parsing user data from localStorage:', error);
+      // Автоматически очищаем битые данные
+      localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      return null;
+    }
   },
   // Очистить все данные аутентификации
-  clearAut: () => {
+  clearAuth: () => {
     localStorage.removeItem(STORAGE_KEYS.TOKEN);
     localStorage.removeItem(STORAGE_KEYS.USER_DATA);
   },
   // Проверить, авторизован ли пользователь
   isAuthenticated: () => {
-    return !!localStorage.getItem(STORAGE_KEYS.TOKEN);
+    const token = storage.getToken();
+    const userData = storage.getUserData();
+    console.log('isAuthenticated check - token:', !!token, 'userData:', !!userData);
+    return !!token && !!userData;
   },
 };

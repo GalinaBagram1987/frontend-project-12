@@ -18,6 +18,8 @@ const Registration = () => {
       // validate,
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
+
+          console.log('Sending data:', { username: values.username, password: values.password });
         // Отправляем запрос на сервер
         if (values.password !== values.confirmPassword) {
           setErrors({ confirmPassword: 'Пароли не совпадают' });
@@ -25,11 +27,13 @@ const Registration = () => {
         }
         const { username, password } = values;
         const response = await authAPI.registr(username, password);
+
+        console.log('Server response:', response);
         
         // Сохраняем в Redux и LocalStorage
         dispatch(loginSuccess({
           token: response.token,
-          user: response.user
+          username: response.username,
         }));
         
         // Редирект в чат
@@ -38,11 +42,15 @@ const Registration = () => {
         console.error('Login failed:', error);
         // Показываем ошибку пользователю
         let errorMessage = error.response.data.message;
-        if (error.response?.data?.message) {
+
+        if (error.response?.status === 409) {
+          errorMessage = 'Пользователь с таким именем уже существует';
+        } else if (error.response?.data?.message) {
           errorMessage = error.response.data.message;
         } else if (error.code === 'ERR_NETWORK') {
           errorMessage = 'Сервер недоступен. Проверьте подключение.';
         }
+
         setErrors({ 
           password: errorMessage 
         });
