@@ -6,7 +6,7 @@ import Login from './pages/login.jsx'
 import Page404 from './pages/page404.jsx'
 import Registration from './pages/registration.jsx'
 import { useDispatch } from 'react-redux';
-import { PrivateRoute } from './components/privateRoad.jsx';
+import { PrivateRoute } from './components/privateRoute.jsx';
 import { storage } from './utils/localStorage.js';
 import { loginSuccess } from './store/authSlice.js';
 

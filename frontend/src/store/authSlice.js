@@ -3,8 +3,8 @@ import { storage } from '../utils/localStorage.js';
 
 const initialState = {
   token: storage.getToken(),
-  user: storage.getUserData(),
-  isAuthenticated: storage.isAuthenticated(),
+  username: storage.getUserData(),
+  isAuthenticated: !!storage.isAuthenticated(),
 };
 
 const authSlice = createSlice({
@@ -13,7 +13,7 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       const { token, username } = action.payload;
-      if (token && username && typeof user === 'object') {
+      if (token && username) {
         state.token = token;
         state.username = username;
         state.isAuthenticated = true;
