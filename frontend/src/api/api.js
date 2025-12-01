@@ -62,13 +62,17 @@ export const chatAPI = {
     }
   },
 
-  editChannel: async (token, newNameChannel) => {
+  editChannel: async (token, channelId, newNameChannel) => {
     try {
-      const response = await axiosInstance.patch(API_ENDPOINTS.CHAT.EDIT_CHANNEL, newNameChannel, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.patch(
+        `${API_ENDPOINTS.CHAT.EDIT_CHANNEL}/${channelId}`,
+        { name: newNameChannel },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error('Edit channel failed:', error);
@@ -76,9 +80,9 @@ export const chatAPI = {
     }
   },
 
-  removeChannel: async (token) => {
+  removeChannel: async (token, channelId) => {
     try {
-      const response = await axiosInstance.delete(API_ENDPOINTS.CHAT.REMOVE_CHANNEL, {
+      const response = await axiosInstance.delete(`${API_ENDPOINTS.CHAT.REMOVE_CHANNEL}/${channelId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,7 +94,7 @@ export const chatAPI = {
     }
   },
 
-  getMessage: async (token) => {
+  getMessages: async (token) => {
     try {
       const response = await axiosInstance.get(API_ENDPOINTS.CHAT.GET_MESSAGE, {
         headers: {
@@ -118,13 +122,17 @@ export const chatAPI = {
     }
   },
 
-  editMessage: async (token, newNameMessage) => {
+  editMessage: async (token, messageId, newNameMessage) => {
     try {
-      const response = await axiosInstance.patch(API_ENDPOINTS.CHAT.EDIT_MESSAGE, newNameMessage, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.patch(
+        `${API_ENDPOINTS.CHAT.EDIT_MESSAGE}/${messageId}`,
+        { body: newNameMessage },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error('Edit message failed:', error);
@@ -132,9 +140,9 @@ export const chatAPI = {
     }
   },
 
-  removeMessage: async (token) => {
+  removeMessage: async (token, messageId) => {
     try {
-      const response = await axiosInstance.delete(API_ENDPOINTS.CHAT.REMOVE_MESSAGE, {
+      const response = await axiosInstance.delete(`${API_ENDPOINTS.CHAT.REMOVE_MESSAGE}/${messageId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
