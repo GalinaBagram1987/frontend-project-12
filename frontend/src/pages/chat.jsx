@@ -1,5 +1,34 @@
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChatData } from "../store/chatSlice.js";
+import ChatForm from '../components/chatForm.jsx';
+import Channels from '../components/channels.jsx';
 
 const Chat = () => {
+	const dispatch = useDispatch();
+	const token = useSelector(state => state.auth.token);
+	const { channels, messages, currentChannelId, loading, error } =  useSelector(state =>state.chat)
+
+	useEffect(() => {
+		if (!token) {
+			console.log('Токен не найден, пропускаем загрузку чата');
+			return;
+		}
+		console.log('Токен есть, загружаем данные чата:', token);
+    dispatch(fetchChatData());
+	}, [dispatch, token]);
+
+	if (loading) return <div>Загрузка...</div>;
+  if (error) return <div>Ошибка: {error}</div>;
+
+	// выбираем текущий кканал
+	const currentChannel = channels.find(channel => channel.id === currentChannelId);
+
+	// Фильтруем сообщения для текущего канала
+  const currentMessages = messages.filter(
+    message => message.channelId === currentChannelId
+  );
+
 return(
   <div className="container h-100 my-4 overflow-hidden rounded shadow">
     <div className="row h-100 bg-wight flex-md-row">
@@ -14,56 +43,39 @@ return(
 						<span className="visually-hidden">+</span>
 					</button>
 			</div>
-      <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-				<li className="nav-item w-100">
-					<button type="button" className="w-100 rounded-0 text-start btn btn-secondary">
-						<span className="me-1">#</span>general</button>
-						</li>
-						<li className="nav-item w-100">
-							<button type="button" className="w-100 rounded-0 text-start btn">
-								<span className="me-1">#</span>random</button>
-								</li>
-							</ul>
+			{/* Список каналов */}
+      <Channels />
 			</div>
 			<div className="col p-0 h-100">
+				{/* Заголовок канала с количеством сообщений */}
 				<div className="d-flex flex-column h-100">
-					<div className="bg-light mb-4 p-3 shadow-sm small">
-						<p className="m-0"><b># general</b></p>
-						<span className="text-muted">0 сообщений</span>
+						{currentChannel && (
+						<div className="bg-light mb-4 p-3 shadow-sm small">
+							<p className="m-0"><b># {currentChannel.name}</b></p>
+						<span className="text-muted">{currentMessages.length} сообщений</span>
 						</div>
-						<div id="messages-box" className="chat-messages overflow-auto px-5 ">
-							</div>
-							<div className="mt-auto px-5 py-3">
-								<form novalidate="" className="py-1 border rounded-2">
-									<div class="input-group has-validation">
-										<input name="body" 
-										aria-label="Новое сообщение" 
-										placeholder="Введите сообщение..." 
-										className="border-0 p-0 ps-2 form-control" 
-										value=""/>
-										<button 
-										type="submit" 
-										disabled="" 
-										className="btn btn-group-vertical">
-											<svg xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 16 16"
-												width="20"
-												height="20"
-												fill="currentColor"
-												className="bi bi-arrow-right-square">
-												<path fill-rule="evenodd" 
-												d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z">
-													</path>
-													</svg>
-													<span className="visually-hidden">Отправить</span>
-												</button>
-											</div>
-										</form>
-									</div>
+						)}
+				{/* Вывод сообщений в канале */}
+				<div id="messages-box" className="chat-messages overflow-auto px-5 ">
+					{currentMessages.length === 0 ? ('') : (
+						currentMessages.map(message => (
+							<div key = {message.id}
+							className='text-berak mb-2'>
+								<b>{message.username}</b>
+								: 
+                {message.body}
 								</div>
-							</div>
-						</div>
-          </div>
+						))
+					)}
+				</div>
+        {/* Форма для ввода сообщений */}
+				<div className="mt-auto px-5 py-3">
+					<ChatForm />
+				</div>
+			</div>
+	</div>
+	</div>
+  </div>
   )
 };
 

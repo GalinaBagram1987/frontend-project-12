@@ -3,7 +3,7 @@ import { storage } from '../utils/localStorage.js';
 
 const initialState = {
   token: storage.getToken(),
-  username: storage.getUserData(),
+  user: storage.getUserData(),
   isAuthenticated: !!storage.isAuthenticated(),
 };
 
@@ -12,17 +12,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      const { token, username } = action.payload;
-      if (token && username) {
+      const { token, user } = action.payload;
+      if (token && user) {
         state.token = token;
-        state.username = username;
+        state.user = user;
         state.isAuthenticated = true;
 
         // Сохраняем в LocalStorage
         storage.setToken(token);
-        storage.setUserData(username);
+        storage.setUserData({ user });
       }
-      console.log('Auth state updated:', { token, username });
+      console.log('Auth state updated:', { token, user });
     },
 
     Logout: (state) => {
