@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { PrivateRoute } from './components/privateRoute.jsx';
 import { storage } from './utils/localStorage.js';
 import { loginSuccess } from './store/authSlice.js';
+// import socket from './library/socket.js';
 
 const App = () => {
 
@@ -20,8 +21,20 @@ const App = () => {
     const userData = storage.getUserData();
     
     if (token && userData) {
-      dispatch(loginSuccess({ token, user: userData }));
-    }
+      dispatch(loginSuccess({ token, username: userData }));
+      // socket.auth = { token };
+       // Подключаем сокет только если еще не подключен
+      // if (!socket.connected) {
+        // socket.connect();
+        // console.log('Сокет подключен из App');
+      }
+    // } else {
+      // Если токена и userData нет , отключаем сокет
+      // if (socket.connected) {
+        // socket.disconnect();
+        // console.log('Сокет отключен из App (нет токена)');
+      //}
+    // }
   }, [dispatch]);
 
   return (

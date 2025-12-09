@@ -12,17 +12,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      const { token, user } = action.payload;
-      if (token && user) {
+      const { token, username } = action.payload;
+      console.log('loginSuccess received:', { token, username });
+      if (token && username) {
         state.token = token;
-        state.user = user;
+        state.user = username;
         state.isAuthenticated = true;
 
         // Сохраняем в LocalStorage
         storage.setToken(token);
-        storage.setUserData({ user });
+        storage.setUserData(username);
       }
-      console.log('Auth state updated:', { token, user });
+      console.log('Auth state updated:', { token, username });
+      console.log('state.user', state.user);
     },
 
     Logout: (state) => {

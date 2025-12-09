@@ -7,9 +7,11 @@ const ChatForm = () => {
   const { channels, currentChannelId } = useSelector((state) => state.chat);
 
   const token = useSelector((state) => state.auth.token);
+  const { user: currentUserName } = useSelector(state => state.auth);
+  const curentUsername = currentUserName;
   // выбираем текущий кканал
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
-
+  console.log('curentUserName', curentUsername);
   const formik = useFormik({
     initialValues: {
       body: '',
@@ -30,7 +32,9 @@ const ChatForm = () => {
         const newMessage = {
           body: values.body.trim(),
           channelId: currentChannelId,
+          username: curentUsername,
         };
+        console.log('newMessage', newMessage);
         // Отправляем запрос на сервер
         const response = await chatAPI.addMessage(token, newMessage);
         if (response) {

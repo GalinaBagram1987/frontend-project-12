@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatData } from "../store/chatSlice.js";
+import { fetchChatData, addChannel, addMessage, removeChannel, renameChannel } from "../store/chatSlice.js";
 import ChatForm from '../components/chatForm.jsx';
 import Channels from '../components/channels.jsx';
+import socket from '../library/socket.js';
 
 const Chat = () => {
 	const dispatch = useDispatch();
 	const token = useSelector(state => state.auth.token);
 	const { channels, messages, currentChannelId, loading, error } =  useSelector(state =>state.chat)
+    const { user: currentUserName } = useSelector(state => state.auth);   
 
 	useEffect(() => {
 		if (!token) {
@@ -15,20 +17,62 @@ const Chat = () => {
 			return;
 		}
 		console.log('Токен есть, загружаем данные чата:', token);
+
+	 // Подключаем сокет с токеном
+    socket.auth = { token };
+    socket.connect();
+
+	  // подписаться на новые сообщения
+    socket.on('newMessage', (payload) => {
+      console.log(payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+      if (!payload.username) {
+				console.warn('Username не пришел от сервера, добавляем из текущего пользователя');
+        payload = { ...payload, username: currentUserName };
+			}
+			dispatch(addMessage(payload));
+	  });
+    // подпишитесь на новый канал
+    socket.on('newChannel', (payload) => {
+      console.log(payload); // { id: 6, name: "new channel", removable: true }
+      dispatch(addChannel(payload));  
+		});
+    // подписаться на удаление канала
+    socket.on('removeChannel', (payload) => {
+      console.log(payload); // { id: 6 };
+      dispatch(removeChannel(payload.id));  
+		});
+    // подписаться на переименование канала
+    socket.on('renameChannel', (payload) => {
+      console.log(payload); // { id: 7, name: "new name channel", removable: true }
+      dispatch(renameChannel(payload));  
+		});
+		// Загружаем начальные данные
     dispatch(fetchChatData());
-	}, [dispatch, token]);
+
+		// Отписка при размонтировании
+		return () => {
+      socket.off('newMessage');
+      socket.off('newChannel');
+      socket.off('removeChannel');
+      socket.off('renameChannel');
+    };
+
+	}, [dispatch, token, currentUserName]);
 
 	if (loading) return <div>Загрузка...</div>;
-  if (error) return <div>Ошибка: {error}</div>;
+    if (error) return <div>Ошибка: {error}</div>;
 
 	// выбираем текущий кканал
 	const currentChannel = channels.find(channel => channel.id === currentChannelId);
-
+    console.log(currentChannel);
 	// Фильтруем сообщения для текущего канала
-  const currentMessages = messages.filter(
-    message => message.channelId === currentChannelId
-  );
-
+    const currentMessages = messages.filter(
+    message => message.channelId === currentChannelId);
+    console.log(currentMessages);
+	// забираем из сторадже имя юзера
+	const curUsername = currentUserName;
+	console.log('curUsername', curUsername);
+	
 return(
   <div className="container h-100 my-4 overflow-hidden rounded shadow">
     <div className="row h-100 bg-wight flex-md-row">
@@ -44,7 +88,7 @@ return(
 					</button>
 			</div>
 			{/* Список каналов */}
-      <Channels />
+    <Channels />
 			</div>
 			<div className="col p-0 h-100">
 				{/* Заголовок канала с количеством сообщений */}
@@ -60,9 +104,9 @@ return(
 					{currentMessages.length === 0 ? ('') : (
 						currentMessages.map(message => (
 							<div key = {message.id}
-							className='text-berak mb-2'>
+							className='text-break mb-2'>
 								<b>{message.username}</b>
-								: 
+								{': '} 
                 {message.body}
 								</div>
 						))

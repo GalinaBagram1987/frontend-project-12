@@ -41,6 +41,7 @@ export const chatAPI = {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('getChannels response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Get channels failed:', error);
@@ -101,20 +102,22 @@ export const chatAPI = {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('getMessages response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Get message failed:', error);
       throw error;
     }
   },
-
   addMessage: async (token, newMessage) => {
     try {
+      console.log('Отправляем сообщение:', newMessage);
       const response = await axiosInstance.post(API_ENDPOINTS.CHAT.ADD_MESSAGE, newMessage, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('Ответ от сервера на отправку сообщения:', response.data);
       return response.data;
     } catch (error) {
       console.error('Add new message failed:', error);

@@ -12,6 +12,9 @@ const fetchChatData = createAsyncThunk(
         throw new Error('Токен не найден');
       }
       const [channelsResponse, messagesResponse] = await Promise.all([chatAPI.getChannels(token), chatAPI.getMessages(token)]);
+      console.log('channels Response', channelsResponse);
+      console.log('messages Response', messagesResponse);
+
       return {
         channels: channelsResponse,
         messages: messagesResponse,
