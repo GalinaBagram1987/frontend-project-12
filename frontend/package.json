@@ -13,7 +13,7 @@
     "@reduxjs/toolkit": "^2.9.2",
     "axios": "^1.13.1",
     "bootstrap": "^5.3.8",
-    "formik": "^2.4.6",
+    "formik": "^2.4.9",
     "i18next": "^25.6.0",
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.8",

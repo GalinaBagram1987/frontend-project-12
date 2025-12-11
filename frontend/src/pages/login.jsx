@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
 import { authAPI } from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
+// import loginSchema from '../library/yup/loginValidate.js';
 
 
 const Login = () => {
@@ -15,13 +16,15 @@ const Login = () => {
       username: '',
       password: '',
     },
-    //сюда надо будет вставть схему валидации
-      // validate,
+    
+      // validationSchema: loginSchema,
+      // validateOnChange: true,
+      // validateOnBlur: true,
+
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
         // Отправляем запрос на сервер
-        const response = await authAPI.login(values.username, values.password)
-        
+        const response = await authAPI.login(values.username, values.password);
         // Сохраняем в Redux и LocalStorage
         dispatch(loginSuccess({
           token: response.token,
@@ -32,8 +35,7 @@ const Login = () => {
         navigate('/chat');
       } catch (error) {
         let errorMessage = 'Ошибка авторизации';
-    
-      if (error.response?.status === 401) {
+        if (error.response?.status === 401) {
         errorMessage = 'Неверное имя пользователя или пароль';
       } else if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
@@ -61,6 +63,7 @@ const Login = () => {
             <form className='col-12 col-md-6 mt-3 mt-md-0'
               onSubmit={formik.handleSubmit}>
               <h1 className='text-center mb-4'>Войти</h1>
+              {/* Поле username */}
               <div className='form-floating mb-3'>
                 <input
                   id='username'
@@ -68,12 +71,12 @@ const Login = () => {
                   type="text"
                   onChange={formik.handleChange}
                   value={formik.values.username}
-                  className='form-control'
+                  className={`form-control ${formik.submitCount > 0 ? 'is-invalid' : ''}`}
                   autoComplete='username'
                 />
                 <label htmlFor="username">Ваш ник</label>
-              {formik.errors.username ? <div>{formik.errors.username}</div> : null}
               </div>
+              {/* Поле password */}
               <div className='form-floating mb-4'>
                 <input
                   id='password'
@@ -82,12 +85,12 @@ const Login = () => {
                   type='password'
                   required 
                   placeholder='Пароль'
-                  className='form-control' 
+                  className={`form-control ${formik.submitCount > 0 && formik.errors.password ? 'is-invalid' : ''}`}
                   onChange={formik.handleChange}
                   value={formik.values.password}
                 />
+                <div className="invalid-tooltip">{(formik.errors.password || formik.errors.username) || ''}</div>
                 <label htmlFor="password">Пароль</label>
-                {formik.errors.password ? <div>{formik.errors.password}</div> : null}
               </div>
               <button
                 type='submit'

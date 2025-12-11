@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
 import { authAPI } from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
+import registrSchema from '../library/yup/registrValidate.js';
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -15,16 +16,16 @@ const Registration = () => {
         confirmPassword: '',
       },
       //сюда надо будет вставть схему валидации
-      // validate,
+      validationSchema: registrSchema,
+      validateOnChange: true,
+      validateOnBlur: true,
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
 
-          console.log('Sending data:', { username: values.username, password: values.password });
+          console.log('Sending data:', 
+            { username: values.username, password: values.password });
         // Отправляем запрос на сервер
-        if (values.password !== values.confirmPassword) {
-          setErrors({ confirmPassword: 'Пароли не совпадают' });
-          return;
-        }
+
         const { username, password } = values;
         const response = await authAPI.registr(username, password);
 
@@ -35,7 +36,7 @@ const Registration = () => {
           token: response.token,
           username: response.username,
         }));
-        
+
         // Редирект в чат
         navigate('/chat');
       } catch (error) {
@@ -72,6 +73,7 @@ return(
             <form className='w-50'
               onSubmit={formik.handleSubmit}>
               <h1 className='text-center mb-4'>Регистрация</h1>
+              {/* Поле username */}
               <div className='form-floating mb-3'>
                 <input
                   placeholder='От 3 до 20 символов'
@@ -79,15 +81,17 @@ return(
                   autoComplete='username'
                   required
                   id='username'
-                  className='form-control'
                   onChange={formik.handleChange}
                   value={formik.values.username}
+                  onBlur={formik.handleBlur}
+                  className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
                 />
                 <label className='form-label' htmlFor='username'>
                   Имя пользователя
                 </label>
-                <div placement='right' className='invalid-tooltip'></div>
+              <div className="invalid-tooltip">{formik.errors.username || ''}</div>
               </div>
+              {/* Поле password */}
               <div className='form-floating mb-3'>
                 <input
                   placeholder='Не менее 6 символов'
@@ -97,16 +101,21 @@ return(
                   autoComplete='new-password'
                   type='password'
                   id='password'
-                  className='form-control'
+                  className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   aria-autocomplete='list'
+                  onBlur={formik.handleBlur}
                 />
+                <div className='invalid-tooltip'>{formik.errors.password || ''}</div>
                 <label className='form-label' htmlFor='password'>
                   Пароль
                 </label>
-                <div className='invalid-tooltip'></div>
+                {formik.touched.password && formik.errors.password && (
+                <div className="invalid-tooltip">{formik.errors.password}</div>
+                )}
               </div>
+              {/* Поле confirmPassword */}
               <div className='form-floating mb-4'>
                 <input
                   placeholder='Пароли должны совпадать'
@@ -115,14 +124,15 @@ return(
                   autoComplete='new-password'
                   type='password'
                   id='confirmPassword'
-                  className='form-control'
+                  className={`form-control ${formik.touched.confirmPassword && formik.errors.confirmPassword ? 'is-invalid' : ''}`}
                   onChange={formik.handleChange}
                   value={formik.values.confirmPassword}
+                  onBlur={formik.handleBlur}
                 />
+                <div className='invalid-tooltip'>{formik.errors.confirmPassword || ''}</div>
                 <label className='form-label' htmlFor='confirmPassword'>
                   Подтвердите пароль
                 </label>
-                <div className='invalid-tooltip'></div>
               </div>
               <button type='submit' className='btn btn-outline-primary'>
                 Зарегистрироваться
