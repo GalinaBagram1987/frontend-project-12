@@ -22,19 +22,7 @@ const App = () => {
     
     if (token && userData) {
       dispatch(loginSuccess({ token, username: userData }));
-      // socket.auth = { token };
-       // Подключаем сокет только если еще не подключен
-      // if (!socket.connected) {
-        // socket.connect();
-        // console.log('Сокет подключен из App');
       }
-    // } else {
-      // Если токена и userData нет , отключаем сокет
-      // if (socket.connected) {
-        // socket.disconnect();
-        // console.log('Сокет отключен из App (нет токена)');
-      //}
-    // }
   }, [dispatch]);
 
   return (
