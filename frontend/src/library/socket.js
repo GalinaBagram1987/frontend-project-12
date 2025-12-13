@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 export const SOCKET_URL = import.meta.env.PROD
-  ? 'https://testslackbagram.onrender.com' // Production URL
+  ? 'https://testslack2bagram.onrender.com' // Production URL
   : 'http://localhost:5001'; // Development URL
 
 const socket = io(SOCKET_URL, {
