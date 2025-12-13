@@ -28,23 +28,23 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ------ CORS ТОЛЬКО ДЛЯ DEVELOPMENT ------
-if (process.env.NODE_ENV !== 'production') {
-  const cors = require('cors');
-  app.use(
-    cors(
-      {
-        origin: process.env.NODE_ENV === 'production' 
-    ? 'https://testslack2bagram.onrender.com' // Продакшен фронтенд
-    : ['http://localhost:5002'], // Development frontend
-        credentials: true, // for куки/авторизационные заголовки
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-        exposedHeaders: ['Content-Length', 'Authorization'] // Важно для некоторых клиентов
-      },
-      app.options(/\/(.*)/, cors(corsOptions))
-    )
-  );
-}
+// if (process.env.NODE_ENV !== 'production') {
+// const cors = require('cors');
+// app.use(
+// cors(
+// {
+//         origin: process.env.NODE_ENV === 'production'
+//     ? 'https://testslack2bagram.onrender.com' // Продакшен фронтенд
+//     : ['http://localhost:5002'], // Development frontend
+//         credentials: true, // for куки/авторизационные заголовки
+//         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//         allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+//         exposedHeaders: ['Content-Length', 'Authorization'] // Важно для некоторых клиентов
+//       },
+//       app.options(/\/(.*)/, cors(corsOptions))
+//     )
+//   );
+// }
 
 app.use(express.json());
 
@@ -110,6 +110,15 @@ if (process.env.NODE_ENV === 'production') {
     });
   });
 }
+
+// ------health------
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    hexlet: 'http://localhost:5000',
+    time: new Date().toISOString(),
+  });
+});
 
 // ------ ЗАПУСК СЕРВЕРА -----
 app.listen(PORT, () => {
