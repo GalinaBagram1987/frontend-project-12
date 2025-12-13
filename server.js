@@ -30,7 +30,16 @@ if (process.env.NODE_ENV === 'production') {
 // ------ CORS ТОЛЬКО ДЛЯ DEVELOPMENT ------
 if (process.env.NODE_ENV !== 'production') {
   const cors = require('cors');
-  app.use(cors({ origin: 'http://localhost:5002' }));
+  app.use(
+    cors(
+      {
+        origin: 'https://testslack2bagram.onrender.com',
+        credentials: true, // for куки/авторизационные заголовки
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Все нужные методы
+      },
+      app.options(/\/(.*)/, cors(corsOptions))
+    )
+  );
 }
 
 app.use(express.json());
