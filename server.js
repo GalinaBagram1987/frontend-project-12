@@ -33,9 +33,13 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(
     cors(
       {
-        origin: 'https://testslack2bagram.onrender.com',
+        origin: process.env.NODE_ENV === 'production' 
+    ? 'https://testslack2bagram.onrender.com' // Продакшен фронтенд
+    : ['http://localhost:5002'], // Development frontend
         credentials: true, // for куки/авторизационные заголовки
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Все нужные методы
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+        exposedHeaders: ['Content-Length', 'Authorization'] // Важно для некоторых клиентов
       },
       app.options(/\/(.*)/, cors(corsOptions))
     )
