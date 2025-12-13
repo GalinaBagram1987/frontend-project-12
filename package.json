@@ -14,7 +14,6 @@
   "license": "ISC",
   "author": "BagramGalina",
   "type": "commonjs",
-
   "scripts": {
     "start": "node server.js",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
@@ -26,6 +25,7 @@
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
+    "axios": "^1.13.2",
     "express": "^5.1.0"
   },
   "engines": {
