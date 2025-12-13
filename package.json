@@ -1,6 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
+  "main": "server.js",
   "description": "Slack",
   "homepage": "https://github.com/GalinaBagram1987/frontend-project-12#readme",
   "bugs": {
@@ -13,16 +14,16 @@
   "license": "ISC",
   "author": "BagramGalina",
   "type": "commonjs",
-  "main": "index.js",
+
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "start": "npx serve -s ./frontend/dist -p ${PORT:-5002} --single",
+    "start": "node server.js",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "npx start-server --port 5001 --static ./frontend/dist",
-    "start:backend": "npx start-server --port $PORT --static ./frontend/dist",
+    "dev:frontend": "cd frontend && npm run dev -- --port 5002",
+    "dev:backend": "npx start-server --port 5001",
+    "build": "cd frontend && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd frontend && npm ci"
+    "postinstall": "cd frontend && npm ci && npm run build",
+    "start:prod": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "nodemon": "^3.1.11"
   }
 }
