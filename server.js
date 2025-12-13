@@ -41,7 +41,7 @@ const HEXLET_API =
     ? 'http://localhost:5000' // локально в том же контейнере
     : 'http://localhost:5001'; // в development
 
-app.use('/api/v1/*', async (req, res) => {
+app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
   try {
     const remainingPath = req.params[0] || '';
     // const url = `${HEXLET_API}/api/v1/${req.params.path}`;
