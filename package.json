@@ -20,9 +20,8 @@
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "npm install && cd frontend && npm run dev -- --port 5002",
     "dev:backend": "npx start-server --port 5001",
-    "build": "cd frontend && npm ci --production=false && npm run build",
+    "build": "npm ci --production=false && cd frontend && npm ci --production=false && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm ci --production=false && cd frontend && npm ci --production=false",
     "start:prod": "NODE_ENV=production node server.js"
   },
   "dependencies": {
