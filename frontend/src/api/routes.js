@@ -1,5 +1,5 @@
 export const BASE_URL = import.meta.env.PROD
-  ? 'https://testslackbagram.onrender.com' // Production URL
+  ? 'https://testslack2bagram.onrender.com' // Production URL
   : ''; // Development URL
 
 export const API_ENDPOINTS = {
