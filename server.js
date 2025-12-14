@@ -51,15 +51,12 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.json());
 
 // ------- ПРОКСИ ДЛЯ SOCKET.IO ------
-app.use(
-  'socket.io',
-  createProxyMiddleware({
-    target: 'http://localhost:5000',
-    changeOrigin: true,
-    ws: true, // Включаем поддержку WebSocket
-    logLevel: 'debug',
-  })
-);
+const socketProxy = createProxyMiddleware('/socket.io', {
+  target: `http://localhost:${HEXLET_PORT}`,
+  changeOrigin: true,
+  ws: true, // ВАЖНО для WebSocket
+  logLevel: 'debug',
+});
 
 // Применяем прокси для WebSocket
 app.use(socketProxy);
