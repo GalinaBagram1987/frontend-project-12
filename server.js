@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const { spawn } = require('child_process');
 const axios = require('axios');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 
@@ -73,6 +74,17 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
       },
       validateStatus: () => true, // принимаем все статусы
     });
+
+    // ------- ПРОКСИ ДЛЯ SOCKET.IO ------
+    app.use(
+      'socket.io',
+      createProxyMiddleware({
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        ws: true, // Включаем поддержку WebSocket
+        logLevel: 'debug',
+      })
+    );
 
     // Копируем заголовки ответа
     Object.entries(response.headers).forEach(([key, value]) => {
