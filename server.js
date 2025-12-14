@@ -50,6 +50,20 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.json());
 
+// ------- ПРОКСИ ДЛЯ SOCKET.IO ------
+app.use(
+  'socket.io',
+  createProxyMiddleware({
+    target: 'http://localhost:5000',
+    changeOrigin: true,
+    ws: true, // Включаем поддержку WebSocket
+    logLevel: 'debug',
+  })
+);
+
+// Применяем прокси для WebSocket
+app.use(socketProxy);
+
 // ------ ПРОКСИ К HEXLET API ------
 const HEXLET_API =
   process.env.NODE_ENV === 'production'
@@ -74,17 +88,6 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
       },
       validateStatus: () => true, // принимаем все статусы
     });
-
-    // ------- ПРОКСИ ДЛЯ SOCKET.IO ------
-    app.use(
-      'socket.io',
-      createProxyMiddleware({
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        ws: true, // Включаем поддержку WebSocket
-        logLevel: 'debug',
-      })
-    );
 
     // Копируем заголовки ответа
     Object.entries(response.headers).forEach(([key, value]) => {
