@@ -4,7 +4,7 @@ const getSocketUrl = () => {
   if (import.meta.env.PROD === 'development') {
     return 'http://localhost:5001'; // локальный сервер
   }
-  return 'https://testslackbagram.onrender.com/'; // продакшен сервер
+  return 'https://testslack2bagram.onrender.com'; // продакшен сервер
 };
 export const socket = io(getSocketUrl(), {
   transports: ['websocket'], // Используем только WebSocket (не long-polling)
