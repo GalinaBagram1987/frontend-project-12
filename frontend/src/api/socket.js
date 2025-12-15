@@ -26,6 +26,10 @@ socket.on('connect', () => {
 
 socket.on('disconnect', (reason) => {
   console.log('WebSocket отключен:', reason);
+  if (reason === 'io server disconnect') {
+    // Сервер намеренно разорвал соединение
+    socket.connect();
+  }
 });
 
 socket.on('connect_error', (error) => {
