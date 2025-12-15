@@ -12,7 +12,7 @@ const getSocketUrl = () => {
 
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
-  path: '/socket.io/', // Важно: слэш в конце!
+  path: '/socket.io/',
   transports: ['polling'], // ТОЛЬКО polling для Render.com
   upgrade: false, // Запретить апгрейд до WebSocket
   forceNew: true, // Новое соединение
