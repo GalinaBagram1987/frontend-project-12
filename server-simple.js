@@ -230,7 +230,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(staticPath));
     console.log(`Serving static files from: ${staticPath}`);
 
-    app.get('/*', (req, res) => {
+    app.get(/.*/, (req, res) => {
       if (req.url.startsWith('/api/') || req.url.startsWith('/socket.io') || req.url === '/health') {
         return res.status(404).json({ error: 'Not found' });
       }
@@ -238,7 +238,7 @@ if (process.env.NODE_ENV === 'production') {
     });
   } else {
     console.error('No static files found');
-    app.get(/.*/, (req, res) => {
+    app.get('/', (req, res) => {
       res.json({
         error: 'Frontend not built',
         instruction: 'Run: npm run build',
