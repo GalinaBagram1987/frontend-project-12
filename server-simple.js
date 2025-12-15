@@ -179,7 +179,7 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
   },
   path: '/socket.io/',
-  transports: ['websocket', 'polling'],
+  transports: ['polling', 'websocket'],
   // УВЕЛИЧИВАЕМ эти значения для Render.com: ? проба
   pingTimeout: 60000, // 60 секунд (было 5000)
   pingInterval: 25000, // 25 секунд (было 25000)
