@@ -1,58 +1,179 @@
-// server-simple.js - БЕЗ http-proxy-middleware
+// server.js - ПОЛНЫЙ КОД
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const cors = require('cors');
+const axios = require('axios');
+const { spawn } = require('child_process');
 
 const app = express();
 const server = http.createServer(app);
 
+// ------ КОНСТАНТЫ ------
 const PORT = process.env.PORT || 5001;
+const HEXLET_PORT = 5000;
+const HEXLET_URL = `http://localhost:${HEXLET_PORT}`;
 
-// Запуск Hexlet сервера если в production
+console.log(`🚀 Configuration:`);
+console.log(`   Server port: ${PORT}`);
+console.log(`   Hexlet port: ${HEXLET_PORT}`);
+console.log(`   Hexlet URL: ${HEXLET_URL}`);
+
+// ------ ЗАПУСК HEXLET СЕРВЕРА В PRODUCTION ------
+let hexletProcess = null;
+
 if (process.env.NODE_ENV === 'production') {
-  const { spawn } = require('child_process');
+  console.log(`🔧 Starting Hexlet server on port ${HEXLET_PORT}...`);
 
-  console.log('🚀 Starting Hexlet server...');
-  const hexletProcess = spawn('npx', ['start-server', '--port', HEXLET_PORT.toString()], {
-    stdio: 'inherit',
-    detached: true,
-  });
+  try {
+    // Запускаем Hexlet сервер
+    hexletProcess = spawn('npx', ['start-server', '--port', HEXLET_PORT.toString()], {
+      stdio: 'inherit',
+      detached: false, // чтобы видеть логи
+    });
 
-  hexletProcess.on('error', (err) => {
-    console.error('Failed to start Hexlet:', err);
-  });
+    hexletProcess.on('error', (err) => {
+      console.error('❌ Failed to start Hexlet server:', err.message);
+    });
 
-  // Убить при завершении
-  process.on('exit', () => {
+    hexletProcess.on('exit', (code, signal) => {
+      console.log(`Hexlet server exited: code=${code}, signal=${signal}`);
+    });
+
+    console.log(`✅ Hexlet server process started (PID: ${hexletProcess.pid})`);
+
+    // Даем время на запуск
+    setTimeout(() => {
+      console.log('Hexlet server should be ready...');
+    }, 3000);
+  } catch (error) {
+    console.error('Error starting Hexlet server:', error);
+  }
+
+  // Graceful shutdown
+  const shutdown = () => {
+    console.log('Shutting down...');
     if (hexletProcess) {
-      hexletProcess.kill();
+      console.log('Killing Hexlet server...');
+      hexletProcess.kill('SIGTERM');
     }
-  });
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }
 
 // ------ CORS ------
+const allowedOrigins = process.env.NODE_ENV === 'production' ? ['https://testslack2bagram.onrender.com'] : ['http://localhost:5002', 'http://localhost:5173'];
+
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://testslack2bagram.onrender.com' : ['http://localhost:5002', 'http://localhost:5173'],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log('CORS blocked:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   })
 );
 
 app.use(express.json());
 
 // ------ HEALTH CHECK ------
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'simple-server',
-    port: PORT,
-    timestamp: new Date().toISOString(),
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Проверяем доступность Hexlet
+    const hexletHealth = await axios
+      .get(`${HEXLET_URL}/api/v1/health`, {
+        timeout: 2000,
+      })
+      .catch(() => ({ status: 'unavailable' }));
+
+    res.json({
+      status: 'ok',
+      service: 'hybrid-server',
+      port: PORT,
+      hexlet: {
+        url: HEXLET_URL,
+        status: hexletHealth.status || 'unreachable',
+        port: HEXLET_PORT,
+      },
+      timestamp: new Date().toISOString(),
+      node: process.version,
+      env: process.env.NODE_ENV || 'development',
+    });
+  } catch (error) {
+    res.json({
+      status: 'degraded',
+      service: 'hybrid-server',
+      port: PORT,
+      hexlet: {
+        url: HEXLET_URL,
+        status: 'check failed',
+        error: error.message,
+      },
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
-// ------ SOCKET.IO ------
+// ------ ПРОКСИ К HEXLET API ------
+app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
+  try {
+    const path = req.params[0] || '';
+    const url = `${HEXLET_URL}/api/v1/${path}`;
+
+    console.log(`📡 Proxying ${req.method} ${req.originalUrl} → ${url}`);
+
+    const response = await axios({
+      method: req.method,
+      url: url,
+      data: req.body,
+      headers: {
+        'Content-Type': req.headers['content-type'] || 'application/json',
+        Authorization: req.headers['authorization'],
+        Accept: req.headers['accept'] || 'application/json',
+      },
+      timeout: 10000,
+      validateStatus: () => true,
+    });
+
+    // Передаем заголовки
+    if (response.headers['content-type']) {
+      res.setHeader('Content-Type', response.headers['content-type']);
+    }
+
+    res.status(response.status).send(response.data);
+  } catch (error) {
+    console.error('❌ Hexlet proxy error:', error.message);
+
+    // Fallback для важных endpoints
+    if (req.method === 'POST' && req.url.includes('/login')) {
+      const username = req.body?.username || 'anonymous';
+      return res.json({
+        token: `fallback-${Date.now()}`,
+        username: username,
+        message: 'Logged in (fallback - Hexlet API down)',
+      });
+    }
+
+    res.status(502).json({
+      error: 'Backend API unavailable',
+      message: error.message,
+      hexletUrl: HEXLET_URL,
+      fallback: 'Using local socket.io server',
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
+// ------ SOCKET.IO СЕРВЕР ------
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -62,24 +183,18 @@ const io = new Server(server, {
   transports: ['websocket', 'polling'],
 });
 
-// Хранилище сообщений
-const messages = [];
-
 io.on('connection', (socket) => {
   console.log('✅ Client connected:', socket.id);
-
-  // Отправляем историю сообщений новому клиенту
-  socket.emit('messageHistory', { messages: messages.slice(-50) });
 
   socket.emit('connected', {
     id: socket.id,
     message: 'Connected to chat server',
     timestamp: new Date().toISOString(),
+    server: 'hybrid-server',
   });
 
-  // Новое сообщение
-  socket.on('newMessage', (data) => {
-    console.log('New message from', socket.id, ':', data);
+  socket.on('message', (data) => {
+    console.log('💬 Message from', socket.id, ':', data);
 
     const message = {
       id: Date.now(),
@@ -88,21 +203,12 @@ io.on('connection', (socket) => {
       timestamp: new Date().toISOString(),
     };
 
-    // Сохраняем
-    messages.push(message);
-    if (messages.length > 1000) messages.shift(); // ограничиваем историю
-
-    // Рассылаем всем
-    io.emit('message', message);
+    // Отправляем всем
+    io.emit('newMessage', message);
   });
 
-  // Пинг-понг для проверки соединения
-  socket.on('ping', () => {
-    socket.emit('pong', { timestamp: new Date().toISOString() });
-  });
-
-  socket.on('disconnect', (reason) => {
-    console.log('❌ Client disconnected:', socket.id, reason);
+  socket.on('disconnect', () => {
+    console.log('❌ Client disconnected:', socket.id);
   });
 });
 
@@ -110,56 +216,48 @@ io.on('connection', (socket) => {
 if (process.env.NODE_ENV === 'production') {
   const fs = require('fs');
 
-  // Ищем собранный фронтенд
+  // Ищем фронтенд
   const possiblePaths = [path.join(__dirname, 'dist'), path.join(__dirname, 'build'), path.join(__dirname, 'frontend/dist'), path.join(__dirname, 'frontend/build')];
 
   let staticPath = null;
   for (const p of possiblePaths) {
     if (fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) {
       staticPath = p;
-      console.log(`📁 Serving static files from: ${staticPath}`);
       break;
     }
   }
 
   if (staticPath) {
     app.use(express.static(staticPath));
+    console.log(`📁 Serving static files from: ${staticPath}`);
 
-    // SPA маршрутизация
     app.get('*', (req, res) => {
-      // Пропускаем API и WebSocket
-      if (req.url.startsWith('/api/') || req.url.startsWith('/socket.io')) {
+      if (req.url.startsWith('/api/') || req.url.startsWith('/socket.io') || req.url === '/health') {
         return res.status(404).json({ error: 'Not found' });
       }
       res.sendFile(path.join(staticPath, 'index.html'));
     });
   } else {
-    console.error('❌ Static files not found!');
+    console.error('❌ No static files found');
     app.get('/', (req, res) => {
       res.json({
         error: 'Frontend not built',
         instruction: 'Run: npm run build',
-        checkedPaths: possiblePaths,
+        pathsChecked: possiblePaths,
       });
     });
   }
 } else {
-  // Development информация
+  // Development
   app.get('/', (req, res) => {
     res.json({
-      message: 'Simple Chat Server',
+      message: 'Hybrid Server (Development)',
       endpoints: {
-        login: 'POST /api/v1/login',
-        users: 'GET /api/v1/users',
-        channels: 'GET /api/v1/channels',
-        health: 'GET /health',
+        health: '/health',
+        api: '/api/v1/*',
         socket: '/socket.io',
       },
-      socketEvents: {
-        connect: 'auto',
-        newMessage: 'Send message',
-        ping: 'Test connection',
-      },
+      hexlet: HEXLET_URL,
     });
   });
 }
@@ -167,14 +265,14 @@ if (process.env.NODE_ENV === 'production') {
 // ------ ЗАПУСК ------
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`
-🚀 =====================================
-✅ SIMPLE SERVER STARTED
+====================================
+✅ HYBRID SERVER STARTED
 📡 Port: ${PORT}
-🌍 Host: 0.0.0.0
 🔌 Socket.io: ws://localhost:${PORT}/socket.io
 🔗 API: http://localhost:${PORT}/api/v1/*
 🏥 Health: http://localhost:${PORT}/health
+📊 Hexlet: ${HEXLET_URL}
 🌐 Mode: ${process.env.NODE_ENV || 'development'}
-======================================
+====================================
   `);
 });
