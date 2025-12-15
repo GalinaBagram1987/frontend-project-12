@@ -238,7 +238,7 @@ if (process.env.NODE_ENV === 'production') {
     });
   } else {
     console.error('No static files found');
-    app.get('/', (req, res) => {
+    app.get(/.*/, (req, res) => {
       res.json({
         error: 'Frontend not built',
         instruction: 'Run: npm run build',
