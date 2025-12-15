@@ -173,47 +173,47 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
 });
 
 // ------ SOCKET.IO СЕРВЕР ------
-const io = new Server(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-  },
-  path: '/socket.io/',
-  transports: ['websocket', 'polling'],
-  // УВЕЛИЧИВАЕМ эти значения для Render.com: ? проба
-  pingTimeout: 60000, // 60 секунд (было 5000)
-  pingInterval: 25000, // 25 секунд (было 25000)
-  connectTimeout: 45000, // 45 секунд
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: '*',
+//     methods: ['GET', 'POST'],
+//   },
+//   path: '/socket.io/',
+//   transports: ['websocket', 'polling'],
+//   // УВЕЛИЧИВАЕМ эти значения для Render.com: ? проба
+//   pingTimeout: 60000, // 60 секунд (было 5000)
+//   pingInterval: 25000, // 25 секунд (было 25000)
+//   connectTimeout: 45000, // 45 секунд
+// });
 
-io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
+// io.on('connection', (socket) => {
+//   console.log('Client connected:', socket.id);
 
-  socket.emit('connected', {
-    id: socket.id,
-    message: 'Connected to chat server',
-    timestamp: new Date().toISOString(),
-    server: 'hybrid-server',
-  });
+//   socket.emit('connected', {
+//     id: socket.id,
+//     message: 'Connected to chat server',
+//     timestamp: new Date().toISOString(),
+//     server: 'hybrid-server',
+//   });
 
-  socket.on('message', (data) => {
-    console.log('Message from', socket.id, ':', data);
+//   socket.on('message', (data) => {
+//     console.log('Message from', socket.id, ':', data);
 
-    const message = {
-      id: Date.now(),
-      ...data,
-      socketId: socket.id,
-      timestamp: new Date().toISOString(),
-    };
+//     const message = {
+//       id: Date.now(),
+//       ...data,
+//       socketId: socket.id,
+//       timestamp: new Date().toISOString(),
+//     };
 
-    // Отправляем всем
-    io.emit('newMessage', message);
-  });
+//     // Отправляем всем
+//     io.emit('newMessage', message);
+//   });
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
-  });
-});
+//   socket.on('disconnect', () => {
+//     console.log('Client disconnected:', socket.id);
+//   });
+// });
 
 // ------ СТАТИЧЕСКИЕ ФАЙЛЫ ------
 if (process.env.NODE_ENV === 'production') {
