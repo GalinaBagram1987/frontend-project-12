@@ -31,30 +31,27 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ------ CORS для всех сред ------
-const cors = require('cors');
-const allowedOrigins = process.env.NODE_ENV === 'production' // разрешенные данные
-  ? ['https://testslack2bagram.onrender.com']
-  : ['http://localhost:5002'];
+const allowedOrigins =
+  process.env.NODE_ENV === 'production' // разрешенные данные
+    ? ['https://testslack2bagram.onrender.com']
+    : ['http://localhost:5002'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log('CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log('CORS blocked origin:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  })
+);
 
 app.use(express.json());
-
-
-
-
-
 
 // ------ CORS ТОЛЬКО ДЛЯ DEVELOPMENT ------
 // if (process.env.NODE_ENV !== 'production') {
@@ -74,7 +71,6 @@ app.use(express.json());
 //     )
 //   );
 // }
-
 
 // ------- ПРОКСИ ДЛЯ SOCKET.IO ------
 const socketProxy = createProxyMiddleware('/socket.io', {
