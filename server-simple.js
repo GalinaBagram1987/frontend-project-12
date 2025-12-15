@@ -1,4 +1,3 @@
-// server.js - ПОЛНЫЙ КОД
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -15,16 +14,16 @@ const PORT = process.env.PORT || 5001;
 const HEXLET_PORT = 5000;
 const HEXLET_URL = `http://localhost:${HEXLET_PORT}`;
 
-console.log(`🚀 Configuration:`);
-console.log(`   Server port: ${PORT}`);
-console.log(`   Hexlet port: ${HEXLET_PORT}`);
-console.log(`   Hexlet URL: ${HEXLET_URL}`);
+console.log(`Configuration:`);
+console.log(`Server port: ${PORT}`);
+console.log(`Hexlet port: ${HEXLET_PORT}`);
+console.log(`Hexlet URL: ${HEXLET_URL}`);
 
 // ------ ЗАПУСК HEXLET СЕРВЕРА В PRODUCTION ------
 let hexletProcess = null;
 
 if (process.env.NODE_ENV === 'production') {
-  console.log(`🔧 Starting Hexlet server on port ${HEXLET_PORT}...`);
+  console.log(`Starting Hexlet server on port ${HEXLET_PORT}...`);
 
   try {
     // Запускаем Hexlet сервер
@@ -34,14 +33,14 @@ if (process.env.NODE_ENV === 'production') {
     });
 
     hexletProcess.on('error', (err) => {
-      console.error('❌ Failed to start Hexlet server:', err.message);
+      console.error('Failed to start Hexlet server:', err.message);
     });
 
     hexletProcess.on('exit', (code, signal) => {
       console.log(`Hexlet server exited: code=${code}, signal=${signal}`);
     });
 
-    console.log(`✅ Hexlet server process started (PID: ${hexletProcess.pid})`);
+    console.log(`Hexlet server process started (PID: ${hexletProcess.pid})`);
 
     // Даем время на запуск
     setTimeout(() => {
@@ -129,7 +128,7 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
     const path = req.params[0] || '';
     const url = `${HEXLET_URL}/api/v1/${path}`;
 
-    console.log(`📡 Proxying ${req.method} ${req.originalUrl} → ${url}`);
+    console.log(`Proxying ${req.method} ${req.originalUrl} → ${url}`);
 
     const response = await axios({
       method: req.method,
@@ -151,7 +150,7 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
 
     res.status(response.status).send(response.data);
   } catch (error) {
-    console.error('❌ Hexlet proxy error:', error.message);
+    console.error('Hexlet proxy error:', error.message);
 
     // Fallback для важных endpoints
     if (req.method === 'POST' && req.url.includes('/login')) {
@@ -184,7 +183,7 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('✅ Client connected:', socket.id);
+  console.log('Client connected:', socket.id);
 
   socket.emit('connected', {
     id: socket.id,
@@ -194,7 +193,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('message', (data) => {
-    console.log('💬 Message from', socket.id, ':', data);
+    console.log('Message from', socket.id, ':', data);
 
     const message = {
       id: Date.now(),
@@ -208,7 +207,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('❌ Client disconnected:', socket.id);
+    console.log('Client disconnected:', socket.id);
   });
 });
 
@@ -229,16 +228,16 @@ if (process.env.NODE_ENV === 'production') {
 
   if (staticPath) {
     app.use(express.static(staticPath));
-    console.log(`📁 Serving static files from: ${staticPath}`);
+    console.log(`Serving static files from: ${staticPath}`);
 
-    app.get('*', (req, res) => {
+    app.get('/*', (req, res) => {
       if (req.url.startsWith('/api/') || req.url.startsWith('/socket.io') || req.url === '/health') {
         return res.status(404).json({ error: 'Not found' });
       }
       res.sendFile(path.join(staticPath, 'index.html'));
     });
   } else {
-    console.error('❌ No static files found');
+    console.error('No static files found');
     app.get('/', (req, res) => {
       res.json({
         error: 'Frontend not built',
@@ -266,13 +265,13 @@ if (process.env.NODE_ENV === 'production') {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ====================================
-✅ HYBRID SERVER STARTED
-📡 Port: ${PORT}
-🔌 Socket.io: ws://localhost:${PORT}/socket.io
-🔗 API: http://localhost:${PORT}/api/v1/*
-🏥 Health: http://localhost:${PORT}/health
-📊 Hexlet: ${HEXLET_URL}
-🌐 Mode: ${process.env.NODE_ENV || 'development'}
+HYBRID SERVER STARTED
+Port: ${PORT}
+Socket.io: ws://localhost:${PORT}/socket.io
+API: http://localhost:${PORT}/api/v1/*
+Health: http://localhost:${PORT}/health
+Hexlet: ${HEXLET_URL}
+Mode: ${process.env.NODE_ENV || 'development'}
 ====================================
   `);
 });
