@@ -7,9 +7,11 @@ const getSocketUrl = () => {
   return 'https://testslack2bagram.onrender.com'; // продакшен сервер
 };
 export const socket = io(getSocketUrl(), {
-  transports: ['polling', 'websocket'],
+  transports: ['polling'],
   withCredentials: false, // Если не нужны куки/credentials
   autoConnect: true, // Автоматическое подключение
+  path: '/socket.io',
+  upgrade: false,
 
   // реконнект настройки:
   reconnection: true,
