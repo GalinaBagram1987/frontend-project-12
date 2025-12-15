@@ -180,6 +180,10 @@ const io = new Server(server, {
   },
   path: '/socket.io/',
   transports: ['websocket', 'polling'],
+  // УВЕЛИЧИВАЕМ эти значения для Render.com: ? проба
+  pingTimeout: 60000, // 60 секунд (было 5000)
+  pingInterval: 25000, // 25 секунд (было 25000)
+  connectTimeout: 45000, // 45 секунд
 });
 
 io.on('connection', (socket) => {
