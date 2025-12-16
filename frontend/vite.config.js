@@ -20,9 +20,12 @@ export default defineConfig({
       },
       // Проксируем WebSocket соединения
       '/socket.io': {
-        target: 'ws://localhost:5001',
+        target: 'http://localhost:5001',
         ws: true,
         rewriteWsOrigin: true,
+        changeOrigin: true,
+        secure: false, // ssl-sertificate parametr
+        rewrite: (path) => path.replace(/^\/socket\.io/, ''),
       },
     },
   },
