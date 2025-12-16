@@ -10,6 +10,7 @@ const app = express();
 const server = http.createServer(app);
 
 // ------ КОНСТАНТЫ ------
+const PORT = process.env.PORT || 5001;
 const HEXLET_PORT = 5000;
 const HEXLET_URL = `http://localhost:${HEXLET_PORT}`;
 
