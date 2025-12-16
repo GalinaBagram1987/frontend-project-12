@@ -180,8 +180,7 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
 // ------ SOCKET.IO СЕРВЕР ------
 const io = new Server(server, {
   cors: {
-    origin: PORT,
-    methods: ['GET', 'POST'],
+    origin: '*',
   },
   path: '/socket.io',
   transports: ['polling', 'websocket'],
