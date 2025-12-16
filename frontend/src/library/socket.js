@@ -1,19 +1,9 @@
 import { io } from 'socket.io-client';
 import { BASE_URL } from '../api/routes';
 
-// Определяем URL в зависимости от среды
-// const getSocketUrl = () => {
-//   // Vite использует import.meta.env.MODE, а не .PROD
-//   if (import.meta.env.MODE === 'development') {
-//     // Development URL
-//     return 'http://localhost:5002';
-//   }
-//   return 'https://testslack2bagram.onrender.com'; // Production URL
-// };
-
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
-  path: '/socket.io/',
+  path: '/socket.io',
   transports: ['polling', 'websocket'],
   // upgrade: false, // Запретить апгрейд до WebSocket
   forceNew: true, // Новое соединение

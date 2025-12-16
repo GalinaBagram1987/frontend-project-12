@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { BASE_URL } from './src/api/routes';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,13 +15,13 @@ export default defineConfig({
     proxy: {
       // Проксируем запросы к API
       '/api': {
-        target: 'http://localhost:5001',
+        target: BASE_URL,
         changeOrigin: true,
         secure: false,
       },
       // Проксируем WebSocket соединения
       '/socket.io': {
-        target: 'http://localhost:5001',
+        target: BASE_URL,
         ws: true,
         rewriteWsOrigin: true,
         changeOrigin: true,
