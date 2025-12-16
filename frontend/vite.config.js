@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { BASE_URL } from './src/api/routes';
+
+const isProd = import.meta.env.PROD === 'production';
+const baseProxyTarget = isProd ? 'https://testslack2bagram.onrender.com' : 'http://localhost:5002';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,13 +17,13 @@ export default defineConfig({
     proxy: {
       // Проксируем запросы к API
       '/api': {
-        target: BASE_URL,
+        target: baseProxyTarget,
         changeOrigin: true,
         secure: false,
       },
       // Проксируем WebSocket соединения
       '/socket.io': {
-        target: BASE_URL,
+        target: baseProxyTarget,
         ws: true,
         rewriteWsOrigin: true,
         changeOrigin: true,
