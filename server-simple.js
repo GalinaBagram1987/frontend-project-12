@@ -65,7 +65,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ------ CORS ------
-const allowedOrigins = PORT;
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? ['https://testslack2bagram.onrender.com']
+    : [
+        'http://localhost:5002', // Vite dev server
+      ];
 
 app.use(
   cors({
