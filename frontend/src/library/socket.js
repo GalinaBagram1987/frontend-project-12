@@ -36,9 +36,16 @@ socket.on('connect', () => {
 socket.on('disconnect', (reason) => {
   console.log('Socket disconnected:', reason);
 });
-
+socket.on('disconnect', (reason) => {
+  console.log('Disconnected:', reason);
+  if (reason === 'transport close') {
+    // Попробовать переподключиться
+    socket.connect();
+  }
+});
 socket.on('connect_error', (error) => {
   console.error('Socket connection error:', error.message);
+  socket.connect();
 });
 
 // Экспортируем ЕДИНСТВЕННЫЙ экземпляр

@@ -180,7 +180,9 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
 // ------ SOCKET.IO СЕРВЕР ------
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: process.env.NODE_ENV === 'production' ? ['https://testslack2bagram.onrender.com'] : '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   },
   path: '/socket.io',
   transports: ['polling', 'websocket'],
@@ -188,6 +190,28 @@ const io = new Server(server, {
   pingTimeout: 60000, // 60 секунд (было 5000)
   pingInterval: 25000, // 25 секунд (было 25000)
   connectTimeout: 45000, // 45 секунд
+
+  // Улучшенное восстановление соединения
+  connectionStateRecovery: {
+    maxDisconnectionDuration: 120000, // 2 минуты
+    skipMiddlewares: true,
+  },
+  // Увеличение лимитов
+  maxHttpBufferSize: 1e6, // 1 MB
+  allowEIO3: true,
+
+  // Оптимизация для долгих соединений
+  allowUpgrades: true,
+  upgradeTimeout: 10000,
+
+  // Уменьшаем логи для production
+  serveClient: false,
+  cookie: false,
+
+  // WebSocket компрессия
+  perMessageDeflate: {
+    threshold: 1024,
+  },
 });
 
 io.on('connection', (socket) => {
