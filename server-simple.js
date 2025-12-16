@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 const { spawn } = require('child_process');
+import { BASE_URL } from './frontend/src/api/routes';
 
 const app = express();
 const server = http.createServer(app);
@@ -65,7 +66,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ------ CORS ------
-const allowedOrigins = process.env.NODE_ENV === 'production' ? ['https://testslack2bagram.onrender.com'] : ['http://localhost:5002', 'http://localhost:5173'];
+const allowedOrigins = BASE_URL;
 
 app.use(
   cors({
@@ -175,10 +176,10 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
 // ------ SOCKET.IO СЕРВЕР ------
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: BASE_URL,
     methods: ['GET', 'POST'],
   },
-  path: '/socket.io/',
+  path: '/socket.io',
   transports: ['polling', 'websocket'],
   // УВЕЛИЧИВАЕМ эти значения для Render.com: ? проба
   pingTimeout: 60000, // 60 секунд (было 5000)

@@ -1,20 +1,21 @@
 import { io } from 'socket.io-client';
+import { BASE_URL } from '../api/routes';
 
 // Определяем URL в зависимости от среды
-const getSocketUrl = () => {
-  // Vite использует import.meta.env.MODE, а не .PROD
-  if (import.meta.env.MODE === 'development') {
-    // Development URL
-    return 'http://localhost:5001';
-  }
-  return 'https://testslack2bagram.onrender.com'; // Production URL
-};
+// const getSocketUrl = () => {
+//   // Vite использует import.meta.env.MODE, а не .PROD
+//   if (import.meta.env.MODE === 'development') {
+//     // Development URL
+//     return 'http://localhost:5002';
+//   }
+//   return 'https://testslack2bagram.onrender.com'; // Production URL
+// };
 
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
   path: '/socket.io/',
-  transports: ['polling'], // ТОЛЬКО polling для Render.com
-  upgrade: false, // Запретить апгрейд до WebSocket
+  transports: ['polling', 'websocket'],
+  // upgrade: false, // Запретить апгрейд до WebSocket
   forceNew: true, // Новое соединение
   withCredentials: false,
   autoConnect: true, // Автоподключение
@@ -28,11 +29,11 @@ const socketConfig = {
 };
 
 // Создаем единственный экземпляр socket
-const socket = io(getSocketUrl(), socketConfig);
+const socket = io(BASE_URL, socketConfig);
 
 // Отладка
 console.log('Socket configuration:');
-console.log('URL:', getSocketUrl());
+console.log('URL:', BASE_URL);
 console.log('Mode:', import.meta.env.MODE);
 console.log('Transports:', socketConfig.transports);
 

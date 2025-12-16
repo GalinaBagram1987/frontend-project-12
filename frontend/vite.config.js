@@ -24,8 +24,6 @@ export default defineConfig({
         ws: true,
         rewriteWsOrigin: true,
         changeOrigin: true,
-        secure: false, // ssl-sertificate parametr
-        rewrite: (path) => path.replace(/^\/socket\.io/, ''),
       },
     },
   },
