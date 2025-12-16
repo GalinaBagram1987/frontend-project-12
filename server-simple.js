@@ -186,6 +186,7 @@ const io = new Server(server, {
   },
   path: '/socket.io',
   transports: ['polling', 'websocket'],
+  allowUpgrades: false, // запретить апгрейд до WebSocket!
   // УВЕЛИЧИВАЕМ эти значения для Render.com: ? проба
   pingTimeout: 60000, // 60 секунд (было 5000)
   pingInterval: 25000, // 25 секунд (было 25000)

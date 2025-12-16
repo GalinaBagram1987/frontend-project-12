@@ -14,9 +14,11 @@ const socketConfig = {
   reconnection: true,
   reconnectionAttempts: Infinity,
   reconnectionDelay: 1000,
-  reconnectionDelayMax: 5000,
-  randomizationFactor: 0.5,
+
+  // Таймауты для Render
   timeout: 20000,
+  pingTimeout: 10000,
+  pingInterval: 8000,
 };
 
 // Создаем единственный экземпляр socket
@@ -36,9 +38,9 @@ socket.on('connect', () => {
 
 socket.on('disconnect', (reason) => {
   console.log('Socket disconnected:', reason);
-  if (reason === 'io server disconnect' || reason === 'io client disconnect') {
+  if (reason === 'io server disconnect' || reason === 'io client disconnect' || reason === 'transport close' || reason === 'ping timeout') {
     // Сервер явно отключил нас. Нужно переподключить вручную.
-    socket.connect();
+    setTimeout(() => socket.connect(), 1000);
   }
 });
 
