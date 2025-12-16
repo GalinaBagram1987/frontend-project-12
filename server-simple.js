@@ -5,13 +5,11 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 const { spawn } = require('child_process');
-import { BASE_URL } from './frontend/src/api/routes.js';
 
 const app = express();
 const server = http.createServer(app);
 
 // ------ КОНСТАНТЫ ------
-const PORT = process.env.PORT || 5001;
 const HEXLET_PORT = 5000;
 const HEXLET_URL = `http://localhost:${HEXLET_PORT}`;
 
@@ -66,7 +64,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ------ CORS ------
-const allowedOrigins = BASE_URL;
+const allowedOrigins = PORT;
 
 app.use(
   cors({
@@ -176,7 +174,7 @@ app.use(/^\/api\/v1\/(.*)/, async (req, res) => {
 // ------ SOCKET.IO СЕРВЕР ------
 const io = new Server(server, {
   cors: {
-    origin: BASE_URL,
+    origin: PORT,
     methods: ['GET', 'POST'],
   },
   path: '/socket.io',
