@@ -5,7 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 const { spawn } = require('child_process');
-import { BASE_URL } from './frontend/src/api/routes';
+import { BASE_URL } from './frontend/src/api/routes.js';
 
 const app = express();
 const server = http.createServer(app);
