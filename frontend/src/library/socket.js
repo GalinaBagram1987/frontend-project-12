@@ -4,7 +4,7 @@ import { BASE_URL } from '../api/routes';
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
   path: '/socket.io',
-  transports: ['polling', 'websocket'],
+  transports: ['websocket', 'polling'],
   // upgrade: false, // Запретить апгрейд до WebSocket
   forceNew: true, // Новое соединение
   withCredentials: false,
@@ -15,7 +15,8 @@ const socketConfig = {
   reconnectionAttempts: Infinity,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
-  timeout: 30000,
+  randomizationFactor: 0.5,
+  timeout: 20000,
 };
 
 // Создаем единственный экземпляр socket
@@ -35,14 +36,21 @@ socket.on('connect', () => {
 
 socket.on('disconnect', (reason) => {
   console.log('Socket disconnected:', reason);
-});
-socket.on('disconnect', (reason) => {
-  console.log('Disconnected:', reason);
-  if (reason === 'transport close') {
-    // Попробовать переподключиться
+  if (reason === 'io server disconnect' || reason === 'io client disconnect') {
+    // Сервер явно отключил нас. Нужно переподключить вручную.
     socket.connect();
   }
 });
+
+socket.on('reconnect_attempt', (attemptNumber) => {
+  console.log(`Попытка переподключения #${attemptNumber}`);
+});
+
+socket.on('reconnect', (attemptNumber) => {
+  console.log(`Успешно переподключились после ${attemptNumber} попыток`);
+  // Можно повторно подписаться на комнаты или отправить синхронизирующий запрос
+});
+
 socket.on('connect_error', (error) => {
   console.error('Socket connection error:', error.message);
   socket.connect();
