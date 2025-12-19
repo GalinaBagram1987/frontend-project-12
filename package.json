@@ -15,13 +15,12 @@
   "author": "BagramGalina",
   "type": "commonjs",
   "scripts": {
-    "start": "node server-simple.js",
+    "start": "",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "npm install && cd frontend && npm run dev -- --port 5002",
     "dev:backend": "npx start-server --port 5001",
     "build": "npm ci --production=false && cd frontend && npm ci --production=false && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:prod": "NODE_ENV=production node server-simple.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
