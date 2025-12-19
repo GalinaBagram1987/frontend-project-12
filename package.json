@@ -15,14 +15,9 @@
   "author": "BagramGalina",
   "type": "commonjs",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "start": "npx serve -s ./frontend/dist -p ${PORT:-5002} --single",
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "npx start-server --port 5001 --static ./frontend/dist",
-    "start:backend": "npx start-server --port $PORT --static ./frontend/dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd frontend && npm ci"
+    "build": "cd frontend && npm ci && npm run build",
+    "start": "npx start-server --port=${PORT:-5001} --static=./build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
