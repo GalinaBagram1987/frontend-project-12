@@ -3,10 +3,8 @@ import { BASE_URL } from '../api/routes';
 
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
-  path: '/socket.io',
-  transports: ['websocket', 'polling'],
-  // upgrade: false, // Запретить апгрейд до WebSocket
-  forceNew: true, // Новое соединение
+  transports: ['polling'],
+  upgrade: false, // Запретить апгрейд до WebSocket
   withCredentials: false,
   autoConnect: true, // Автоподключение
 
@@ -14,11 +12,13 @@ const socketConfig = {
   reconnection: true,
   reconnectionAttempts: Infinity,
   reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  randomizationFactor: 0.5, // Добавить случайность к задержке
 
   // Таймауты для Render
   timeout: 20000,
-  pingTimeout: 10000,
-  pingInterval: 8000,
+  pingTimeout: 5000,
+  pingInterval: 10000,
 };
 
 // Создаем единственный экземпляр socket
