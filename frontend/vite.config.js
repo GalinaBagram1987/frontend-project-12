@@ -8,6 +8,11 @@ export default defineConfig({
   server: {
     port: 5002,
     host: '0.0.0.0', // Добавьте эту строку
+    allowedHosts: [
+      'testslack2bagram.onrender.com', // ваш хост на Render
+      'localhost', // для локальной разработки
+      '127.0.0.1', // для локальной разработки
+    ],
     hmr: {
       overlay: false, // Отключить overlay при ошибках HMR
     },
