@@ -33,7 +33,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../build', // → /frontend-project-12/build/
     minify: false,
     rollupOptions: {
       output: {
