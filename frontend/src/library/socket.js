@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { BASE_URL } from '../api/routes.js';
+import { SOCKET_URL } from '../api/routes.js';
 
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
@@ -22,11 +22,11 @@ const socketConfig = {
 };
 
 // Создаем единственный экземпляр socket
-const socket = io(BASE_URL, socketConfig);
+const socket = io(SOCKET_URL, socketConfig);
 
 // Отладка
 console.log('Socket configuration:');
-console.log('URL:', BASE_URL);
+console.log('URL:', SOCKET_URL);
 console.log('Mode:', import.meta.env.MODE);
 console.log('Transports:', socketConfig.transports);
 
