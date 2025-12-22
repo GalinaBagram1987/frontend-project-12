@@ -5,9 +5,9 @@ export const BASE_URL = isProduction
   ? 'https://testslack2bagram.onrender.com' // Production URL
   : 'http://localhost:5002'; // Development URL
 
-  export const SOCKET_URL = isProduction
-  ? window.location.origin  // В продакшене тот же хост
-  : 'http://localhost:5001';
+export const SOCKET_URL = isProduction
+  ? window.location.origin // В продакшене тот же хост
+  : '/';
 
 export const API_ENDPOINTS = {
   AUTH: {
