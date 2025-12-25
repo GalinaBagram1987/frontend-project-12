@@ -19,6 +19,7 @@ const Registration = () => {
       validationSchema: registrSchema,
       validateOnChange: true,
       validateOnBlur: true,
+      
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
 
