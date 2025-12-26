@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch  } from 'react-redux';
-import { setCurrentChannel, addChannel } from '../store/chatSlice.js';
+import { addChannel } from '../store/chatSlice.js';
 import { useFormik } from 'formik';
 import newChannelValidate from '../library/yup/newChannelValidate.js';
 
-const AddChannelForm = () => {
+const AddChannelForm = ({onClose}) => {
   const dispatch = useDispatch();
   // const { channels, currentChannelId } = useSelector((state) => state.chat);
   //const { showAddedStatus, setShowEddedStatus } = ('');
@@ -19,11 +19,12 @@ const AddChannelForm = () => {
 
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
-        console.log('Added Channel:', { name: values.newChannel });
+        const response = await dispatch(addChannel({ name: values.newChannel }));
 
-        const response = await dispatch(addChannel({ newChannel: values.newChannel }));
-        dispatch(setCurrentChannel(response.payload?.id));
-        formik.resetForm();
+        console.log('Response from addChannel:', response);
+
+        formik.resetForm(); // Сброс формы после успешной отправки
+        onClose?.(); // Закрытие модального окна
       } catch (error) {
         console.log('Add channel failed:', error);
 
@@ -53,7 +54,7 @@ const AddChannelForm = () => {
         <div className="modal-content">
           <div className="modal-header">
             <div className="modal-title h4">Добавить канал</div>
-            <button type="button" aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
+            <button type="button" onClick={onClose} aria-label="Close" data-bs-dismiss="modal" className="btn btn-close" />
           </div>
           <div className="modal-body">
             <form className="" onSubmit={formik.handleSubmit}>
@@ -73,7 +74,7 @@ const AddChannelForm = () => {
               </div>
 
               <div className="d-flex justify-content-end mt-3">
-                <button type="button" className="me-2 btn btn-secondary" onClick={() => formik.resetForm()}>Отменить</button>
+                <button type="button" className="me-2 btn btn-secondary" onClick={onClose}>Отменить</button>
                 <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
                   Отправить
                 </button>

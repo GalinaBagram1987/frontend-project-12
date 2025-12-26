@@ -4,7 +4,6 @@ import { fetchChatData, addChannel, addMessage, removeChannel, renameChannel } f
 import ChatForm from '../components/chatForm.jsx';
 import Channels from '../components/channels.jsx';
 import socket from '../library/socket.js';
-import AddChannelForm from '../components/addChannelForm.jsx';
 import AddChannelButton from '../components/addChannelButton.jsx';
 
 const Chat = () => {
@@ -85,7 +84,7 @@ return(
 					<AddChannelButton />
 			</div>
 			{/* Список каналов */}
-    <Channels />
+                <Channels />
 			</div>
 			<div className="col p-0 h-100">
 				{/* Заголовок канала с количеством сообщений */}
