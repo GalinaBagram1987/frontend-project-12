@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { chatAPI } from '../api/api';
 import { response } from 'express';
 import { console } from 'inspector';
+import { stat } from 'fs';
 import { act } from 'react';
 
 // Thunk для загрузки данных
@@ -31,61 +32,67 @@ const fetchChatDataThunk = createAsyncThunk(
 );
 
 // Thunk для добавления канала
-const addChannelThunk = createAsyncThunk('chat/addChannel', async (channelData, { rejectWithValue }) => {
+const addChannelThunk = createAsyncThunk('chat/addChannel', async (channelData, { getState, rejectWithValue }) => {
   try {
-    const response = await chatAPI.addChannel(channelData);
+    const token = getState().auth?.token;
+    const response = await chatAPI.addChannel(token, channelData);
     return response; // { id: '3', name: 'new channel', removable: true }
   } catch (error) {
-    return rejectWithValue(response?.data || error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 // Thunk для удаления канала
-const removeChannelThunk = createAsyncThunk('chat/removeChannel', async (channelId, { rejectWithValue }) => {
+const removeChannelThunk = createAsyncThunk('chat/removeChannel', async (channelId, { getState, rejectWithValue }) => {
   try {
-    await chatAPI.removeChannel(channelId);
+    const token = getState().auth?.token;
+    await chatAPI.removeChannel(token, channelId);
     return channelId;
   } catch (error) {
-    return rejectWithValue(response?.data || error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 
 // Thunk для переименования канала
-const editChannelThunk = createAsyncThunk('chat/editChannel', async ({ id, name }, { rejectWithValue }) => {
+const editChannelThunk = createAsyncThunk('chat/editChannel', async ({ id, name }, { getState, rejectWithValue }) => {
   try {
-    const response = await chatAPI.editChannel(id, name);
+    const token = getState().auth?.token;
+    const response = await chatAPI.editChannel(token, id, name);
     return response;
   } catch (error) {
-    return rejectWithValue(response?.data || error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 
 // Thunk для добавления сообщения
-const addMessageThunk = createAsyncThunk('chat/addMessage', async (message, { rejectWithValue }) => {
+const addMessageThunk = createAsyncThunk('chat/addMessage', async (message, { getState, rejectWithValue }) => {
   try {
-    const response = await chatAPI.addMessage(message);
+    const token = getState().auth?.token;
+    const response = await chatAPI.addMessage(token, message);
     return response;
   } catch (error) {
-    return rejectWithValue(response?.data || error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 
 // Thunk для изменения сообщения
-const editMessageThunk = createAsyncThunk('chat/aditMessage', async ({ messageId, body }, { rejectWithValue }) => {
+const editMessageThunk = createAsyncThunk('chat/editMessage', async ({ messageId, body }, { getState, rejectWithValue }) => {
   try {
-    const response = await chatAPI.editMessage(messageId, body);
+    const token = getState().auth?.token;
+    const response = await chatAPI.editMessage(token, messageId, body);
     return response;
   } catch (error) {
-    return rejectWithValue(response?.data || error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 
 // Thunk для удаления сообщения
-const removeMessageThunk = createAsyncThunk('chat/removeMessage', async (messageId, { rejectWithValue }) => {
+const removeMessageThunk = createAsyncThunk('chat/removeMessage', async (messageId, { getState, rejectWithValue }) => {
   try {
-    await chatAPI.removeMessage(messageId);
+    const token = getState().auth?.token;
+    await chatAPI.removeMessage(token, messageId);
     return messageId;
   } catch (error) {
-    return rejectWithValue(response?.data || error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 
@@ -143,13 +150,12 @@ const chatSlice = createSlice({
       // Загрузка данных началась
       .addCase(addChannelThunk.pending, (state) => {
         state.loading = true;
-        state.error = false;
+        state.error = null;
       })
       // Канал успешно добавлен
       .addCase(addChannelThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.status = 'succeeded';
         // Сохраняем канал
         state.channels.push(action.payload);
         // Новый канал как активный
@@ -164,10 +170,10 @@ const chatSlice = createSlice({
       // Загрузка данных
       .addCase(removeChannelThunk.pending, (state) => {
         state.loading = true;
-        state.error = false;
+        state.error = null;
       })
       // Канал успешно удалён
-      .addCase(addChannelThunk.fulfilled, (state, action) => {
+      .addCase(removeChannelThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
         const channelId = action.payload;
@@ -188,11 +194,12 @@ const chatSlice = createSlice({
       // Загрузка данных
       .addCase(editChannelThunk.pending, (state) => {
         state.loading = true;
-        state.error = false;
+        state.error = null;
       })
       // Канал успешно переименован
       .addCase(editChannelThunk.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         const { id, name } = action.payload;
         // Находим и переименовываем канал
         const channel = state.channels.find((ch) => ch.id === id);
@@ -209,18 +216,58 @@ const chatSlice = createSlice({
       // Загрузка данных
       .addCase(addMessageThunk.pending, (state) => {
         state.loading = true;
-        state.error = false;
+        state.error = null;
       })
       // Сообщение добавлено
       .addCase(addMessageThunk.fulfilled, (state, action) => {
-        state.messages.push(action.payload);
         state.loading = false;
+        state.error = null;
+        state.messages.push(action.payload);
       })
       // Ошибка добавления сообщения
       .addCase(addMessageThunk.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
-      });
+      })
+      // ====Редактирование сообщения====
+      // Загрузка данных
+      .addCase(editMessageThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      // Сообщение успешно переименовано
+      .addCase(editMessageThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+
+         const updatedMessage = action.payload; // { id: '...', body: '...', ... }
+        // Находим и переимен сообщение
+        const message = state.messages.find((ms) => ms.id === updatedMessage.id);
+        if (message) {
+          message.body = updatedMessage.body;
+        }
+      })
+      // Ошибка переименования сообщения
+      .addCase(editMessageThunk.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      // ====Удаление сообщения====
+      // Загрузка данных
+      .addCase(removeMessageThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeMessageThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        const messageId = action.payload;
+        state.messages = state.messages.filter((ms) => ms.id !== messageId);
+      })
+      .addCase(removeMessageThunk.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
   },
 });
 
