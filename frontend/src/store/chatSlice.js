@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { chatAPI } from '../api/api';
-import { response } from 'express';
-import { console } from 'inspector';
-import { stat } from 'fs';
-import { act } from 'react';
 
 // Thunk для загрузки данных
 const fetchChatDataThunk = createAsyncThunk(
@@ -271,6 +267,11 @@ const chatSlice = createSlice({
   },
 });
 
-// export const { setCurrentChannel, addMessage, addChannel, removeChannel, renameChannel, clearChat } = chatSlice.actions;
-export { fetchChatDataThunk, addChannelThunk, removeChannelThunk, editChannelThunk, addMessageThunk, editMessageThunk, removeMessageThunk };
+export const { setCurrentChannel, clearChat } = chatSlice.actions;
 export default chatSlice.reducer;
+// Алиасы для обратной совместимости
+export const fetchChatData = fetchChatDataThunk;
+export const addChannel = addChannelThunk;
+export const removeChannel = removeChannelThunk;
+export const renameChannel = editChannelThunk; // Важно: используем editChannelThunk
+export const addMessage = addMessageThunk;
