@@ -145,12 +145,10 @@ const chatSlice = createSlice({
       // ====Добавление канала====
       // Загрузка данных началась
       .addCase(addChannelThunk.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       // Канал успешно добавлен
       .addCase(addChannelThunk.fulfilled, (state, action) => {
-        state.loading = false;
         state.error = null;
         // Сохраняем канал
         state.channels.push(action.payload);
@@ -160,17 +158,14 @@ const chatSlice = createSlice({
       // Ошибка загрузки
       .addCase(addChannelThunk.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
       })
       // ====Удаление канала====
       // Загрузка данных
       .addCase(removeChannelThunk.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       // Канал успешно удалён
       .addCase(removeChannelThunk.fulfilled, (state, action) => {
-        state.loading = false;
         state.error = null;
         const channelId = action.payload;
         // Удаляем канал и его соощения
@@ -184,17 +179,14 @@ const chatSlice = createSlice({
       // Ошибка загрузки
       .addCase(removeChannelThunk.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
       })
       // ====Переименование канала====
       // Загрузка данных
       .addCase(editChannelThunk.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       // Канал успешно переименован
       .addCase(editChannelThunk.fulfilled, (state, action) => {
-        state.loading = false;
         state.error = null;
         const { id, name } = action.payload;
         // Находим и переименовываем канал
@@ -206,34 +198,28 @@ const chatSlice = createSlice({
       // Ошибка переименования
       .addCase(editChannelThunk.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
       })
       // ====Добавление сообщения====
       // Загрузка данных
       .addCase(addMessageThunk.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       // Сообщение добавлено
       .addCase(addMessageThunk.fulfilled, (state, action) => {
-        state.loading = false;
         state.error = null;
         state.messages.push(action.payload);
       })
       // Ошибка добавления сообщения
       .addCase(addMessageThunk.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
       })
       // ====Редактирование сообщения====
       // Загрузка данных
       .addCase(editMessageThunk.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       // Сообщение успешно переименовано
       .addCase(editMessageThunk.fulfilled, (state, action) => {
-        state.loading = false;
         state.error = null;
 
          const updatedMessage = action.payload; // { id: '...', body: '...', ... }
@@ -246,23 +232,19 @@ const chatSlice = createSlice({
       // Ошибка переименования сообщения
       .addCase(editMessageThunk.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
       })
       // ====Удаление сообщения====
       // Загрузка данных
       .addCase(removeMessageThunk.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(removeMessageThunk.fulfilled, (state, action) => {
-        state.loading = false;
         state.error = null;
         const messageId = action.payload;
         state.messages = state.messages.filter((ms) => ms.id !== messageId);
       })
       .addCase(removeMessageThunk.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
       })
   },
 });
@@ -275,3 +257,5 @@ export const addChannel = addChannelThunk;
 export const removeChannel = removeChannelThunk;
 export const renameChannel = editChannelThunk; // Важно: используем editChannelThunk
 export const addMessage = addMessageThunk;
+export const renameMessage = editMessageThunk;
+export const removeMessage = removeMessageThunk;

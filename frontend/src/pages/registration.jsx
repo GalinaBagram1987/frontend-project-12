@@ -41,9 +41,9 @@ const Registration = () => {
         // Редирект в чат
         navigate('/chat');
       } catch (error) {
-        console.error('Login failed:', error);
+        console.error('registration failed:', error);
         // Показываем ошибку пользователю
-        let errorMessage = error.response.data.message;
+        let errorMessage = 'Ошибка регистрации';
 
         if (error.response?.status === 409) {
           errorMessage = 'Пользователь с таким именем уже существует';

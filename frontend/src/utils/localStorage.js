@@ -35,10 +35,17 @@ export const storage = {
     const userData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
     console.log('getUserData:', userData);
 
-    if (!userData) return null;
+    if (!userData)  {
+      return null;
+    }
     try {
-      const parsedData = JSON.parse(userData);
-      return parsedData && typeof parsedData === 'object' ? parsedData.user || parsedData.name || parsedData : null;
+      const parsed = JSON.parse(userData);
+      // Обрабатываем все случаи:
+    if (typeof parsed === 'string') return parsed;
+    if (parsed && typeof parsed === 'object') {
+      return parsed.username || parsed.user || parsed.name || parsed;
+    }
+    return parsed;
     } catch (error) {
       console.error('Error parsing user data from localStorage:', error);
       // Автоматически очищаем битые данные

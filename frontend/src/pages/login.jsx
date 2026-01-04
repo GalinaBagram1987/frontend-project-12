@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
 import { authAPI } from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
-// import loginSchema from '../library/yup/loginValidate.js';
+import loginSchema from '../library/yup/loginValidate.js';
 
 
 const Login = () => {
@@ -17,9 +17,9 @@ const Login = () => {
       password: '',
     },
     
-      // validationSchema: loginSchema,
-      // validateOnChange: true,
-      // validateOnBlur: true,
+      validationSchema: loginSchema,
+      validateOnChange: true,
+      validateOnBlur: true,
 
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
@@ -72,7 +72,7 @@ const Login = () => {
                   onChange={formik.handleChange}
                   value={formik.values.username}
                   className={`form-control ${formik.submitCount > 0 ? 'is-invalid' : ''}`}
-                  autoComplete='username'
+                  autoComplete='new-name'
                 />
                 <label htmlFor="username">Ваш ник</label>
               </div>
@@ -81,7 +81,7 @@ const Login = () => {
                 <input
                   id='password'
                   name='password'
-                  autoComplete='current-password'
+                  autoComplete='new-password'
                   type='password'
                   required 
                   placeholder='Пароль'

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatData, addChannel, addMessage, removeChannel, renameChannel } from "../store/chatSlice.js";
+import { fetchChatData, addChannel, addMessage, removeChannel, renameChannel, removeMessage, renameMessage } from "../store/chatSlice.js";
 import ChatForm from '../components/chatForm.jsx';
 import Channels from '../components/channels.jsx';
 import socket from '../library/socket.js';
@@ -10,7 +10,11 @@ const Chat = () => {
 	const dispatch = useDispatch();
 	const token = useSelector(state => state.auth.token);
 	const { channels, messages, currentChannelId, loading, error } =  useSelector(state =>state.chat)
-    const { user: currentUserName } = useSelector(state => state.auth);   
+  const { user: currentUserName } = useSelector(state => state.auth);   
+  // пустой реф для сокета
+  const socketRef = useRef(null);
+	// флаг для предотвращения повтрной загрузки
+	const hasLoadedRef = useRef(false);
 
 	useEffect(() => {
 		if (!token) {
@@ -19,18 +23,24 @@ const Chat = () => {
 		}
 		console.log('Токен есть, загружаем данные чата:', token);
 
-	 // Подключаем сокет с токеном
-    socket.auth = { token };
-    socket.connect();
+	 // Подключаем сокет с токеном только один раз
+	 if (!socketRef.current) {
+		socket.auth = { token };
+		socket.connect();
+		socketRef.current = socket;
+		console.log('WebSocket соединение установлено');
+	  
+    // Обрабатываем потерю связи
+    socket.on('disconnect', () => {
+      console.log('Соединение потеряно.');
+      socket.connect(); // Автоматическое восстановление
+    });
 
 	  // подписаться на новые сообщения
     socket.on('newMessage', (payload) => {
-      console.log(payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
-      if (!payload.username) {
-				console.warn('Username не пришел от сервера, добавляем из текущего пользователя');
-        payload = { ...payload, username: currentUserName };
-			}
-			dispatch(addMessage(payload));
+      console.log('Новый обработанный event:', payload);
+			console.log('Получено новое сообщение:', payload); // Логируем поступающее сообщение
+      dispatch(addMessage(payload));
 	  });
     // подпишитесь на новый канал
     socket.on('newChannel', (payload) => {
@@ -47,21 +57,54 @@ const Chat = () => {
       console.log(payload); // { id: 7, name: "new name channel", removable: true }
       dispatch(renameChannel(payload));  
 		});
-		// Загружаем начальные данные
-    dispatch(fetchChatData());
-
+	  // подписаться на удаление сообщения
+	  socket.on('removeMessage', (payload) => {
+     console.log(payload);
+		 dispatch(removeMessage(payload));
+  	});
+	  // подписаться на переименование сообщения
+		socket.on('renameMessage', (payload) => {
+			console.log(payload);
+			dispatch(renameMessage(payload));
+		});
+		// для диагностики
+    socket.on('connect', () => {
+      console.log('WebSocket подключен');
+    });
+    
+    socket.on('connect_error', (err) => {
+      console.error('WebSocket ошибка подключения:', err.message);
+    });
 		// Отписка при размонтировании
 		return () => {
-      socket.off('newMessage');
-      socket.off('newChannel');
-      socket.off('removeChannel');
-      socket.off('renameChannel');
+      console.log('Отписываемся от сокетов');
+      if (socketRef.current) {
+        socket.off('newMessage');
+        socket.off('newChannel');
+        socket.off('removeChannel');
+        socket.off('renameChannel');
+        socket.off('renameMessage');
+        socket.off('removeMessage');
+        socket.off('disconnect');
+        socket.off('connect');
+        socket.off('connect_error');
+      }
     };
+	};
+	}, [dispatch, token]);
 
-	}, [dispatch, token, currentUserName]);
+
+	// Отдельно запустим загрузку данных при монтировании компонента
+	useEffect(() => {
+		if (!token) {
+			console.log('Токен не найден, пропускаем загрузку чата');
+			return;
+		}
+		dispatch(fetchChatData());
+	}, [dispatch, token, currentUserName]); 
 
 	if (loading) return <div>Загрузка...</div>;
-    if (error) return <div>Ошибка: {error}</div>;
+  if (error) return <div>Ошибка: {error}</div>;
 
 	// выбираем текущий кканал
 	const currentChannel = channels.find(channel => channel.id === currentChannelId);

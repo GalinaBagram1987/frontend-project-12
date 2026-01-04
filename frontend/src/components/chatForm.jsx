@@ -11,7 +11,7 @@ const ChatForm = () => {
   const curentUsername = currentUserName;
   // выбираем текущий кканал
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
-  console.log('curentUserName', curentUsername);
+  // console.log('curentUserName', curentUsername);
   const formik = useFormik({
     initialValues: {
       body: '',
