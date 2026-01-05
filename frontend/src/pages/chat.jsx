@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatData, addChannel, removeChannel, renameChannel, removeMessage, renameMessage } from "../store/chatSlice.js";
-import { addMessageFromServer } from '../store/chatSlice.js';
+import { fetchChatData } from "../store/chatSlice.js";
+import { 
+	addMessageFromServer,
+	addChannelFromServer,
+	removeChannelFromServer,
+	renameChannelFromServer,
+  removeMessageFromServer,
+  renameMessageFromServer } from '../store/chatSlice.js';
 import ChatForm from '../components/chatForm.jsx';
 import Channels from '../components/channels.jsx';
 import socket from '../library/socket.js';
@@ -13,15 +19,6 @@ const Chat = () => {
 	const { channels, messages, currentChannelId, loading, error } =  useSelector(state =>state.chat)
   const { user: currentUserName } = useSelector(state => state.auth);
 	
-	// Отдельно запустим загрузку данных при монтировании компонента
-	// useEffect(() => {
-	// 	if (!token) {
-	// 		console.log('Токен не найден, пропускаем загрузку чата');
-	// 		return;
-	// 	}
-	// 	dispatch(fetchChatData());
-	// }, [dispatch, token, currentUserName]); 
-
   // пустой реф для сокета
   const socketRef = useRef(null);
 
@@ -43,39 +40,37 @@ const Chat = () => {
 		const subscribeEvents = () => {
     // подписаться на новые сообщения
     socket.on('newMessage', (payload) => {
-      console.log('Новый обработанный event:', payload);
 			console.log('Получено новое сообщение:', payload); // Логируем поступающее сообщение
       dispatch(addMessageFromServer(payload));
 	  });
     // подпишитесь на новый канал
     socket.on('newChannel', (payload) => {
       console.log(payload); // { id: 6, name: "new channel", removable: true }
-      dispatch(addChannel(payload));  
+      dispatch(addChannelFromServer(payload));  
 		});
     // подписаться на удаление канала
     socket.on('removeChannel', (payload) => {
       console.log(payload); // { id: 6 };
-      dispatch(removeChannel(payload.id));  
+      dispatch(removeChannelFromServer(payload.id));  
 		});
     // подписаться на переименование канала
     socket.on('renameChannel', (payload) => {
       console.log(payload); // { id: 7, name: "new name channel", removable: true }
-      dispatch(renameChannel(payload));  
+      dispatch(renameChannelFromServer(payload));  
 		});
 	  // подписаться на удаление сообщения
 	  socket.on('removeMessage', (payload) => {
      console.log(payload);
-		 dispatch(removeMessage(payload));
+		 dispatch(removeMessageFromServer(payload.id));
   	});
 	  // подписаться на переименование сообщения
 		socket.on('renameMessage', (payload) => {
 			console.log(payload);
-			dispatch(renameMessage(payload));
+			dispatch(renameMessageFromServer(payload));
 		});
 	};
 	  subscribeEvents();
     
-		// для диагностики
 		// сокет подключен
     socket.on('connect', () => {
       console.log('WebSocket подключен');
@@ -106,8 +101,6 @@ const Chat = () => {
       }
     };
 	}, [dispatch, token]);
-
-
 	
 	if (loading) return <div>Загрузка...</div>;
   if (error) return <div>Ошибка: {error}</div>;
@@ -122,14 +115,6 @@ const Chat = () => {
 	// забираем из сторадже имя юзера
 	const curUsername = currentUserName;
 	console.log('curUsername', curUsername);
-	
-  console.log('Все сообщения:', messages);
-  console.log('Дубликаты сообщений:');
-
-  const duplicateIds = messages
-    .map(msg => msg.id)
-    .filter((id, index, array) => array.indexOf(id) !== index);
-  console.log('Дублирующиеся ID:', duplicateIds); // Должен показать [167]
 
 return(
   <div className="container h-100 my-4 overflow-hidden rounded shadow">
