@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatData, addChannel, addMessage, removeChannel, renameChannel, removeMessage, renameMessage } from "../store/chatSlice.js";
+import { fetchChatData, addChannel, removeChannel, renameChannel, removeMessage, renameMessage } from "../store/chatSlice.js";
+import { addMessageFromServer } from '../store/chatSlice.js';
 import ChatForm from '../components/chatForm.jsx';
 import Channels from '../components/channels.jsx';
 import socket from '../library/socket.js';
@@ -10,37 +11,41 @@ const Chat = () => {
 	const dispatch = useDispatch();
 	const token = useSelector(state => state.auth.token);
 	const { channels, messages, currentChannelId, loading, error } =  useSelector(state =>state.chat)
-  const { user: currentUserName } = useSelector(state => state.auth);   
+  const { user: currentUserName } = useSelector(state => state.auth);
+	
+	// Отдельно запустим загрузку данных при монтировании компонента
+	// useEffect(() => {
+	// 	if (!token) {
+	// 		console.log('Токен не найден, пропускаем загрузку чата');
+	// 		return;
+	// 	}
+	// 	dispatch(fetchChatData());
+	// }, [dispatch, token, currentUserName]); 
+
   // пустой реф для сокета
   const socketRef = useRef(null);
-	// флаг для предотвращения повтрной загрузки
-	const hasLoadedRef = useRef(false);
 
 	useEffect(() => {
 		if (!token) {
-			console.log('Токен не найден, пропускаем загрузку чата');
-			return;
+		 	console.log('Токен не найден, пропускаем загрузку чата');
+		 	return;
 		}
-		console.log('Токен есть, загружаем данные чата:', token);
-
+		 console.log('Токен есть, загружаем данные чата:', token);
+      dispatch(fetchChatData());
 	 // Подключаем сокет с токеном только один раз
-	 if (!socketRef.current) {
-		socket.auth = { token };
-		socket.connect();
-		socketRef.current = socket;
-		console.log('WebSocket соединение установлено');
-	  
-    // Обрабатываем потерю связи
-    socket.on('disconnect', () => {
-      console.log('Соединение потеряно.');
-      socket.connect(); // Автоматическое восстановление
-    });
+	  if (!socketRef.current) {
+		  socket.auth = { token };
+		  socket.connect();
+		  socketRef.current = socket;
+		  console.log('WebSocket соединение установлено');
+		}
 
-	  // подписаться на новые сообщения
+		const subscribeEvents = () => {
+    // подписаться на новые сообщения
     socket.on('newMessage', (payload) => {
       console.log('Новый обработанный event:', payload);
 			console.log('Получено новое сообщение:', payload); // Логируем поступающее сообщение
-      dispatch(addMessage(payload));
+      dispatch(addMessageFromServer(payload));
 	  });
     // подпишитесь на новый канал
     socket.on('newChannel', (payload) => {
@@ -67,14 +72,24 @@ const Chat = () => {
 			console.log(payload);
 			dispatch(renameMessage(payload));
 		});
+	};
+	  subscribeEvents();
+    
 		// для диагностики
+		// сокет подключен
     socket.on('connect', () => {
       console.log('WebSocket подключен');
     });
-    
+    // ошибка соединения
     socket.on('connect_error', (err) => {
       console.error('WebSocket ошибка подключения:', err.message);
     });
+		// Обрабатываем потерю связи
+    socket.on('disconnect', () => {
+      console.log('Соединение потеряно.');
+      socket.connect(); // Автоматическое восстановление
+    });
+   
 		// Отписка при размонтировании
 		return () => {
       console.log('Отписываемся от сокетов');
@@ -90,19 +105,10 @@ const Chat = () => {
         socket.off('connect_error');
       }
     };
-	};
 	}, [dispatch, token]);
 
 
-	// Отдельно запустим загрузку данных при монтировании компонента
-	useEffect(() => {
-		if (!token) {
-			console.log('Токен не найден, пропускаем загрузку чата');
-			return;
-		}
-		dispatch(fetchChatData());
-	}, [dispatch, token, currentUserName]); 
-
+	
 	if (loading) return <div>Загрузка...</div>;
   if (error) return <div>Ошибка: {error}</div>;
 
@@ -117,6 +123,14 @@ const Chat = () => {
 	const curUsername = currentUserName;
 	console.log('curUsername', curUsername);
 	
+  console.log('Все сообщения:', messages);
+  console.log('Дубликаты сообщений:');
+
+  const duplicateIds = messages
+    .map(msg => msg.id)
+    .filter((id, index, array) => array.indexOf(id) !== index);
+  console.log('Дублирующиеся ID:', duplicateIds); // Должен показать [167]
+
 return(
   <div className="container h-100 my-4 overflow-hidden rounded shadow">
     <div className="row h-100 bg-wight flex-md-row">

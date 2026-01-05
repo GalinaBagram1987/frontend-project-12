@@ -1,11 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { chatAPI } from '../api/api.js';
+// import { chatAPI } from '../api/api.js';
+import { addMessage } from '../store/chatSlice.js';
 
 const ChatForm = () => {
   const { channels, currentChannelId } = useSelector((state) => state.chat);
-
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const { user: currentUserName } = useSelector(state => state.auth);
   const curentUsername = currentUserName;
@@ -36,7 +37,7 @@ const ChatForm = () => {
         };
         console.log('newMessage', newMessage);
         // Отправляем запрос на сервер
-        const response = await chatAPI.addMessage(token, newMessage);
+        const response = await dispatch(addMessage(newMessage)).unwrap();;
         if (response) {
           formik.resetForm();
         }

@@ -3,7 +3,8 @@ const isProduction = import.meta.env.PROD;
 
 export const BASE_URL = isProduction
   ? 'https://testslack2bagram.onrender.com' // Production URL
-  : 'http://localhost:5002'; // Development URL
+  // : 'http://localhost:5002'; // Development URL
+  : '/';
 
 export const SOCKET_URL = isProduction
   ? window.location.origin // В продакшене тот же хост

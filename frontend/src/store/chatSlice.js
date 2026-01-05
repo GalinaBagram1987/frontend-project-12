@@ -105,6 +105,53 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    
+    // ==== СИНХРОННЫЕ обработчики для WebSocket ====
+    //  добавить канал от сервера
+    addChannelFromServer: (state, action) => {
+      const exists = state.channels.some(ch => ch.id === action.payload.id); // существует
+      if (!exists) {
+        state.channels.push(action.payload);
+      }
+    },
+    // добавить сообщ от сервера
+    addMessageFromServer: (state, action) => {
+      const exists = state.messages.some(msg => msg.id === action.payload.id);
+      if (!exists) {
+        state.messages.push(action.payload);
+      }
+    },
+    // удаление канала от сервера
+    removeChannelFromServer: (state, action) => {
+      const channelId = action.payload;
+      state.channels = state.channels.filter(ch => ch.id !== channelId);
+      state.messages = state.messages.filter(msg => msg.channelId !== channelId);
+      if (state.currentChannelId === channelId) {
+        state.currentChannelId = state.channels[0]?.id || null;
+      }
+    },
+      // переименование канала от сервера
+    renameChannelFromServer: (state, action) => {
+      const { id, name } = action.payload;
+      const channel = state.channels.find(ch => ch.id === id);
+      if (channel) channel.name = name;
+    },
+
+      // переименование сообщения от серевера
+    renameMessageFromServer: (state, action) => {
+      const updatedMessage = action.payload; // { id: '...', body: '...', ... }
+        // Находим и переимен сообщение
+        const message = state.messages.find((ms) => ms.id === updatedMessage.id);
+        if (message) {
+          message.body = updatedMessage.body;
+      }
+    },
+    // удаление сообщ от сервера
+    removeMessageFromServer: (state, action) => {
+      const messageId = action.payload;
+      state.messages = state.messages.filter(msg => msg.id !== messageId);
+    },
+
     // СИНХРОННЫЕ действия
     // Установить текущий канал
     setCurrentChannel: (state, action) => {
@@ -150,8 +197,6 @@ const chatSlice = createSlice({
       // Канал успешно добавлен
       .addCase(addChannelThunk.fulfilled, (state, action) => {
         state.error = null;
-        // Сохраняем канал
-        state.channels.push(action.payload);
         // Новый канал как активный
         state.currentChannelId = action.payload.id;
       })
@@ -167,14 +212,14 @@ const chatSlice = createSlice({
       // Канал успешно удалён
       .addCase(removeChannelThunk.fulfilled, (state, action) => {
         state.error = null;
-        const channelId = action.payload;
+        // const channelId = action.payload;
         // Удаляем канал и его соощения
-        state.channels = state.channels.filter((ch) => ch.id !== channelId);
-        state.messages = state.messages.filter((msg) => msg.channelId !== channelId);
+        // state.channels = state.channels.filter((ch) => ch.id !== channelId);
+        // state.messages = state.messages.filter((msg) => msg.channelId !== channelId);
         // Если удалили активный канал, устанавливаем новый
-        if (state.currentChannelId === channelId) {
-          state.currentChannelId = state.channels[0].id || null;
-        }
+        // if (state.currentChannelId === channelId) {
+          // state.currentChannelId = state.channels[0].id || null;
+        //}
       })
       // Ошибка загрузки
       .addCase(removeChannelThunk.rejected, (state, action) => {
@@ -188,12 +233,12 @@ const chatSlice = createSlice({
       // Канал успешно переименован
       .addCase(editChannelThunk.fulfilled, (state, action) => {
         state.error = null;
-        const { id, name } = action.payload;
+        // const { id, name } = action.payload;
         // Находим и переименовываем канал
-        const channel = state.channels.find((ch) => ch.id === id);
-        if (channel) {
-          channel.name = name;
-        }
+        // const channel = state.channels.find((ch) => ch.id === id);
+        // if (channel) {
+          // channel.name = name;
+        // }
       })
       // Ошибка переименования
       .addCase(editChannelThunk.rejected, (state, action) => {
@@ -207,7 +252,7 @@ const chatSlice = createSlice({
       // Сообщение добавлено
       .addCase(addMessageThunk.fulfilled, (state, action) => {
         state.error = null;
-        state.messages.push(action.payload);
+        // state.messages.push(action.payload);
       })
       // Ошибка добавления сообщения
       .addCase(addMessageThunk.rejected, (state, action) => {
@@ -222,12 +267,12 @@ const chatSlice = createSlice({
       .addCase(editMessageThunk.fulfilled, (state, action) => {
         state.error = null;
 
-         const updatedMessage = action.payload; // { id: '...', body: '...', ... }
+         // const updatedMessage = action.payload; // { id: '...', body: '...', ... }
         // Находим и переимен сообщение
-        const message = state.messages.find((ms) => ms.id === updatedMessage.id);
-        if (message) {
-          message.body = updatedMessage.body;
-        }
+        // const message = state.messages.find((ms) => ms.id === updatedMessage.id);
+        // if (message) {
+          // message.body = updatedMessage.body;
+        //}
       })
       // Ошибка переименования сообщения
       .addCase(editMessageThunk.rejected, (state, action) => {
@@ -240,8 +285,8 @@ const chatSlice = createSlice({
       })
       .addCase(removeMessageThunk.fulfilled, (state, action) => {
         state.error = null;
-        const messageId = action.payload;
-        state.messages = state.messages.filter((ms) => ms.id !== messageId);
+        // const messageId = action.payload;
+        // state.messages = state.messages.filter((ms) => ms.id !== messageId);
       })
       .addCase(removeMessageThunk.rejected, (state, action) => {
         state.error = action.payload;
@@ -249,7 +294,15 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setCurrentChannel, clearChat } = chatSlice.actions;
+export const { 
+  setCurrentChannel, 
+  clearChat,
+  addChannelFromServer,
+  addMessageFromServer,
+  removeChannelFromServer,
+  renameChannelFromServer,
+  removeMessageFromServer,
+  renameMessageFromServer } = chatSlice.actions;
 export default chatSlice.reducer;
 // Алиасы для обратной совместимости
 export const fetchChatData = fetchChatDataThunk;
