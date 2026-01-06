@@ -1,0 +1,49 @@
+import React, { useState } from 'react';
+import { useDispatch  } from 'react-redux';
+import { removeChannel } from '../store/chatSlice';
+import { toast } from 'react-toastify';
+
+const DropRemove = ({channelId, onClose}) => {
+  const dispatch = useDispatch();
+  const [ isLoading, setIsLoading ] = useState(false);
+  
+  const submitRemove = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(removeChannel(channelId)).unwrap();
+      toast.success('Канал успешно удалён!');
+      onClose();
+    } catch (error) {
+      console.error('Ошибка при удалении:', error);
+      toast.error(`Не удалось удалить канал: ${error.message}`); 
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  const handleCansel = () => {
+    onClose();
+  }
+
+  return (
+    <>
+    <div class="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+      <div className="modal-header">
+        <div className="modal-title h4">Удалить канал</div>
+        <button type="button" onClick={handleCansel} aria-label="Close" data-bs-dismiss="modal" className="btn btn-close">
+          </button>
+          </div>
+          <div className="modal-body">
+            <p className="lead">Уверены?</p>
+            <div className="d-flex justify-content-end">
+              <button type="button" onClick={handleCansel} className="me-2 btn btn-secondary">Отменить</button>
+              <button type="button" onClick={submitRemove} className="btn btn-danger">Удалить</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </>
+  )
+};
+
+export default DropRemove;
