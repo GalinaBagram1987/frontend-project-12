@@ -3,7 +3,7 @@ import { useDispatch  } from 'react-redux';
 import { renameChannel } from '../store/chatSlice';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
-import renameChannelValidate from '../library/yup/renameChannelValidate';
+import renameChannelValidate from '../library/yup/renameChannelValidate.js';
 
 const DropRename = ({channelId, onClose}) => {
   const dispatch = useDispatch();
@@ -28,15 +28,25 @@ const DropRename = ({channelId, onClose}) => {
       } catch (error) {
         console.log('Rename channel failed:', error);
 
-        let errorMessage = error?.response?.data?.message;
-
-        if (error?.response?.status === 409) {
-          errorMessage = 'Канал с таким именем уже существует';
-        } else if (error?.response?.data?.message) {
-          errorMessage = error.response.data.message;
-        } else if (error?.code === 'ERR_NETWORK') {
+         let errorMessage = 'Неизвестная ошибка';
+        
+        // 1. Ошибка из rejectWithValue
+        if (error.payload) {
+          errorMessage = error.payload?.message || error.payload;
+        }
+        // 2. Статус 409 - конфликт имени
+        // else if (error?.response?.status === 409) {
+          // errorMessage = 'Канал с таким именем уже существует';
+        //}
+        // 3. Сетевая ошибка
+        else if (error?.code === 'ERR_NETWORK') {
           errorMessage = 'Сервер недоступен. Проверьте подключение.';
         }
+        // 4. Любая другая ошибка
+        else if (error?.message) {
+          errorMessage = error.message;
+        }
+
         setErrors({ newNameChannel: errorMessage });
         toast.error(`Не удалось переименовать канал: ${errorMessage}`); 
       } finally {
