@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch  } from 'react-redux';
 import DropRename from './dropRename.jsx';
-import DropRemove from '/dropRemove.jsx'
+import DropRemove from './dropRemove.jsx'
 
-const DropdownMenu = ({channelId}) => {
+const DropdownMenu = ({ channelId, channelName }) => {
   const [ isMenuOpen, setIsMenuOpen ] = useState(false);
   const [ isRemoveModOpen, setIsRemoveModOpen ] = useState(false);
   const [ isRenameModOpen, setIsRenameModOpen ] = useState(false);
@@ -38,41 +37,84 @@ const DropdownMenu = ({channelId}) => {
     setIsRemoveModOpen(false);
   }
 
-  const cliseRenameModal = () => {
+  const closeRenameModal = () => {
     setIsMenuOpen(false);
     setIsRenameModOpen(false);
   }
 
   return (
-    <button type="button" 
-      id="react-aria6368764644-:r4:" 
-      aria-expanded="false" 
-      className="flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary">
+    <div className="dropdown" ref={menuRef}>
+      {/* Кнопка открытия меню */}
+      <button type="button" 
+        id="react-aria6368764644-:r4:" 
+        aria-expanded="false" 
+        className="flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary"
+        onClick={toggleMenu}
+      >
       <span className="visually-hidden">Управление каналом</span>
-      onClick={toggleMenu}
-    </button>
+      </button>
 
-    {{setIsMenuOpen(true)} && (
-      <div x-placement="bottom-end" 
+      {/* Выпадающее меню */}
+      {isMenuOpen && (
+      <div
+      x-placement="bottom-end" 
       aria-labelledby="react-aria6368764644-:r4:" 
       className="dropdown-menu show" 
       data-popper-reference-hidden="false" 
       data-popper-escaped="false" 
       data-popper-placement="bottom-end" 
-      style="position: absolute; inset: 0px 0px auto auto; transform: translate3d(0px, 32px, 0px);">
+      style= {{
+        position: 'absolute',
+        inset: '0px 0px auto auto',
+        transform: 'translate3d(0px, 32px, 0px)',
+      }}
+        >
       <a data-rr-ui-dropdown-item="" 
         className="dropdown-item" 
         role="button" 
-        tabindex="0" 
-        href="#">Удалить</a>
+        tabIndex="0" 
+        onClick={openRemoveModal}
+        >
+        Удалить
+        </a>
         <a data-rr-ui-dropdown-item="" 
         className="dropdown-item" 
         role="button" 
-        tabindex="0" 
-        href="#">Переименовать</a>
-        </div>
+        tabIndex="0" 
+        onClick={openRenameModal}
+        >
+        Переименовать
+        </a>
+      </div>
     )}
-  )
+  {/* Модальное окно удаления */}
+  {isRemoveModOpen && (
+    <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+    <DropRemove
+      channelId={channelId}
+      onClose={closeRemoveModal}
+    />
+    </div>
+    </div>
+  )}
+  {/* Модальное окно переименования */}
+  {isRenameModOpen && (
+    <div role='dialog' aria-modal='true' className='fade modal show' tabIndex='-1' style={{display:'block'}}>
+    <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+    <DropRename
+      channelId={channelId}
+      currentName={channelName}
+      onClose={closeRenameModal}
+      
+    />
+    </div>
+    </div>
+    </div>
+  )}
+  </div>
+  );
 };
 
 export default DropdownMenu;
