@@ -25,11 +25,13 @@ const Channels = () => {
             <div role='group' className='d-flex droupdown btn-group'>
             <button 
             type='button'
-            className={`w-100 rounded-0 text-start btn ${channel.id === currentChannelId ? 'btn-secondary' : ''} `}
+            className={`w-100 rounded-0 text-start text-truncate btn ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
             onClick={() => handleChannelSelect(channel.id)}
-            >
+            > 
+              <span>
               <span className='me-1'>#</span>
               {channel.name}
+              </span>
             </button>
             {!isSystemChannel(channel.name) && (
               <DropdownMenu

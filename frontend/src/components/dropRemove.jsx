@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch  } from 'react-redux';
+import { useDispatch, useSelector  } from 'react-redux';
 import { removeChannel } from '../store/chatSlice.js';
 import { toast } from 'react-toastify';
 
 const DropRemove = ({channelId, onClose}) => {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
   const [ isLoading, setIsLoading ] = useState(false);
   
   const submitRemove = async () => {

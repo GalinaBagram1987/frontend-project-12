@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import DropRename from './dropRename.jsx';
 import DropRemove from './dropRemove.jsx'
 
@@ -7,6 +8,9 @@ const DropdownMenu = ({ channelId, channelName }) => {
   const [ isRemoveModOpen, setIsRemoveModOpen ] = useState(false);
   const [ isRenameModOpen, setIsRenameModOpen ] = useState(false);
   const menuRef = useRef(null);
+
+  const currentChannelId = useSelector((state) => state.chat.currentChannelId);
+  const isActive = currentChannelId === channelId;
 
   useEffect(() => {
      const handleClickOutside = (event) => {
@@ -46,9 +50,9 @@ const DropdownMenu = ({ channelId, channelName }) => {
     <div className="dropdown" ref={menuRef}>
       {/* Кнопка открытия меню */}
       <button type="button" 
-        id="react-aria6368764644-:r4:" 
+        id="react-aria6368764644-:r0" 
         aria-expanded="false" 
-        className="flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-secondary"
+        className={`flex-grow-0 dropdown-toggle dropdown-toggle-split rounded-start-0 rounded-end btn ${isActive ? 'btn-secondary' : ''}`}
         onClick={toggleMenu}
       >
       <span className="visually-hidden">Управление каналом</span>
@@ -89,12 +93,14 @@ const DropdownMenu = ({ channelId, channelName }) => {
     )}
   {/* Модальное окно удаления */}
   {isRemoveModOpen && (
+    <div role='dialog' aria-modal='true' className='fade modal show' tabIndex='-1' style={{display:'block'}}>
     <div className="modal-dialog modal-dialog-centered">
     <div className="modal-content">
     <DropRemove
       channelId={channelId}
       onClose={closeRemoveModal}
     />
+    </div>
     </div>
     </div>
   )}

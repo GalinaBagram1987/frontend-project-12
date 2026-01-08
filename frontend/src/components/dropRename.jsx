@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch  } from 'react-redux';
+import { useDispatch, useSelector  } from 'react-redux';
 import { renameChannel } from '../store/chatSlice';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
@@ -7,6 +7,7 @@ import renameChannelValidate from '../library/yup/renameChannelValidate.js';
 
 const DropRename = ({channelId, currentName = '', onClose}) => {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
   
   const formik = useFormik({
     initialValues: {
@@ -18,7 +19,7 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
     
     onSubmit: async (values, { setSubmitting, setErrors, resetForm }) => {
       try {
-        const response = await dispatch(renameChannel({ id: channelId, name: values.newNameChannel })).unwrap();
+        const response = await dispatch(renameChannel({ token, id: channelId, name: values.newNameChannel })).unwrap();
 
         console.log('Response from renameChannel:', response);
 

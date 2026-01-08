@@ -65,8 +65,9 @@ export const chatAPI = {
 
   editChannel: async (token, channelId, newNameChannel) => {
     try {
+      const url = API_ENDPOINTS.CHAT.EDIT_CHANNEL.replace(':id', channelId);
       const response = await axiosInstance.patch(
-        `${API_ENDPOINTS.CHAT.EDIT_CHANNEL}/${channelId}`,
+        url,
         { name: newNameChannel },
         {
           headers: {
@@ -83,7 +84,13 @@ export const chatAPI = {
 
   removeChannel: async (token, channelId) => {
     try {
-      const response = await axiosInstance.delete(`${API_ENDPOINTS.CHAT.REMOVE_CHANNEL}/${channelId}`, {
+      const url = API_ENDPOINTS.CHAT.REMOVE_CHANNEL.replace(':id', channelId);
+      console.log('=== EDIT remove DEBUG ===');
+      console.log('URL:', url); // Должно быть: /api/v1/channels/4
+      console.log('channelId:', channelId);
+      console.log('========================');
+      const response = await axiosInstance.delete(
+        url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
