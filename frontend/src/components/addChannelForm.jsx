@@ -1,19 +1,32 @@
 import React from 'react';
-import { useDispatch  } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addChannel } from '../store/chatSlice.js';
 import { useFormik } from 'formik';
 import newChannelValidate from '../library/yup/newChannelValidate.js';
 
 const AddChannelForm = ({onClose}) => {
   const dispatch = useDispatch();
-  // const { channels, currentChannelId } = useSelector((state) => state.chat);
-  //const { showAddedStatus, setShowEddedStatus } = ('');
+  const channels = useSelector((state) => state.chat.channels);
 
   const formik = useFormik({
     initialValues: {
       newChannel: '',
     },
     validationSchema: newChannelValidate,
+    validate: (values) => {
+      const errors = {};
+      const newName = values.newChannel.trim();
+      
+      if (newName) {
+        const isNameExists = channels.some(channel => 
+        channel.name.toLowerCase() === newName.toLowerCase()
+      );
+      if (isNameExists) {
+          errors.newChannel = 'Канал с таким именем уже существует';
+        }
+    }
+      return errors;
+    },
     validateOnChange: true,
     validateOnBlur: true,
 

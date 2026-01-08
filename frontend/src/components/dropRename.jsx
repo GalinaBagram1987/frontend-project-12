@@ -8,19 +8,37 @@ import renameChannelValidate from '../library/yup/renameChannelValidate.js';
 const DropRename = ({channelId, currentName = '', onClose}) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  const channels = useSelector((state) => state.chat.channels);
   
   const formik = useFormik({
     initialValues: {
       newNameChannel: currentName,
     },
     validationSchema: renameChannelValidate,
+    validate: () => {
+      const errors = {};
+      const newName = newNameChannel.value.trim();
+      // 1. Проверка на изменение
+      if (newName === currentName) {
+        errors.newNameChannel = 'Название не изменилось';
+        return errors; 
+      }
+      // 2. Проверка уникальности из состояния
+      const isNameExists = channels.some(channel => 
+        channel.id !== channelId && // Исключаем переименуемый канал
+        channel.name.toLowerCase() === newName.toLowerCase()
+      );
+      if (isNameExists) {
+        errors.newNameChannel = 'Имя канала должно быть уникальным';
+      }
+      return errors;
+    },
     validateOnChange: true,
     validateOnBlur: true,
     
     onSubmit: async (values, { setSubmitting, setErrors, resetForm }) => {
       try {
         const response = await dispatch(renameChannel({ token, id: channelId, name: values.newNameChannel })).unwrap();
-
         console.log('Response from renameChannel:', response);
 
         resetForm(); // Сброс формы после успешной отправки
