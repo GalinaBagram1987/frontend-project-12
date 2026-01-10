@@ -1,0 +1,72 @@
+import { error } from "node:console";
+import { ValidationError } from "yup";
+
+const ruTransl = {
+  translation: {
+    login: {
+      title: 'Вход',
+      nameLogin: 'Введите имя пользователя',
+      passwordLogin: 'Пароль',
+      login: 'Войти',
+      text: 'Нет аккаунта',
+      link:  'Регистрация',
+    },
+    registr: {
+      registration: 'Регистрация',
+      userRegist: 'Имя пользователя',
+      passwordRegist: 'Пароль',
+      confirmPassword: 'Подвердите пароль',
+      register: 'Регистрация',
+    },
+    chat: {
+      channels: 'Каналы',
+      addChannel: 'Добавить канал',
+      cancel: 'Отменить',
+      send: 'Отправить',
+      removeButton: 'Удалить',
+      renameButton: 'Переименовать',
+      removeWindow: 'Удалить канал',
+      renameWindow: 'Переименовать канал',
+      enterMessage: 'Введите сообщение',
+      exit: 'Выйти',
+      count: {
+        "messagesCount_zero": "0 сообщений",
+        "messagesCount_one": "{{count}} сообщение",
+        "messagesCount_few": "{{count}} сообщения",
+        "messagesCount_many": "{{count}} сообщений",
+       },
+    },
+    validationError: {
+      requiredField: 'Обязательное поле',
+      symbols: 'от 3 до 20 символов',
+      nameLength: 'Имя пользователя должно быть не менее 3 символов',
+      passwordLength: 'Пароль должен быть не менее 6 символов',
+      requiredName: 'Введите имя пользователя',
+      requiredPassword: 'Введите пароль',
+      requiredChannel: 'Название канала обязательно',
+      required: 'Обязательное поле',
+      confirmPassword: 'Пароли должны совпадать',
+    },
+    error: {
+      errorPassword: 'Неверное имя пользователя или пароль',
+      userExists: 'Пользователь уже существует',
+      networkError: 'Ошибка соединения с сервером',
+      channelExists: 'Канал с таким именем уже существует',
+      unknownError: 'Неизвестная ошибка',
+    },
+    toastify: {
+      addChannelOk: 'Канал добавлен',
+      remaneChannekOk: 'Канал переименован',
+      removeChannelOk: 'Канал удален',
+    },
+    common: {
+      loading: 'Загрузка...',
+      save: 'Сохранить',
+      delete: 'Удалить',
+      edit: 'Редактировать',
+      close: 'Закрыть',
+      error: 'Ошибка',
+    },
+  }, 
+};
+export default ruTransl;

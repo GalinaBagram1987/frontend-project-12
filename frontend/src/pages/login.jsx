@@ -24,7 +24,7 @@ const Login = () => {
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
         // Отправляем запрос на сервер
-        const response = await authAPI.login(values.username, values.password);
+        const response = await authAPI.login(values.username.trim(), values.password);
         // Сохраняем в Redux и LocalStorage
         dispatch(loginSuccess({
           token: response.token,

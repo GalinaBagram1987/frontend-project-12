@@ -1,0 +1,67 @@
+const enTransl = {
+  translation: {
+    login: {
+      title: 'Sign In',
+      nameLogin: 'Username',
+      passwordLogin: 'Password',
+      login: 'Sign In',
+      text: 'Don\'t have an account?',
+      link: 'Registration',
+    },
+    registr: {
+      registration: 'Registration',
+      userRegist: 'Username',
+      passwordRegist: 'Password',
+      confirmPassword: 'Confirm password',
+      register: 'Sign Up',
+    },
+    chat: {
+      channels: 'Channels',
+      addChannel: 'Add channel',
+      cancel: 'Cancel',
+      send: 'Send',
+      removeButton: 'Delete',
+      renameButton: 'Rename',
+      removeWindow: 'Delete channel',
+      renameWindow: 'Rename channel',
+      enterMessage: 'Enter message',
+      exit: 'Log Out',
+      count: {
+        "messagesCount_one": "{{count}} message",
+        "messagesCount_other": "{{count}} messages",
+      },
+    },
+    validationError: {
+      requiredField: 'Required field',
+      symbols: '3 to 20 characters',
+      nameLength: 'Username must be at least 3 characters',
+      passwordLength: 'Password must be at least 6 characters',
+      requiredName: 'Username is required',
+      requiredPassword: 'Password is required', 
+      requiredChannel: 'Channel name is required',
+      required: 'This field is required',
+      confirmPassword: 'Passwords do not match',
+    },
+    error: {
+      errorPassword: 'Invalid username or password',
+      userExists: 'User already exists',
+      networkError: 'Network error',
+      channelExists: 'Channel with this name already exists',
+      unknownError: 'Unknown error',
+    },
+    toastify: {
+      addChannelOk: 'Channel added',
+      remaneChannekOk: 'Channel renamed',
+      removeChannelOk: 'Channel deleted',
+    },
+    common: {
+      loading: 'Loading...',
+      save: 'Save',
+      delete: 'Delete',
+      edit: 'Edit',
+      close: 'Close',
+      error: 'Error',
+    },
+  },
+};
+export default enTransl;

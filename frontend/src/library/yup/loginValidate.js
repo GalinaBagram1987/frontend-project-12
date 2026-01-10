@@ -1,7 +1,11 @@
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
+
+const { t } = useTranslation();
+
 const loginSchema = yup.object().shape({
-  username: yup.string().min(3, 'Имя пользователя должно быть не менее 3 символов').required('Введите имя пользователя'),
-  password: yup.string().min(6, 'Пароль должен быть не менее 6 символов').required('Введите пароль'),
+  username: yup.string().min(3, t('validationError.nameLength')).required(t('login.nameLogin')),
+  password: yup.string().min(6, t('validationError.passwordLength')).required(t('validationError.requiredPassword')),
 });
 
 export default loginSchema;

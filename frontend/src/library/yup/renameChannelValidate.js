@@ -1,10 +1,14 @@
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
+
+const { t } = useTranslation();
+
 const renameChannelValidate = yup.object().shape({
   newNameChannel: yup
   .string()
-  .min(3, 'От 3 до 20 символов')
-  .max(20, 'От 3 до 20 символов')
-  .required('Название канала обязательно')
+  .min(3, t(' validationError.symbols'))
+  .max(20, t(' validationError.symbols'))
+  .required(t('validationError.requiredChannel'))
 });
 
 export default renameChannelValidate;

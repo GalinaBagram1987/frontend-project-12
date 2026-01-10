@@ -12,6 +12,10 @@ import ChatForm from '../components/chatForm.jsx';
 import Channels from '../components/channels.jsx';
 import socket from '../library/socket.js';
 import AddChannelButton from '../components/addChannelButton.jsx';
+import { useTranslation } from 'react-i18next';
+
+const { t } = useTranslation();
+
 
 const Chat = () => {
 	const dispatch = useDispatch();
@@ -102,8 +106,8 @@ const Chat = () => {
     };
 	}, [dispatch, token]);
 	
-	if (loading) return <div>Загрузка...</div>;
-  if (error) return <div>Ошибка: {error}</div>;
+	if (loading) return <div>{t('common.loading')}</div>;
+  if (error) return <div>{t('common.error')}: {error}</div>;
 
 	// выбираем текущий кканал
 	const currentChannel = channels.find(channel => channel.id === currentChannelId);
