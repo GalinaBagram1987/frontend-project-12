@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector  } from 'react-redux';
 import { removeChannel } from '../store/chatSlice.js';
 import { toast } from 'react-toastify';
 
 const DropRemove = ({channelId, onClose}) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
   const [ isLoading, setIsLoading ] = useState(false);
   
   const submitRemove = async () => {
@@ -33,10 +34,10 @@ const DropRemove = ({channelId, onClose}) => {
           </button>
           </div>
           <div className="modal-body">
-            <p className="lead">Уверены?</p>
+            <p className="lead">{t('removeCh.youOk')}</p>
             <div className="d-flex justify-content-end">
-              <button type="button" onClick={handleCancel} disabled={isLoading} className="me-2 btn btn-secondary">Отменить</button>
-              <button type="button" onClick={submitRemove} disabled={isLoading} className="btn btn-danger">Удалить</button>
+              <button type="button" onClick={handleCancel} disabled={isLoading} className="me-2 btn btn-secondary">{t('removeCh.cancel')}</button>
+              <button type="button" onClick={submitRemove} disabled={isLoading} className="btn btn-danger">{t('removeCh.remove')}</button>
         </div>
     </div>
     </>

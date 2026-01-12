@@ -43,12 +43,12 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
         console.log('Response from renameChannel:', response);
 
         resetForm(); // Сброс формы после успешной отправки
-        toast.success('Канал успешно переименован!');
+        toast.success(t('toastify.remaneChannekOk'));
         onClose?.(); // Закрытие модального окна
       } catch (error) {
         console.log('Rename channel failed:', error);
 
-         let errorMessage = 'Неизвестная ошибка';
+         let errorMessage = t('error.unknownError');
         
         // 1. Ошибка из rejectWithValue
         if (error.payload) {
@@ -56,7 +56,7 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
         }
         // 2. Сетевая ошибка
         else if (error?.code === 'ERR_NETWORK') {
-          errorMessage = 'Сервер недоступен. Проверьте подключение.';
+          errorMessage = t('error.networkError');
         }
         // 3. Любая другая ошибка
         else if (error?.message) {
@@ -79,7 +79,7 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
   return (
     <>
       <div className="modal-header">
-        <div className="modal-title h4">Переименовать канал</div>
+        <div className="modal-title h4">{t('renameCh.renameCh')}</div>
           <button type="button" onClick={handleClose} aria-label="Close" data-bs-dismiss="modal" className="btn btn-close">
             </button>
             </div>
@@ -97,7 +97,7 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
                     disabled={formik.isSubmitting}
                     autoFocus
                     />
-                    <label className="visually-hidden" htmlFor="newNameChannel">Имя канала</label>
+                    <label className="visually-hidden" htmlFor="newNameChannel">{t('renameCh.chnName')}</label>
                     {formik.errors.newNameChannel && (
                       <div className="invalid-feedback d-block">
                         {formik.errors.newNameChannel}
@@ -108,15 +108,13 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
                         type="button" 
                         onClick={handleClose}
                         className="me-2 btn btn-secondary"
-                      >
-                        Отменить
+                      >{t('chat.cancel')}
                       </button>
                       <button
                         type="submit"
                         className="btn btn-primary"
                         disabled={formik.isSubmitting || !formik.values.newNameChannel.trim()}
-                      >
-                        Отправить
+                      >{t('chat.send')}
                       </button>       
                     </div>
                   </div>

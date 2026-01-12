@@ -1,5 +1,3 @@
-import { error } from "node:console";
-
 const ruTransl = {
   translation: {
     login: {
@@ -36,7 +34,15 @@ const ruTransl = {
        },
     },
     renameCh: {
+      renameCh: 'Переименовать канал?',
+      chnName: 'Имя канала',
       noChangeName: 'Название не изменилось',
+      uniqName: 'Имя канала должно быть уникальным',
+    },
+    removeCh: {
+      youOk: 'Уверены?',
+      cancel: 'Отменить',
+      remove: 'Удалить',
     },
     validationError: {
       requiredField: 'Обязательное поле',
@@ -59,7 +65,7 @@ const ruTransl = {
     },
     toastify: {
       addChannelOk: 'Канал добавлен',
-      remaneChannekOk: 'Канал переименован',
+      remaneChannekOk: 'Канал успешно переименован',
       removeChannelOk: 'Канал удален',
     },
     common: {
