@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const NavBar = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -20,13 +22,13 @@ const NavBar = () => {
           </span>
       ) : (
         <>
-          <span className="navbar-brand">Hexlet Chat</span>
+          <span className="navbar-brand">{t('navBar.chat')}</span>
           <button 
             type="button"
             onClick={handleLogout}
             className="btn btn-primary"
           >
-            Выйти
+            {t('navBar.exit')}
           </button>
         </>
       )}

@@ -1,5 +1,9 @@
 const ruTransl = {
   translation: {
+    navBar: {
+      chat: 'Hexlet Chat',
+      exit: 'Выйти',
+    },
     login: {
       title: 'Войти',
       nameLogin: 'Ваш ник',
@@ -62,6 +66,11 @@ const ruTransl = {
       networkError: 'Сервер недоступен. Проверьте подключение',
       channelExists: 'Канал с таким именем уже существует',
       unknownError: 'Неизвестная ошибка',
+    },
+    errorPage: {
+      noPage: 'Страница не найдена',
+      goTo: 'Но вы можете перейти',
+      mainPage: 'на главную страницу',
     },
     toastify: {
       addChannelOk: 'Канал добавлен',

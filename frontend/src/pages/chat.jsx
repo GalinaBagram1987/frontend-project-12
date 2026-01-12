@@ -138,7 +138,9 @@ return(
 						{currentChannel && (
 						<div className="bg-light mb-4 p-3 shadow-sm small">
 							<p className="m-0"><b># {currentChannel.name}</b></p>
-						<span className="text-muted">{currentMessages.length} сообщений</span>
+						<span className="text-muted">
+							{t('chat.count.messagesCount', { count: currentMessages.length })}
+							</span>
 						</div>
 						)}
 				{/* Вывод сообщений в канале */}

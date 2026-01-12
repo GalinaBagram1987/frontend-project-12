@@ -1,5 +1,9 @@
 const enTransl = {
   translation: {
+    navBar: {
+      chat: 'Hexlet Chat',
+      exit: 'Exit',
+    },
     login: {
       title: 'Sign In',
       nameLogin: 'Username',
@@ -61,6 +65,11 @@ const enTransl = {
       networkError: 'Server unavailable. Check your connection',
       channelExists: 'Channel with this name already exists',
       unknownError: 'Unknown error',
+    },
+    errorPage: {
+      noPage: 'Page not found',
+      goTo: 'But you can go',
+      mainPage: 'to the main page',
     },
     toastify: {
       addChannelOk: 'Channel added',
