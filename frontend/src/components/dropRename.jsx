@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector  } from 'react-redux';
 import { renameChannel } from '../store/chatSlice.js';
 import { toast } from 'react-toastify';
@@ -6,21 +7,21 @@ import { useFormik } from 'formik';
 import renameChannelValidate from '../library/yup/renameChannelValidate.js';
 
 const DropRename = ({channelId, currentName = '', onClose}) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
   const channels = useSelector((state) => state.chat.channels);
   
   const formik = useFormik({
     initialValues: {
       newNameChannel: currentName,
     },
-    validationSchema: renameChannelValidate,
+    validationSchema: renameChannelValidate(t),
     validate: () => {
       const errors = {};
       const newName = newNameChannel.value.trim();
       // 1. Проверка на изменение
       if (newName === currentName) {
-        errors.newNameChannel = 'Название не изменилось';
+        errors.newNameChannel = t('renameCh.noChangeName');
         return errors; 
       }
       // 2. Проверка уникальности из состояния
@@ -29,7 +30,7 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
         channel.name.toLowerCase() === newName.toLowerCase()
       );
       if (isNameExists) {
-        errors.newNameChannel = 'Имя канала должно быть уникальным';
+        errors.newNameChannel = t('renameCh.unigName');
       }
       return errors;
     },
@@ -38,7 +39,7 @@ const DropRename = ({channelId, currentName = '', onClose}) => {
     
     onSubmit: async (values, { setSubmitting, setErrors, resetForm }) => {
       try {
-        const response = await dispatch(renameChannel({ token, id: channelId, name: values.newNameChannel })).unwrap();
+        const response = await dispatch(renameChannel({ id: channelId, name: values.newNameChannel })).unwrap();
         console.log('Response from renameChannel:', response);
 
         resetForm(); // Сброс формы после успешной отправки

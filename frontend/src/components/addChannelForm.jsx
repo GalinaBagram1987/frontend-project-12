@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addChannel } from '../store/chatSlice.js';
 import { useFormik } from 'formik';
 import newChannelValidate from '../library/yup/newChannelValidate.js';
+import { useTranslation } from 'react-i18next';
 
 const AddChannelForm = ({onClose}) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.chat.channels);
 
@@ -12,7 +14,7 @@ const AddChannelForm = ({onClose}) => {
     initialValues: {
       newChannel: '',
     },
-    validationSchema: newChannelValidate,
+    validationSchema: newChannelValidate(t),
     validate: (values) => {
       const errors = {};
       const newName = values.newChannel.trim();

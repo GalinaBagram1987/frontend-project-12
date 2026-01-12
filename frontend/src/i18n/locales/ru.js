@@ -1,11 +1,13 @@
+import { error } from "node:console";
+
 const ruTransl = {
   translation: {
     login: {
-      title: 'Вход',
-      nameLogin: 'Введите имя пользователя',
+      title: 'Войти',
+      nameLogin: 'Ваш ник',
       passwordLogin: 'Пароль',
       login: 'Войти',
-      text: 'Нет аккаунта',
+      text: 'Нет аккаунта?',
       link:  'Регистрация',
     },
     registr: {
@@ -13,7 +15,7 @@ const ruTransl = {
       userRegist: 'Имя пользователя',
       passwordRegist: 'Пароль',
       confirmPassword: 'Подвердите пароль',
-      register: 'Регистрация',
+      register: 'Зарегистрироваться',
     },
     chat: {
       channels: 'Каналы',
@@ -27,11 +29,14 @@ const ruTransl = {
       enterMessage: 'Введите сообщение',
       exit: 'Выйти',
       count: {
-        "messagesCount_zero": "0 сообщений",
-        "messagesCount_one": "{{count}} сообщение",
-        "messagesCount_few": "{{count}} сообщения",
-        "messagesCount_many": "{{count}} сообщений",
+        "messagesCount_zero": '0 сообщений',
+        "messagesCount_one": '{{count}} сообщение',
+        "messagesCount_few": '{{count}} сообщения',
+        "messagesCount_many": '{{count}} сообщений',
        },
+    },
+    renameCh: {
+      noChangeName: 'Название не изменилось',
     },
     validationError: {
       requiredField: 'Обязательное поле',
@@ -45,9 +50,10 @@ const ruTransl = {
       confirmPassword: 'Пароли должны совпадать',
     },
     error: {
+      errorBase: 'Ошибка регистрации',
       errorPassword: 'Неверное имя пользователя или пароль',
-      userExists: 'Пользователь уже существует',
-      networkError: 'Ошибка соединения с сервером',
+      userExists: 'Пользователь с таким именем уже существует',
+      networkError: 'Сервер недоступен. Проверьте подключение',
       channelExists: 'Канал с таким именем уже существует',
       unknownError: 'Неизвестная ошибка',
     },

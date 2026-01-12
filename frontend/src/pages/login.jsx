@@ -38,11 +38,11 @@ const Login = () => {
       } catch (error) {
         let errorMessage = 'Ошибка авторизации';
         if (error.response?.status === 401) {
-        errorMessage = 'Неверное имя пользователя или пароль';
+        errorMessage =  t('error.errorPassword');
       } else if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.code === 'ERR_NETWORK') {
-        errorMessage = 'Сервер недоступен';
+        errorMessage = t('error.networkError');
       }
         // Показываем ошибку пользователю
         setErrors({ 
@@ -64,7 +64,7 @@ const Login = () => {
           </div>
             <form className='col-12 col-md-6 mt-3 mt-md-0'
               onSubmit={formik.handleSubmit}>
-              <h1 className='text-center mb-4'>Войти</h1>
+              <h1 className='text-center mb-4'>{t('login.title')}</h1>
               {/* Поле username */}
               <div className='form-floating mb-3'>
                 <input
@@ -76,7 +76,7 @@ const Login = () => {
                   className={`form-control ${formik.submitCount > 0 ? 'is-invalid' : ''}`}
                   autoComplete='new-name'
                 />
-                <label htmlFor="username">Ваш ник</label>
+                <label htmlFor="username">{t('login.nameLogin')}</label>
               </div>
               {/* Поле password */}
               <div className='form-floating mb-4'>
@@ -86,26 +86,26 @@ const Login = () => {
                   autoComplete='new-password'
                   type='password'
                   required 
-                  placeholder='Пароль'
+                  placeholder={t('login.passwordLogin')}
                   className={`form-control ${formik.submitCount > 0 && formik.errors.password ? 'is-invalid' : ''}`}
                   onChange={formik.handleChange}
                   value={formik.values.password}
                 />
                 <div className="invalid-tooltip">{(formik.errors.password || formik.errors.username) || ''}</div>
-                <label htmlFor="password">Пароль</label>
+                <label htmlFor="password">{t('login.passwordLogin')}</label>
               </div>
               <button
                 type='submit'
                 className='w-100 mb-3 btn btn-outline-primary'
                 >
-                Войти
+                {t('login.login')}
               </button>
             </form>
             </div>
             <div className='card-footer p-4 mt-auto w-100'>
               <div className='text-center'>
-                <span>Нет аккаунта? </span>
-                <a href='/registration'>Регистрация</a>
+                <span>{t('login.text')} </span>
+                <a href='/registration'>{t('login.link')}</a>
               </div>
             </div>
           </div>

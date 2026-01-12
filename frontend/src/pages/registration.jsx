@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
@@ -9,7 +10,7 @@ const Registration = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Хук для навигации
-
+  
   const formik = useFormik({
       initialValues: {
         username: '',
@@ -44,14 +45,14 @@ const Registration = () => {
       } catch (error) {
         console.error('registration failed:', error);
         // Показываем ошибку пользователю
-        let errorMessage = 'Ошибка регистрации';
+        let errorMessage = t('error.errorBase');
 
         if (error.response?.status === 409) {
-          errorMessage = 'Пользователь с таким именем уже существует';
+          errorMessage = t('error.userExists');
         } else if (error.response?.data?.message) {
           errorMessage = error.response.data.message;
         } else if (error.code === 'ERR_NETWORK') {
-          errorMessage = 'Сервер недоступен. Проверьте подключение.';
+          errorMessage = t('error.networkError');
         }
 
         setErrors({ 
@@ -74,7 +75,7 @@ return(
             </div>
             <form className='w-50'
               onSubmit={formik.handleSubmit}>
-              <h1 className='text-center mb-4'>Регистрация</h1>
+              <h1 className='text-center mb-4'>{t('registr.registration')}</h1>
               {/* Поле username */}
               <div className='form-floating mb-3'>
                 <input
@@ -89,14 +90,14 @@ return(
                   className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
                 />
                 <label className='form-label' htmlFor='username'>
-                  Имя пользователя
+                  {t('registr.userRegist')}
                 </label>
               <div className="invalid-tooltip">{formik.errors.username || ''}</div>
               </div>
               {/* Поле password */}
               <div className='form-floating mb-3'>
                 <input
-                  placeholder='Не менее 6 символов'
+                  placeholder={t('validationError.PasswordLength')}
                   name='password'
                   aria-describedby='passwordHelpBlock'
                   required
@@ -111,7 +112,7 @@ return(
                 />
                 <div className='invalid-tooltip'>{formik.errors.password || ''}</div>
                 <label className='form-label' htmlFor='password'>
-                  Пароль
+                  {t('registr.passwordRegist')}
                 </label>
                 {formik.touched.password && formik.errors.password && (
                 <div className="invalid-tooltip">{formik.errors.password}</div>
@@ -120,7 +121,7 @@ return(
               {/* Поле confirmPassword */}
               <div className='form-floating mb-4'>
                 <input
-                  placeholder='Пароли должны совпадать'
+                  placeholder={t('validationError.confirmPassword')}
                   name='confirmPassword'
                   required
                   autoComplete='new-password'
@@ -133,11 +134,11 @@ return(
                 />
                 <div className='invalid-tooltip'>{formik.errors.confirmPassword || ''}</div>
                 <label className='form-label' htmlFor='confirmPassword'>
-                  Подтвердите пароль
+                  {t('registr.confirmPassword')}
                 </label>
               </div>
               <button type='submit' className='btn btn-outline-primary'>
-                Зарегистрироваться
+                {t('registr.register')}
               </button>
             </form>
           </div>
