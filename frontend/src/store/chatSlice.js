@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { chatAPI } from '../api/api';
+import { chatAPI } from '../api/axiosInstance';
 // все асинхронные опер делаем через чанки
 // Thunk для загрузки данных
 const fetchChatDataThunk = createAsyncThunk(

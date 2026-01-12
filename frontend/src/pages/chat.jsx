@@ -14,11 +14,11 @@ import socket from '../library/socket.js';
 import AddChannelButton from '../components/addChannelButton.jsx';
 import { useTranslation } from 'react-i18next';
 
-const { t } = useTranslation();
-
-
 const Chat = () => {
+	const { t } = useTranslation();
+
 	const dispatch = useDispatch();
+
 	const token = useSelector(state => state.auth.token);
 	const { channels, messages, currentChannelId, loading, error } =  useSelector(state =>state.chat)
   const { user: currentUserName } = useSelector(state => state.auth);

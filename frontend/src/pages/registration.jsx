@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import registrSchema from '../library/yup/registrValidate.js';
 
 const Registration = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Хук для навигации
 
@@ -16,7 +17,7 @@ const Registration = () => {
         confirmPassword: '',
       },
       //сюда надо будет вставть схему валидации
-      validationSchema: registrSchema,
+      validationSchema: registrSchema(t),
       validateOnChange: true,
       validateOnBlur: true,
       

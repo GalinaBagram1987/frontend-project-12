@@ -1,11 +1,5 @@
-import axios from 'axios';
-import { BASE_URL, API_ENDPOINTS } from './routes';
-
-export const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  timeout: 10000,
-  headers: { 'Content-Type': 'application/json' },
-});
+import apiWithIterceptors from './axiosInstance.js';
+import { API_ENDPOINTS } from './routes.js';
 
 export const authAPI = {
   login: async (username, password) => {
@@ -13,7 +7,7 @@ export const authAPI = {
       console.log('Login endpoint:', API_ENDPOINTS.AUTH.LOGIN);
       console.log('Making login request for user:', username);
 
-      const response = await axiosInstance.post(API_ENDPOINTS.AUTH.LOGIN, { username, password });
+      const response = await apiWithIterceptors.post(API_ENDPOINTS.AUTH.LOGIN, { username, password });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -23,7 +17,7 @@ export const authAPI = {
   },
   registr: async (username, password) => {
     try {
-      const response = await axiosInstance.post(API_ENDPOINTS.AUTH.REGISTR, { username, password });
+      const response = await apiWithIterceptors.post(API_ENDPOINTS.AUTH.REGISTR, { username, password });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -34,13 +28,9 @@ export const authAPI = {
 };
 
 export const chatAPI = {
-  getChannels: async (token) => {
+  getChannels: async () => {
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.CHAT.GET_CHANNELS, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiWithIterceptors.get(API_ENDPOINTS.CHAT.GET_CHANNELS);
       console.log('getChannels response:', response.data);
       return response.data;
     } catch (error) {
@@ -49,13 +39,9 @@ export const chatAPI = {
     }
   },
 
-  addChannel: async (token, newChannel) => {
+  addChannel: async (newChannel) => {
     try {
-      const response = await axiosInstance.post(API_ENDPOINTS.CHAT.ADD_CHANNEL, newChannel, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiWithIterceptors.post(API_ENDPOINTS.CHAT.ADD_CHANNEL, newChannel);
       return response.data;
     } catch (error) {
       console.error('Add new channel failed:', error);
@@ -63,17 +49,12 @@ export const chatAPI = {
     }
   },
 
-  editChannel: async (token, channelId, newNameChannel) => {
+  editChannel: async (channelId, newNameChannel) => {
     try {
       const url = API_ENDPOINTS.CHAT.EDIT_CHANNEL.replace(':id', channelId);
-      const response = await axiosInstance.patch(
+      const response = await apiWithIterceptors.patch(
         url,
-        { name: newNameChannel },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { name: newNameChannel }
       );
       return response.data;
     } catch (error) {
@@ -82,19 +63,15 @@ export const chatAPI = {
     }
   },
 
-  removeChannel: async (token, channelId) => {
+  removeChannel: async (channelId) => {
     try {
       const url = API_ENDPOINTS.CHAT.REMOVE_CHANNEL.replace(':id', channelId);
       console.log('=== EDIT remove DEBUG ===');
       console.log('URL:', url); // Должно быть: /api/v1/channels/4
       console.log('channelId:', channelId);
       console.log('========================');
-      const response = await axiosInstance.delete(
-        url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiWithIterceptors.delete(
+        url);
       return response.data;
     } catch (error) {
       console.error('Remove channel failed:', error);
@@ -102,13 +79,9 @@ export const chatAPI = {
     }
   },
 
-  getMessages: async (token) => {
+  getMessages: async () => {
     try {
-      const response = await axiosInstance.get(API_ENDPOINTS.CHAT.GET_MESSAGE, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiWithIterceptors.get(API_ENDPOINTS.CHAT.GET_MESSAGE);
       console.log('getMessages response:', response.data);
       return response.data;
     } catch (error) {
@@ -116,14 +89,10 @@ export const chatAPI = {
       throw error;
     }
   },
-  addMessage: async (token, newMessage) => {
+  addMessage: async (newMessage) => {
     try {
       console.log('Отправляем сообщение:', newMessage);
-      const response = await axiosInstance.post(API_ENDPOINTS.CHAT.ADD_MESSAGE, newMessage, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiWithIterceptors.post(API_ENDPOINTS.CHAT.ADD_MESSAGE, newMessage);
       console.log('Ответ от сервера на отправку сообщения:', response.data);
       return response.data;
     } catch (error) {
@@ -132,16 +101,11 @@ export const chatAPI = {
     }
   },
 
-  editMessage: async (token, messageId, newNameMessage) => {
+  editMessage: async (messageId, newNameMessage) => {
     try {
-      const response = await axiosInstance.patch(
+      const response = await apiWithIterceptors.patch(
         `${API_ENDPOINTS.CHAT.EDIT_MESSAGE}/${messageId}`,
-        { body: newNameMessage },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { body: newNameMessage }
       );
       return response.data;
     } catch (error) {
@@ -150,13 +114,9 @@ export const chatAPI = {
     }
   },
 
-  removeMessage: async (token, messageId) => {
+  removeMessage: async (messageId) => {
     try {
-      const response = await axiosInstance.delete(`${API_ENDPOINTS.CHAT.REMOVE_MESSAGE}/${messageId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiWithIterceptors.delete(`${API_ENDPOINTS.CHAT.REMOVE_MESSAGE}/${messageId}`);
       return response.data;
     } catch (error) {
       console.error('Remove message failed:', error);

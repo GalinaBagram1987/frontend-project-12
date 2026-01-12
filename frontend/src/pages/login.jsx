@@ -1,4 +1,5 @@
 
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
@@ -8,6 +9,7 @@ import loginSchema from '../library/yup/loginValidate.js';
 
 
 const Login = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Хук для навигации
   
@@ -17,7 +19,7 @@ const Login = () => {
       password: '',
     },
     
-      validationSchema: loginSchema,
+      validationSchema: loginSchema(t),
       validateOnChange: true,
       validateOnBlur: true,
 

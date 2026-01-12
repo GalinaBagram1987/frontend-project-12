@@ -1,6 +1,3 @@
-import { error } from "node:console";
-import { ValidationError } from "yup";
-
 const ruTransl = {
   translation: {
     login: {
