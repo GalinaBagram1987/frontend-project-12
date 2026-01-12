@@ -18,7 +18,7 @@ const NavBar = () => {
       {!isPathWithExit ? (
         <span className="navbar-brand"
           onClick={handleLogout}>
-          Hexlet Chat
+          {t('navBar.chat')}
           </span>
       ) : (
         <>
