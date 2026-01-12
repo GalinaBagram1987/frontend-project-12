@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
-import { authAPI } from '../api/api.js';
+import { authAPI } from '../api/apiMethods.js';
 import { useNavigate } from 'react-router-dom';
 import registrSchema from '../library/yup/registrValidate.js';
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../store/authSlice.js';
-import { authAPI } from '../api/api.js';
+import { authAPI } from '../api/apiMethods.js';
 import { useNavigate } from 'react-router-dom';
 import loginSchema from '../library/yup/loginValidate.js';
 

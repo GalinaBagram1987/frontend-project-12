@@ -1,21 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { chatAPI } from '../api/axiosInstance';
+import { chatAPI } from '../api/apiMethods.js';
 // все асинхронные опер делаем через чанки
 // Thunk для загрузки данных
 const fetchChatDataThunk = createAsyncThunk(
   'chat/fetchData', // Id отображается в dev tools и должен быть уникальный у каждого thunk
-  async (__, { getState, rejectWithValue }) => {
+  async (__, { rejectWithValue }) => {
     // здесь _ обозначает, что аргументы не используются.
     try {
-      const { auth } = getState();
-      const token = auth.token;
-      if (!token) {
-        throw new Error('Токен не найден');
-      }
-      const [channelsResponse, messagesResponse] = await Promise.all([chatAPI.getChannels(token), chatAPI.getMessages(token)]);
+      const [channelsResponse, messagesResponse] = await Promise.all([chatAPI.getChannels(), chatAPI.getMessages()]);
       console.log('channels Response', channelsResponse);
       console.log('messages Response', messagesResponse);
-
       return {
         channels: channelsResponse,
         messages: messagesResponse,
@@ -28,20 +22,18 @@ const fetchChatDataThunk = createAsyncThunk(
 );
 
 // Thunk для добавления канала
-const addChannelThunk = createAsyncThunk('chat/addChannel', async (channelData, { getState, rejectWithValue }) => {
+const addChannelThunk = createAsyncThunk('chat/addChannel', async (channelData, { rejectWithValue }) => {
   try {
-    const token = getState().auth?.token;
-    const response = await chatAPI.addChannel(token, channelData);
+    const response = await chatAPI.addChannel(channelData);
     return response; // { id: '3', name: 'new channel', removable: true }
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
   }
 });
 // Thunk для удаления канала
-const removeChannelThunk = createAsyncThunk('chat/removeChannel', async (channelId, { getState, rejectWithValue }) => {
+const removeChannelThunk = createAsyncThunk('chat/removeChannel', async (channelId, { rejectWithValue }) => {
   try {
-    const token = getState().auth?.token;
-    await chatAPI.removeChannel(token, channelId);
+    await chatAPI.removeChannel(channelId);
     return channelId;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -49,10 +41,9 @@ const removeChannelThunk = createAsyncThunk('chat/removeChannel', async (channel
 });
 
 // Thunk для переименования канала
-const editChannelThunk = createAsyncThunk('chat/editChannel', async ({ id, name }, { getState, rejectWithValue }) => {
+const editChannelThunk = createAsyncThunk('chat/editChannel', async ({ id, name }, { rejectWithValue }) => {
   try {
-    const token = getState().auth?.token;
-    const response = await chatAPI.editChannel(token, id, name);
+    const response = await chatAPI.editChannel(id, name);
     return response;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -60,10 +51,9 @@ const editChannelThunk = createAsyncThunk('chat/editChannel', async ({ id, name 
 });
 
 // Thunk для добавления сообщения
-const addMessageThunk = createAsyncThunk('chat/addMessage', async (message, { getState, rejectWithValue }) => {
+const addMessageThunk = createAsyncThunk('chat/addMessage', async (message, { rejectWithValue }) => {
   try {
-    const token = getState().auth?.token;
-    const response = await chatAPI.addMessage(token, message);
+    const response = await chatAPI.addMessage(message);
     return response;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -71,10 +61,9 @@ const addMessageThunk = createAsyncThunk('chat/addMessage', async (message, { ge
 });
 
 // Thunk для изменения сообщения
-const editMessageThunk = createAsyncThunk('chat/editMessage', async ({ messageId, body }, { getState, rejectWithValue }) => {
+const editMessageThunk = createAsyncThunk('chat/editMessage', async ({ messageId, body }, { rejectWithValue }) => {
   try {
-    const token = getState().auth?.token;
-    const response = await chatAPI.editMessage(token, messageId, body);
+    const response = await chatAPI.editMessage(messageId, body);
     return response;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -82,10 +71,9 @@ const editMessageThunk = createAsyncThunk('chat/editMessage', async ({ messageId
 });
 
 // Thunk для удаления сообщения
-const removeMessageThunk = createAsyncThunk('chat/removeMessage', async (messageId, { getState, rejectWithValue }) => {
+const removeMessageThunk = createAsyncThunk('chat/removeMessage', async (messageId, { rejectWithValue }) => {
   try {
-    const token = getState().auth?.token;
-    await chatAPI.removeMessage(token, messageId);
+    await chatAPI.removeMessage(messageId);
     return messageId;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
