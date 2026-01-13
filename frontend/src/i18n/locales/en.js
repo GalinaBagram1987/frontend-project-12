@@ -43,6 +43,7 @@ const enTransl = {
       uniqName: 'Channel name must be unique',
     },
     removeCh: {
+      removeCh: 'Remove channel?',
       youOk: 'Are you sure?',
       cancel: 'Cancel',
       remove: 'Delete',

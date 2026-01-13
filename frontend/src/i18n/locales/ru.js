@@ -44,6 +44,7 @@ const ruTransl = {
       uniqName: 'Имя канала должно быть уникальным',
     },
     removeCh: {
+      removeCh: 'Удалить канал?',
       youOk: 'Уверены?',
       cancel: 'Отменить',
       remove: 'Удалить',
@@ -73,7 +74,7 @@ const ruTransl = {
       mainPage: 'на главную страницу',
     },
     toastify: {
-      addChannelOk: 'Канал добавлен',
+      addChannelOk: 'Канал успешно добавлен',
       remaneChannekOk: 'Канал успешно переименован',
       removeChannelOk: 'Канал удален',
     },

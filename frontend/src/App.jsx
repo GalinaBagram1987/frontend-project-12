@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { PrivateRoute } from './components/privateRoute.jsx';
 import { storage } from './utils/localStorage.js';
 import { loginSuccess } from './store/authSlice.js';
+import ToastProvider from './components/toastProvider.jsx';
 // import socket from './library/socket.js';
 
 const App = () => {
@@ -26,23 +27,26 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Все страницы внутри Layout */}
-        <Route path="/" element={<Layout />} >
-          <Route index element={ <Login /> } />
-          <Route path='login' element={<Login />} />
-          <Route path='registration' element={<Registration />} />
-          <Route path='chat' element={
-            <PrivateRoute>
-              <Chat />
-            </PrivateRoute>
-            } />
-          <Route path='page404' element={<Page404 />} />
-          <Route path='*' element={<Page404 />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <ToastProvider />
+      <BrowserRouter>
+        <Routes>
+          {/* Все страницы внутри Layout */}
+          <Route path="/" element={<Layout />} >
+            <Route index element={ <Login /> } />
+            <Route path='login' element={<Login />} />
+            <Route path='registration' element={<Registration />} />
+            <Route path='chat' element={
+              <PrivateRoute>
+                <Chat />
+              </PrivateRoute>
+              } />
+            <Route path='page404' element={<Page404 />} />
+            <Route path='*' element={<Page404 />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

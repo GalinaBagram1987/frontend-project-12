@@ -4,6 +4,8 @@ import { useDispatch, useSelector  } from 'react-redux';
 import { renameChannel } from '../store/chatSlice.js';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+
 import renameChannelValidate from '../library/yup/renameChannelValidate.js';
 
 const DropRename = ({channelId, currentName = '', onClose}) => {

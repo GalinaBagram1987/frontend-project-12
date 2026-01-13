@@ -13,7 +13,7 @@ const DropRemove = ({channelId, onClose}) => {
     setIsLoading(true);
     try {
       await dispatch(removeChannel(channelId)).unwrap();
-      toast.success('Канал успешно удалён!');
+      toast.success(t('toastify.removeChannelOk'));
       onClose();
     } catch (error) {
       console.error('Ошибка при удалении:', error);
@@ -29,7 +29,7 @@ const DropRemove = ({channelId, onClose}) => {
   return (
     <>
       <div className="modal-header">
-        <div className="modal-title h4">Удалить канал</div>
+        <div className="modal-title h4">{t('removeCh.removeCh')}</div>
         <button type="button" onClick={handleCancel} aria-label="Close" data-bs-dismiss="modal" className="btn btn-close">
           </button>
           </div>
