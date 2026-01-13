@@ -36,6 +36,11 @@ const enTransl = {
         "messagesCount_other": '{{count}} messages',
       },
     },
+    message: {
+      mesNotEmpty: 'Message cannot be empty',
+      mesErrorSend: 'Error sending message',
+      interNewMes: 'Enter a message...',
+    },
     renameCh: {
       renameChannel: 'Rename channel?',
       chnName: 'Channel Name',

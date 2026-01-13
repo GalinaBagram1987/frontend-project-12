@@ -37,6 +37,11 @@ const ruTransl = {
         "messagesCount_many": '{{count}} сообщений',
        },
     },
+    message: {
+      mesNotEmpty: 'Сообщение не может быть пустым',
+      mesErrorSend: 'Ошибка отправки сообщения',
+      interNewMes: 'Введите сообщение...',
+    },
     renameCh: {
       renameCh: 'Переименовать канал?',
       chnName: 'Имя канала',
