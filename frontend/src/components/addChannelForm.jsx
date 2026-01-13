@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import newChannelValidate from '../library/yup/newChannelValidate.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from '../utils/profanityFilter.js';
 
 const AddChannelForm = ({onClose}) => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const AddChannelForm = ({onClose}) => {
     validate: (values) => {
       const errors = {};
       const newName = values.newChannel.trim();
-      
+            
       if (newName) {
         const isNameExists = channels.some(channel => 
         channel.name.toLowerCase() === newName.toLowerCase()
@@ -34,8 +35,9 @@ const AddChannelForm = ({onClose}) => {
     validateOnBlur: true,
 
     onSubmit: async (values, { setSubmitting, setErrors }) => {
+      const cleanChannel = filter.clean(values.newChannel.trim(), '•');
       try {
-        const response = await dispatch(addChannel({ name: values.newChannel }));
+        const response = await dispatch(addChannel({ name: cleanChannel }));
 
         console.log('Response from addChannel:', response);
 
