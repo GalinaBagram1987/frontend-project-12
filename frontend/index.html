@@ -5,9 +5,6 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>frontend</title>
-  </head>
-  <body class="h-100 bg-light">
-    <div id="root" class="h-100"></div>
     <script>
       var _rollbarConfig = {
       accessToken: "01835758e5f54ed98756beb10aadff96",
@@ -39,7 +36,9 @@
         c="log,debug,info,warn,warning,error,critical,global,configure,handleUncaughtException,handleAnonymousErrors,handleUnhandledRejection,captureEvent,captureDomContentLoaded,captureLoad".split(","),p=0;p<c.length;++p)l.prototype[c[p]]=d(c[p]);var u="https://cdn.rollbar.com/rollbarjs/refs/tags/v3.0.0/rollbar.min.js";if(_rollbarConfig=_rollbarConfig||{},!_rollbarConfig.rollbarJsUrl){var f="replay"in _rollbarConfig;_rollbarConfig.rollbarJsUrl=f?u.replace("rollbar.min.js","rollbar.replay.min.js"):u}_rollbarConfig.async=void 0===_rollbarConfig.async||_rollbarConfig.async;var b,h=function(o,n){if(o){var a=n.globalAlias||"Rollbar";if("object"===e(o[a]))return o[a];o._rollbarShims={},o._rollbarWrappedError=null;var l=new s(n);return t((function(){n.captureUncaught&&(l._rollbarOldOnError=o.onerror,function(r,o){if(r){var n;if("function"==typeof o._rollbarOldOnError)n=o._rollbarOldOnError;else if(r.onerror){for(n=r.onerror;n._rollbarOldOnError;)n=n._rollbarOldOnError;o._rollbarOldOnError=n}o.handleAnonymousErrors();var e=function(){var e=Array.prototype.slice.call(arguments,0);!function(r,o,n,e){r._rollbarWrappedError&&(e[4]||(e[4]=r._rollbarWrappedError),e[5]||(e[5]=r._rollbarWrappedError._rollbarContext),r._rollbarWrappedError=null);var t=o.handleUncaughtException.apply(o,e);n&&n.apply(r,e),"anonymous"===t&&(o.anonymousErrorsPending+=1)}(r,o,n,e)};e._rollbarOldOnError=n,r.onerror=e}}(o,l),n.wrapGlobalEventHandlers&&function(o,n,e){if(o){var t,a,l="EventTarget,Window,Node,ApplicationCache,AudioTrackList,ChannelMergerNode,CryptoOperation,EventSource,FileReader,HTMLUnknownElement,IDBDatabase,IDBRequest,IDBTransaction,KeyOperation,MediaController,MessagePort,ModalWindow,Notification,SVGElementInstance,Screen,TextTrack,TextTrackCue,TextTrackList,WebSocket,WebSocketWorker,Worker,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload".split(",");for(t=0;t<l.length;++t)o[a=l[t]]&&o[a].prototype&&r(n,o[a].prototype,e)}}(o,l,!0)),n.captureUnhandledRejections&&function(r,o){if(r){"function"==typeof r._rollbarURH&&r._rollbarURH.belongsToShim&&r.removeEventListener("unhandledrejection",r._rollbarURH);var n=function(r){var n,e,t;try{n=r.reason}catch(r){n=void 0}try{e=r.promise}catch(r){e="[unhandledrejection] error getting promise from event"}try{t=r.detail,!n&&t&&(n=t.reason,e=t.promise)}catch(r){}n||(n="[unhandledrejection] error getting reason from event"),o&&o.handleUnhandledRejection&&o.handleUnhandledRejection(n,e)};n.belongsToShim=!0,r._rollbarURH=n,r.addEventListener("unhandledrejection",n)}}(o,l);var t=n.autoInstrument;return!1!==n.enabled&&(void 0===t||!0===t||function(r){return!("object"!==e(r)||void 0!==r.page&&!r.page)}(t))&&o.addEventListener&&(o.addEventListener("load",l.captureLoad.bind(l)),o.addEventListener("DOMContentLoaded",l.captureDomContentLoaded.bind(l))),o[a]=l,l}))()}}(window,_rollbarConfig),y=(b=_rollbarConfig,function(r){if(!r&&!window._rollbarInitialized){for(var o,n,e=(b=b||{}).globalAlias||"Rollbar",t=window.rollbar,a=function(r){return new t(r)},l=0;o=window._rollbarShims[l++];)n||(n=o.handler),o.handler._swapAndProcessMessages(a,o.messages);window[e]=n,window._rollbarInitialized=!0}});window.rollbar=s,h.loadFull(window,document,!_rollbarConfig.async,_rollbarConfig,y)}();
       // End Rollbar Snippet
     </script>
-
-    <script type="module" src="/src/main.jsx"></script>
+  </head>
+  <body class="h-100 bg-light">
+    <div id="root" class="h-100"></div>
+       <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
