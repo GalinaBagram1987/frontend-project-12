@@ -9,7 +9,7 @@ import { store } from './store/store.js';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18nIndex.js';
 
-// import {  Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'; 
+import {  Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'; 
 
 // const rollbarConfig = {
 //   accessToken: '01835758e5f54ed98756beb10aadff96', // свой
@@ -37,12 +37,24 @@ import i18n from './i18n/i18nIndex.js';
     </RollbarProvider>
   </React.StrictMode> */}
 
+  // <React.StrictMode>
+  //   <I18nextProvider i18n={i18n}>
+  //     <Provider store = {store}>
+  //       <App />
+  //     </Provider>
+  //   </I18nextProvider>
+  // </React.StrictMode>
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <I18nextProvider i18n={i18n}>
-      <Provider store = {store}>
-        <App />
-      </Provider>
-    </I18nextProvider>
-  </React.StrictMode>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <I18nextProvider i18n={i18n}>
+          <Provider store = {store}>
+            <App />
+          </Provider>
+        </I18nextProvider>
+      </ErrorBoundary>
+    </RollbarProvider>
+  </React.StrictMode> 
 )
