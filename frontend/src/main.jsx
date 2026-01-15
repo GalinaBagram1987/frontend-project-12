@@ -11,19 +11,19 @@ import i18n from './i18n/i18nIndex.js';
 
 import {  Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'; 
 
-// const rollbarConfig = {
-//   accessToken: '01835758e5f54ed98756beb10aadff96', // свой
-//   captureUncaught: true,
-//   captureUnhandledRejections: true,
-//   environment: 'development',
-//   payload: {
-//     client: {
-//       javascript: {
-//         code_version: '1.0.0'
-//       }
-//     }
-//   }
-// };
+const rollbarConfig = {
+  accessToken: '01835758e5f54ed98756beb10aadff96', // свой
+   captureUncaught: true,
+   captureUnhandledRejections: true,
+   environment: 'development',
+   payload: {
+     client: {
+       javascript: {
+         code_version: '1.0.0'
+       }
+     }
+   }
+ };
 
 {/* <React.StrictMode>
     <RollbarProvider config={rollbarConfig}>
