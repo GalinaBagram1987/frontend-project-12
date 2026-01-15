@@ -43,6 +43,18 @@ export default defineConfig(({ mode }) => {
       port: env.PORT ? Number(env.PORT) : 5002, // рендер передает порт как строку, делем число
       host: true,
       allowedHosts: true, // разрешить все хосты для Render
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5001', // Ваш бэкенд
+          changeOrigin: true,
+          secure: false,
+        },
+        '/socket.io': {
+          target: 'http://localhost:5001',
+          changeOrigin: true,
+          ws: true,
+        }
+      }
     },
 
     build: {
