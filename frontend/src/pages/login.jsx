@@ -24,6 +24,8 @@ const Login = () => {
       validateOnBlur: true,
 
       onSubmit: async (values, { setSubmitting, setErrors }) => {
+        // setSubmitting(true);
+        console.log('Начало отправки, isSubmitting будет:', true);
         try {
         // Отправляем запрос на сервер
         const response = await authAPI.login(values.username.trim(), values.password);
@@ -36,6 +38,7 @@ const Login = () => {
         // Редирект в чат
         navigate('/chat');
       } catch (error) {
+        console.log('Ошибка, isSubmitting:', false);
         let errorMessage = 'Ошибка авторизации';
         if (error.response?.status === 401) {
         errorMessage =  t('error.errorPassword');
@@ -49,6 +52,7 @@ const Login = () => {
           password: errorMessage 
         });
       } finally {
+        console.log('finally, ставим isSubmitting:', false);
         setSubmitting(false);
       }
       },
@@ -63,7 +67,8 @@ const Login = () => {
             <img src="/assets/images/main_slack.jpg" className="rounded-circle" alt="Аватар" />
           </div>
             <form className='col-12 col-md-6 mt-3 mt-md-0'
-              onSubmit={formik.handleSubmit}>
+              onSubmit={formik.handleSubmit}
+              >
               <h1 className='text-center mb-4'>{t('login.title')}</h1>
               {/* Поле username */}
               <div className='form-floating mb-3'>
@@ -98,7 +103,7 @@ const Login = () => {
                 type='submit'
                 className='w-100 mb-3 btn btn-outline-primary'
                 >
-                {t('login.login')}
+               {t('login.login')}
               </button>
             </form>
             </div>
