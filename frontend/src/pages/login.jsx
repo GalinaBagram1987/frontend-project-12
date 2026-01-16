@@ -105,7 +105,7 @@ const Login = () => {
             <div className='card-footer p-4 mt-auto w-100'>
               <div className='text-center'>
                 <span>{t('login.text')} </span>
-                <a href='/registration'>{t('login.link')}</a>
+                <a href='/signup'>{t('login.link')}</a>
               </div>
             </div>
           </div>
