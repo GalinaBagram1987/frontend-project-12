@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/" element={<Layout />} >
             <Route index element={ <Login /> } />
             <Route path='login' element={<Login />} />
-            <Route path='registration' element={<Registration />} />
+            <Route path='signup' element={<Registration />} />
             <Route path='chat' element={
               <PrivateRoute>
                 <Chat />
