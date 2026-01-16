@@ -114,9 +114,6 @@ return(
                 <label className='form-label' htmlFor='password'>
                   {t('registr.passwordRegist')}
                 </label>
-                {formik.touched.password && formik.errors.password && (
-                <div className="invalid-tooltip">{formik.errors.password}</div>
-                )}
               </div>
               {/* Поле confirmPassword */}
               <div className='form-floating mb-4'>
