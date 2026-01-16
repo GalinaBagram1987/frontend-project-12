@@ -3,6 +3,7 @@ lint-frontend:
 
 install:
 	npm ci
+	cd frontend && npm ci
 
 start-frontend:
 	make -C frontend start
