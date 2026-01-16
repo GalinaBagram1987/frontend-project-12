@@ -16,7 +16,7 @@ const ruTransl = {
       registration: 'Регистрация',
       userRegist: 'Имя пользователя',
       passwordRegist: 'Пароль',
-      confirmPassword: 'Подвердите пароль',
+      confirmPassword: 'Подтвердите пароль',
       register: 'Зарегистрироваться',
     },
     chat: {
