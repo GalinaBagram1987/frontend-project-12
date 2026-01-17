@@ -61,7 +61,11 @@ const ChatForm = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} noValidate className='py-1 border rounded-2'>
+    <form 
+      onSubmit={formik.handleSubmit}
+      noValidate
+      className='py-1 border rounded-2'
+      >
       <div className='input-group has-validation'>
         <input
           name='body'
@@ -72,6 +76,12 @@ const ChatForm = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           disabled={!currentChannelId || formik.isSubmitting}
+          onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            formik.handleSubmit();
+            }
+          }}
         />
         <button type='submit' disabled={!currentChannelId || !formik.values.body.trim() || formik.isSubmitting} className='btn btn-group-vertical'>
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='20' height='20' fill='currentColor' className='bi bi-arrow-right-square'>
