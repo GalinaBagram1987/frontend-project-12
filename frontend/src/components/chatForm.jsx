@@ -69,6 +69,7 @@ const ChatForm = () => {
       <div className='input-group has-validation'>
         <input
           name='body'
+          type='text'
           aria-label='Новое сообщение'
           placeholder={t('message.interNewMes')}
           className='border-0 p-0 ps-2 form-control'
