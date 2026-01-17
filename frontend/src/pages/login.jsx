@@ -1,7 +1,8 @@
 
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+// import { useEffect } from 'react';
 import { loginSuccess } from '../store/authSlice.js';
 import { authAPI } from '../api/apiMethods.js';
 import { useNavigate } from 'react-router-dom';
@@ -25,15 +26,14 @@ const Login = () => {
       onSubmit: async (values, { setSubmitting, setErrors }) => {
         try {
         // Отправляем запрос на сервер
-        const response = await authAPI.login(values.username.trim(), values.password);
-        // Сохраняем в Redux и LocalStorage
-        dispatch(loginSuccess({
+          const response = await authAPI.login(values.username.trim(), values.password);
+        //  Сохраняем в Redux и LocalStorage
+          dispatch(loginSuccess({
           token: response.token,
           username: response.username,
         }));
-        
-        // Редирект в чат
         navigate('/chat');
+        // throw { response: { status: 401 } };
       } catch (error) {
         console.log('Ошибка, isSubmitting:', false);
         let errorMessage = 'Ошибка авторизации';
@@ -54,6 +54,11 @@ const Login = () => {
       }
       },
     });
+    const handleFormSubmit = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      formik.handleSubmit(e);
+    };
     return(
       <div className='container-fluid h-100'>
         <div className='row justify-content-center align-content-center h-100'>
@@ -64,7 +69,7 @@ const Login = () => {
             <img src="/assets/images/main_slack.jpg" className="rounded-circle" alt="Аватар" />
           </div>
             <form className='col-12 col-md-6 mt-3 mt-md-0'
-              onSubmit={formik.handleSubmit}
+              onSubmit={handleFormSubmit}
               >
               <h1 className='text-center mb-4'>{t('login.title')}</h1>
               {/* Поле username */}
@@ -80,7 +85,11 @@ const Login = () => {
                   autoComplete='new-name'
                 />
                 <label htmlFor="username">{t('login.nameLogin')}</label>
-                <div className="invalid-tooltip">{formik.errors.username || ''}</div>
+                {formik.touched.username && formik.errors.username && (
+                  <div className="invalid-tooltip">
+                    {formik.errors.username}
+                  </div>
+                )}
               </div>
               {/* Поле password */}
               <div className='form-floating mb-4'>
@@ -97,7 +106,11 @@ const Login = () => {
                   value={formik.values.password}
                 />
                 <label htmlFor="password">{t('login.passwordLogin')}</label>
-                <div className="invalid-tooltip">{formik.errors.password || ''}</div>
+                {formik.errors.password && (
+                  <div className="invalid-tooltip">
+                    {formik.errors.password}
+                  </div>
+                )}
               </div>
               <button
                 type='submit'

@@ -21,7 +21,6 @@ export const setupInterceptors = (axiosInstance) => {
       if (error.response?.status === 401) {
         storage.clearAuth();
         console.log('Cleared localStorage');
-        window.location.href = '/login';
       }
       return Promise.reject(error);
     }
