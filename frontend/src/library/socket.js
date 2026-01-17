@@ -16,7 +16,7 @@ const socketConfig = {
   randomizationFactor: 0.5, // Добавить случайность к задержке
 
   // Таймауты для Render
-  timeout: 20000,
+  timeout: 5000,
   pingTimeout: 60000,
   pingInterval: 25000,
 };
