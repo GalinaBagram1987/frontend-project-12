@@ -25,6 +25,8 @@ const Channels = () => {
             <div role='group' className='d-flex droupdown btn-group'>
             <button 
             type='button'
+            role='button'
+            name={channel.name}
             className={`w-100 rounded-0 text-start text-truncate btn ${channel.id === currentChannelId ? 'btn-secondary' : ''}`}
             onClick={() => handleChannelSelect(channel.id)}
             > 
