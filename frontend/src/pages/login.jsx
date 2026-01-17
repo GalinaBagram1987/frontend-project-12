@@ -7,7 +7,6 @@ import { authAPI } from '../api/apiMethods.js';
 import { useNavigate } from 'react-router-dom';
 import loginSchema from '../library/yup/loginValidate.js';
 
-
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -24,8 +23,6 @@ const Login = () => {
       validateOnBlur: true,
 
       onSubmit: async (values, { setSubmitting, setErrors }) => {
-        // setSubmitting(true);
-        console.log('Начало отправки, isSubmitting будет:', true);
         try {
         // Отправляем запрос на сервер
         const response = await authAPI.login(values.username.trim(), values.password);
@@ -78,10 +75,12 @@ const Login = () => {
                   type="text"
                   onChange={formik.handleChange}
                   value={formik.values.username}
-                  className={`form-control ${formik.submitCount > 0 ? 'is-invalid' : ''}`}
+                  onBlur={formik.handleBlur}
+                  className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
                   autoComplete='new-name'
                 />
                 <label htmlFor="username">{t('login.nameLogin')}</label>
+                <div className="invalid-tooltip">{formik.errors.username || ''}</div>
               </div>
               {/* Поле password */}
               <div className='form-floating mb-4'>
@@ -92,16 +91,18 @@ const Login = () => {
                   type='password'
                   required 
                   placeholder={t('login.passwordLogin')}
-                  className={`form-control ${formik.submitCount > 0 && formik.errors.password ? 'is-invalid' : ''}`}
+                  className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.password}
                 />
-                <div className="invalid-tooltip">{(formik.errors.password || formik.errors.username) || ''}</div>
                 <label htmlFor="password">{t('login.passwordLogin')}</label>
+                <div className="invalid-tooltip">{formik.errors.password || ''}</div>
               </div>
               <button
                 type='submit'
                 className='w-100 mb-3 btn btn-outline-primary'
+                disabled={formik.isSubmitting}
                 >
                {t('login.login')}
               </button>
