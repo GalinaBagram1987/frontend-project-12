@@ -81,6 +81,7 @@ const ChatForm = () => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             formik.handleSubmit();
+            console.log('Enter pressed, current value:', e.target.value);
             }
           }}
         />

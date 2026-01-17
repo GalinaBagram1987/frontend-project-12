@@ -30,6 +30,12 @@ console.log('URL:', SOCKET_URL);
 console.log('Mode:', import.meta.env.MODE);
 console.log('Transports:', socketConfig.transports);
 
+socket.on('newMessage', (message) => {
+  console.log('Получено сообщение:', message.body);
+  console.log('Добавляю в currentMessages');
+  setCurrentMessages(prev => [...prev, message]);
+});
+
 // // События для отладки
 // socket.on('connect', () => {
 //   console.log('Socket connected via', socket.io.engine.transport.name);
