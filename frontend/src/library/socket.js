@@ -30,19 +30,6 @@ console.log('URL:', SOCKET_URL);
 console.log('Mode:', import.meta.env.MODE);
 console.log('Transports:', socketConfig.transports);
 
-socket.on('newMessage', (message) => {
-  // Для тестов: мгновенное обновление
-  if (process.env.NODE_ENV === 'test') {
-    setCurrentMessages(prev => [...prev, message]);
-  } else {
-    // Для продакшена: обычная логика
-    setTimeout(() => {
-      setCurrentMessages(prev => [...prev, message]);
-    }, 100);
-  }
-});
-
-
 // // События для отладки
 // socket.on('connect', () => {
 //   console.log('Socket connected via', socket.io.engine.transport.name);
