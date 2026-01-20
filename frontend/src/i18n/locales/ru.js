@@ -79,7 +79,7 @@ const ruTransl = {
       mainPage: 'на главную страницу',
     },
     toastify: {
-      addChannelOk: 'Канал успешно добавлен',
+      addChannelOk: 'Канал создан',
       remaneChannekOk: 'Канал успешно переименован',
       removeChannelOk: 'Канал удален',
     },
