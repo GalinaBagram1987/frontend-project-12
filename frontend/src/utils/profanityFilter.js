@@ -4,11 +4,12 @@ const filter = LeoProfanity;
 
 try {
   filter.loadDictionary('ru');
+  filter.loadDictionary('en');
 } catch (e) {
   console.warn('Русский словарь не загружен. Используется английский.');
 }
 // Расширение словаря дополнительными словами
-const additionalRussianWords = [
+const additionalWords = [
   // Производные от основных корней
   'хуило', 'хуеплёт', 'хуйня', 'хуйло', 'охуеть', 'охуительно', 'охуенно', 'похуй', 'хуёво',
   'пиздец', 'пиздато', 'пиздеть', 'пиздёж', 'пиздобол', 'распиздяй',
@@ -17,10 +18,14 @@ const additionalRussianWords = [
   // Транслитерация/сленг
   'huy', 'bljat', 'pizdec', 'cyka', 'blya', 'yebat',
   // Другие распространенные ругательства
-  'сука', 'мудак', 'говно', 'жопа', 'засранец', 'гандон', 'лох'
+  'сука', 'мудак', 'говно', 'жопа', 'засранец', 'гандон', 'лох',
+  // Английские слова
+  'boobs', 'boob', 'ass', 'asshole', 'shit', 'fuck', 'fucking',
+  'bitch', 'cock', 'cunt', 'dick', 'pussy', 'whore', 'slut',
+  'bastard', 'motherfucker', 'retard', 'nigger', 'faggot'
 ];
 
-filter.add(additionalRussianWords);
-console.log(`Словарь расширен на ${additionalRussianWords.length} слов. Всего слов: ${filter.list().length}`);
+filter.add(additionalWords);
+console.log(`Словарь расширен на ${additionalWords.length} слов. Всего слов: ${filter.list().length}`);
 
 export default filter;
