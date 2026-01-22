@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react';
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// export default defineConfig(({ mode }) => {
+//export default defineConfig(({ mode }) => {
 //   // Загружаем env переменные
 //   const env = loadEnv(mode, __dirname, '');
 
@@ -100,7 +100,7 @@ export default defineConfig(
             }, 
           },
           preview: {
-            port: env.PORT ? Number(env.PORT) : 5002, // рендер передает порт как строку, делем число
+            port: 'window.location.origin', 
             host: true,
             allowedHosts: true, // разрешить все хосты для Render
           },

@@ -35,7 +35,7 @@ const AddChannelForm = ({onClose}) => {
     validateOnBlur: true,
 
     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      const cleanChannel = filter.clean(values.newChannel.trim(), '•');
+      const cleanChannel = filter.clean(values.newChannel.trim(), '*');
       try {
         const response = await dispatch(addChannel({ name: cleanChannel }));
 

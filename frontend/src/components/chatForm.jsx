@@ -33,7 +33,7 @@ const ChatForm = () => {
         return;
       }
       try {
-        const cleanMessage = filter.clean(values.body.trim(), '•');
+        const cleanMessage = filter.clean(values.body.trim(), '*');
         
         const newMessage = {
           // body: values.body.trim(),
