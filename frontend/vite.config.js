@@ -75,9 +75,33 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(
   { plugins: 
     [react()], 
-      server: { open: true, proxy: 
-        { '/api': { target: 'http://localhost:5001', },
-         '/socket.io': { target: 'ws://localhost:5001', ws: true, rewriteWsOrigin: true, },
-      }, 
-    }, 
+      server: { 
+        open: true,
+          port: 5002,
+       host: '0.0.0.0',
+       allowedHosts: [
+        'window.location.origin',
+        'localhost',
+        '127.0.0.1',
+        '.onrender.com', // добавьте это для всех поддоменов Render
+        ],
+        hmr: {
+          overlay: false,
+        },
+          proxy: 
+            { '/api': 
+              { target: 
+            'http://localhost:5001', 
+          },
+           '/socket.io': 
+            { target: 'ws://localhost:5001',
+              ws: true, 
+              rewriteWsOrigin: true, },
+            }, 
+          },
+          preview: {
+            port: env.PORT ? Number(env.PORT) : 5002, // рендер передает порт как строку, делем число
+            host: true,
+            allowedHosts: true, // разрешить все хосты для Render
+          },
   })
