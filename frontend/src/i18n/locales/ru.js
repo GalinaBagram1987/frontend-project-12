@@ -80,7 +80,7 @@ const ruTransl = {
     },
     toastify: {
       addChannelOk: 'Канал создан',
-      remaneChannekOk: 'Канал успешно переименован',
+      remaneChannekOk: 'Канал переименован',
       removeChannelOk: 'Канал удален',
     },
     common: {
