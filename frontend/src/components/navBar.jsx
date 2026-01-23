@@ -17,25 +17,25 @@ const NavBar = () => {
       <div className="container">
         {!isPathWithExit
           ? (
-            <span
-              className="navbar-brand"
-              onClick={handleLogout}
-            >
-              {t('navBar.chat')}
-            </span>
-          )
-          : (
-            <>
-              <span className="navbar-brand">{t('navBar.chat')}</span>
-              <button
-                type="button"
+              <span
+                className="navbar-brand"
                 onClick={handleLogout}
-                className="btn btn-primary"
               >
-                {t('navBar.exit')}
-              </button>
-            </>
-          )}
+                {t('navBar.chat')}
+              </span>
+            )
+            : (
+              <>
+                <span className="navbar-brand">{t('navBar.chat')}</span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="btn btn-primary"
+                >
+                  {t('navBar.exit')}
+                </button>
+              </>
+            )}
       </div>
     </nav>
   )

@@ -62,17 +62,35 @@ export default defineConfig([
       ],
 
       // Переопределяем правила @stylistic если нужно
-      '@stylistic/semi': ['error', 'never'], // Без точек с запятой
-      '@stylistic/indent': ['error', 2,
-        {
-          // Для JSX атрибутов - дополнительный отступ
-          JSXAttribute: 2,
-          JSXClosingElement: 2,
-          JSXClosingFragment: 2,
-          JSXExpressionContainer: 2,
-          JSXOpeningElement: 2,
-          JSXOpeningFragment: 2, }], // Отступ 2 пробела
-      '@stylistic/quotes': ['error', 'single'], // Одинарные кавычки
+      '@stylistic/semi': ['error', 'never'],
+      '@stylistic/indent': ['error', 2, {
+        ignoredNodes: [
+          'JSXElement',
+          'JSXElement > *',
+          'JSXExpressionContainer > *',
+        ],
+        SwitchCase: 1,
+        VariableDeclarator: 1,
+        outerIIFEBody: 1,
+        MemberExpression: 1,
+        FunctionDeclaration: {
+          parameters: 1,
+          body: 1,
+        },
+        FunctionExpression: {
+          parameters: 1,
+          body: 1,
+        },
+        CallExpression: {
+          arguments: 1,
+        },
+        ArrayExpression: 1,
+        ObjectExpression: 1,
+        ImportDeclaration: 1,
+        flatTernaryExpressions: false,
+        offsetTernaryExpressions: true,
+      }],
+      '@stylistic/quotes': ['error', 'single'],
     },
   },
 ])
