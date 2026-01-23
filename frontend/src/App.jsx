@@ -22,8 +22,7 @@ const App = () => {
     if (token && userData) {
       dispatch(loginSuccess({ token, username: userData }))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch])
 
   return (
     <>
