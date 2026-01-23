@@ -17,7 +17,11 @@ export default defineConfig([
     plugins: {
       'react-hooks': reactHooks,
     },
-    rules: reactHooks.configs.recommended.rules,
+    // rules: reactHooks.configs.recommended.rules,
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
   },
 
   // Правила для React Refresh (Vite) (ИСПРАВЛЕНО - преобразовано в flat config)

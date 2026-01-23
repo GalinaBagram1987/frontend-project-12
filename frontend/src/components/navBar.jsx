@@ -24,7 +24,7 @@ const NavBar = () => {
                 {t('navBar.chat')}
               </span>
             )
-              : (
+          : (
               <>
                 <span className="navbar-brand">{t('navBar.chat')}</span>
                 <button
