@@ -16,9 +16,9 @@ const DropRename = ({ channelId, currentName = '', onClose }) => {
       newNameChannel: currentName,
     },
     validationSchema: renameChannelValidate(t),
-    validate: (values) => {
+    validate: () => {
       const errors = {}
-      const newName = values.newNameChannel.value.trim()
+      const newName = newNameChannel.value.trim()
       // 1. Проверка на изменение
       if (newName === currentName) {
         errors.newNameChannel = t('renameCh.noChangeName')
