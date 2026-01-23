@@ -206,7 +206,7 @@ const chatSlice = createSlice({
         state.error = null
       })
       // Канал успешно удалён
-      .addCase(removeChannelThunk.fulfilled, (state, action) => {
+      .addCase(removeChannelThunk.fulfilled, (state) => {
         state.error = null
       })
       // Ошибка загрузки
@@ -219,7 +219,7 @@ const chatSlice = createSlice({
         state.error = null
       })
       // Канал успешно переименован
-      .addCase(editChannelThunk.fulfilled, (state, action) => {
+      .addCase(editChannelThunk.fulfilled, (state) => {
         state.error = null
       })
       // Ошибка переименования
@@ -232,7 +232,7 @@ const chatSlice = createSlice({
         state.error = null
       })
       // Сообщение добавлено
-      .addCase(addMessageThunk.fulfilled, (state, action) => {
+      .addCase(addMessageThunk.fulfilled, (state) => {
         state.error = null
         // state.messages.push(action.payload);
       })
@@ -246,7 +246,7 @@ const chatSlice = createSlice({
         state.error = null
       })
       // Сообщение успешно переименовано
-      .addCase(editMessageThunk.fulfilled, (state, action) => {
+      .addCase(editMessageThunk.fulfilled, (state) => {
         state.error = null
       })
       // Ошибка переименования сообщения
@@ -258,7 +258,7 @@ const chatSlice = createSlice({
       .addCase(removeMessageThunk.pending, (state) => {
         state.error = null
       })
-      .addCase(removeMessageThunk.fulfilled, (state, action) => {
+      .addCase(removeMessageThunk.fulfilled, (state) => {
         state.error = null
       })
       .addCase(removeMessageThunk.rejected, (state, action) => {

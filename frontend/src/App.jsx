@@ -30,7 +30,6 @@ const App = () => {
       <ToastProvider />
       <BrowserRouter>
         <Routes>
-          // eslint-disable-next-line react-hooks/exhaustive-deps
           {/* Все страницы внутри Layout */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Login />} />

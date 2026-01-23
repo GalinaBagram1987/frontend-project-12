@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { BASE_URL } from './routes'
-import { setupInterceptors } from './interceptors'
+import { BASE_URL } from './routes.js'
+import { setupInterceptors } from './interceptors.js'
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
