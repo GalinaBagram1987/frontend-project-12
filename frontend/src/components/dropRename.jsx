@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { renameChannel } from '../store/chatSlice.js'
@@ -17,9 +16,9 @@ const DropRename = ({ channelId, currentName = '', onClose }) => {
       newNameChannel: currentName,
     },
     validationSchema: renameChannelValidate(t),
-    validate: () => {
+    validate: (values) => {
       const errors = {}
-      const newName = newNameChannel.value.trim()
+      const newName = values.newNameChannel.value.trim()
       // 1. Проверка на изменение
       if (newName === currentName) {
         errors.newNameChannel = t('renameCh.noChangeName')

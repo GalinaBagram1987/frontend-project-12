@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useFormik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 // import { useEffect } from 'react';
 import { loginSuccess } from '../store/authSlice.js'
 import { authAPI } from '../api/apiMethods.js'

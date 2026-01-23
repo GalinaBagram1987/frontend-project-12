@@ -1,7 +1,5 @@
-import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
-// import { chatAPI } from '../api/api.js';
 import { addMessage } from '../store/chatSlice.js'
 import { useTranslation } from 'react-i18next'
 import filter from '../utils/profanityFilter.js'
@@ -15,7 +13,6 @@ const ChatForm = () => {
   const curentUsername = currentUserName
   // выбираем текущий кканал
   const currentChannel = channels.find(channel => channel.id === currentChannelId)
-  // console.log('curentUserName', curentUsername);
   const formik = useFormik({
     initialValues: {
       body: '',
@@ -36,7 +33,6 @@ const ChatForm = () => {
         const cleanMessage = filter.clean(values.body.trim(), '*')
 
         const newMessage = {
-          // body: values.body.trim(),
           body: cleanMessage,
           channelId: currentChannelId,
           username: curentUsername,

@@ -9,7 +9,8 @@ i18n
   .init({
     resources: resources,
     fallbackLng: 'ru',
-    debug: process.env.NODE_ENV === 'development',
+    // debug: process.env.NODE_ENV === 'development',
+    debug: import.meta.env?.DEV === 'development',
     interpolation: {
       escapeValue: false,
     },

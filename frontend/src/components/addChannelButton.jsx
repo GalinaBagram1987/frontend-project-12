@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import AddChannelForm from '../components/addChannelForm.jsx'
 
 const AddChannelButton = () => {

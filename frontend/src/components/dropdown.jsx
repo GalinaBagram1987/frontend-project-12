@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import DropRename from './dropRename.jsx'
 import DropRemove from './dropRemove.jsx'
@@ -62,7 +62,7 @@ const DropdownMenu = ({ channelId, channelName }) => {
       {/* Выпадающее меню */}
       {isMenuOpen && (
         <div
-          x-placement="bottom-end"
+          data-x-placement="bottom-end"
           aria-labelledby="react-aria6368764644-:r4:"
           className="dropdown-menu show"
           data-popper-reference-hidden="false"
