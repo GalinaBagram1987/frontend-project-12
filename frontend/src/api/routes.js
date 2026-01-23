@@ -1,4 +1,4 @@
-const isProduction = import.meta.env.PROD;
+const isProduction = import.meta.env.PROD
 // const isDevelopment = import.meta.env.DEV;
 
 // export const BASE_URL = window.location.origin;
@@ -7,12 +7,12 @@ const isProduction = import.meta.env.PROD;
 //   // : 'http://localhost:5002'; // Development URL
 //   : '/';
 export const BASE_URL = isProduction
- ? window.location.origin
- : window.location.origin;
+  ? window.location.origin
+  : window.location.origin
 
 export const SOCKET_URL = isProduction
   ? window.location.origin // В продакшене тот же хост
-  : '/';
+  : '/'
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -29,4 +29,4 @@ export const API_ENDPOINTS = {
     EDIT_MESSAGE: '/api/v1/messages/:id',
     REMOVE_MESSAGE: '/api/v1/messages/:id',
   },
-};
+}

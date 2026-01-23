@@ -10,7 +10,7 @@ const ruTransl = {
       passwordLogin: 'Пароль',
       login: 'Войти',
       text: 'Нет аккаунта?',
-      link:  'Регистрация',
+      link: 'Регистрация',
     },
     registr: {
       registration: 'Регистрация',
@@ -31,11 +31,11 @@ const ruTransl = {
       enterMessage: 'Введите сообщение',
       exit: 'Выйти',
       count: {
-        "messagesCount_zero": '0 сообщений',
-        "messagesCount_one": '{{count}} сообщение',
-        "messagesCount_few": '{{count}} сообщения',
-        "messagesCount_many": '{{count}} сообщений',
-       },
+        messagesCount_zero: '0 сообщений',
+        messagesCount_one: '{{count}} сообщение',
+        messagesCount_few: '{{count}} сообщения',
+        messagesCount_many: '{{count}} сообщений',
+      },
     },
     message: {
       mesNotEmpty: 'Сообщение не может быть пустым',
@@ -91,6 +91,6 @@ const ruTransl = {
       close: 'Закрыть',
       error: 'Ошибка',
     },
-  }, 
-};
-export default ruTransl;
+  },
+}
+export default ruTransl

@@ -1,5 +1,5 @@
-import { io } from 'socket.io-client';
-import { SOCKET_URL } from '../api/routes.js';
+import { io } from 'socket.io-client'
+import { SOCKET_URL } from '../api/routes.js'
 
 // Конфигурация для Render.com (только polling)
 const socketConfig = {
@@ -19,16 +19,16 @@ const socketConfig = {
   timeout: 5000,
   pingTimeout: 60000,
   pingInterval: 25000,
-};
+}
 
 // Создаем единственный экземпляр socket
-const socket = io(SOCKET_URL, socketConfig);
+const socket = io(SOCKET_URL, socketConfig)
 
 // Отладка
-console.log('Socket configuration:');
-console.log('URL:', SOCKET_URL);
-console.log('Mode:', import.meta.env.MODE);
-console.log('Transports:', socketConfig.transports);
+console.log('Socket configuration:')
+console.log('URL:', SOCKET_URL)
+console.log('Mode:', import.meta.env.MODE)
+console.log('Transports:', socketConfig.transports)
 
 // // События для отладки
 // socket.on('connect', () => {
@@ -59,4 +59,4 @@ console.log('Transports:', socketConfig.transports);
 // });
 
 // Экспортируем ЕДИНСТВЕННЫЙ экземпляр
-export default socket;
+export default socket

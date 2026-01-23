@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const CustomCloseButton = ({ closeToast }) => (
-  <button 
+  <button
     onClick={closeToast}
     style={{ background: 'none', color: 'gray', border: 'none' }}
   >
     ✕
   </button>
-);
+)
 
 const ToastProvider = () => {
   return (
@@ -28,7 +28,7 @@ const ToastProvider = () => {
       limit={3} // максимум 3 тоста одновременно
       closeButton={CustomCloseButton}
     />
-  );
-};
+  )
+}
 
-export default ToastProvider;
+export default ToastProvider

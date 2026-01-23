@@ -1,12 +1,13 @@
-import LeoProfanity from 'leo-profanity';
+import LeoProfanity from 'leo-profanity'
 
-const filter = LeoProfanity;
+const filter = LeoProfanity
 
 try {
-  filter.loadDictionary('ru');
-  filter.loadDictionary('en');
-} catch (e) {
-  console.warn('Русский словарь не загружен. Используется английский.');
+  filter.loadDictionary('ru')
+  filter.loadDictionary('en')
+}
+catch (e) {
+  console.warn('Русский словарь не загружен. Используется английский.')
 }
 // Расширение словаря дополнительными словами
 const additionalWords = [
@@ -22,10 +23,10 @@ const additionalWords = [
   // Английские слова
   'boobs', 'boob', 'ass', 'asshole', 'shit', 'fuck', 'fucking',
   'bitch', 'cock', 'cunt', 'dick', 'pussy', 'whore', 'slut',
-  'bastard', 'motherfucker', 'retard', 'nigger', 'faggot'
-];
+  'bastard', 'motherfucker', 'retard', 'nigger', 'faggot',
+]
 
-filter.add(additionalWords);
-console.log(`Словарь расширен на ${additionalWords.length} слов. Всего слов: ${filter.list().length}`);
+filter.add(additionalWords)
+console.log(`Словарь расширен на ${additionalWords.length} слов. Всего слов: ${filter.list().length}`)
 
-export default filter;
+export default filter

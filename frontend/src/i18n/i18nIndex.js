@@ -1,7 +1,7 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import resources from "./locales/resources.js";
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import resources from './locales/resources.js'
 
 i18n
   .use(initReactI18next)
@@ -13,12 +13,11 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-     detection: {
+    detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
       lookupLocalStorage: 'i18nextLng',
     },
-  });
+  })
 
-  export default i18n;
-
+export default i18n

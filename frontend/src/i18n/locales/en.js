@@ -31,9 +31,9 @@ const enTransl = {
       enterMessage: 'Enter message',
       exit: 'Log Out',
       count: {
-        "messagesCount_zero": '0 messages',
-        "messagesCount_one": '{{count}} message',
-        "messagesCount_other": '{{count}} messages',
+        messagesCount_zero: '0 messages',
+        messagesCount_one: '{{count}} message',
+        messagesCount_other: '{{count}} messages',
       },
     },
     message: {
@@ -91,5 +91,5 @@ const enTransl = {
       error: 'Error',
     },
   },
-};
-export default enTransl;
+}
+export default enTransl
