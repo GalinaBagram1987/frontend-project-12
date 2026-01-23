@@ -63,15 +63,15 @@ export default defineConfig([
 
       // Переопределяем правила @stylistic если нужно
       '@stylistic/semi': ['error', 'never'], // Без точек с запятой
-      '@stylistic/indent': ['error', 2, 
+      '@stylistic/indent': ['error', 2,
         {
-    // Для JSX атрибутов - дополнительный отступ
-    JSXAttribute: 2,
-    JSXClosingElement: 2,
-    JSXClosingFragment: 2,
-    JSXExpressionContainer: 2,
-    JSXOpeningElement: 2,
-    JSXOpeningFragment: 2, }], // Отступ 2 пробела
+          // Для JSX атрибутов - дополнительный отступ
+          JSXAttribute: 2,
+          JSXClosingElement: 2,
+          JSXClosingFragment: 2,
+          JSXExpressionContainer: 2,
+          JSXOpeningElement: 2,
+          JSXOpeningFragment: 2, }], // Отступ 2 пробела
       '@stylistic/quotes': ['error', 'single'], // Одинарные кавычки
     },
   },

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentChannel } from '../store/chatSlice.js'
 import DropdownMenu from './dropdown.jsx'
