@@ -160,17 +160,17 @@ const Chat = () => {
               {currentMessages.length === 0
                 ? ('')
                 : (
-                  currentMessages.map(message => (
-                    <div
-                      key={message.id}
-                      className="text-break mb-2"
-                    >
-                      <b>{message.username}</b>
-                      {': '}
-                      {message.body}
-                    </div>
-                  ))
-                )}
+                    currentMessages.map(message => (
+                      <div
+                        key={message.id}
+                        className="text-break mb-2"
+                      >
+                        <b>{message.username}</b>
+                        {': '}
+                        {message.body}
+                      </div>
+                    ))
+                  )}
             </div>
             {/* Форма для ввода сообщений */}
             <div className="mt-auto px-5 py-3">

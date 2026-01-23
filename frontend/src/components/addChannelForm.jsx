@@ -92,8 +92,8 @@ const AddChannelForm = ({ onClose }) => {
                   />
                   {formik.touched.newChannel && formik.errors.newChannel
                     ? (
-                      <div className="invalid-feedback">{formik.errors.newChannel}</div>
-                    )
+                        <div className="invalid-feedback">{formik.errors.newChannel}</div>
+                      )
                     : null}
                 </div>
 
