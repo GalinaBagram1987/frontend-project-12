@@ -11,6 +11,45 @@ const Registration = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate() // Хук для навигации
 
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    try {
+      // Отправляем запрос на сервер
+      const { username, password } = values
+      const response = await authAPI.registr(username, password)
+
+      // Сохраняем в Redux и LocalStorage
+      dispatch(loginSuccess({
+        token: response.token,
+        username: response.username,
+      }))
+
+      // Редирект в чат
+      navigate('/chat')
+    }
+    catch (error) {
+      console.error('registration failed:', error)
+      // Показываем ошибку пользователю
+      let errorMessage = t('error.errorBase')
+
+      if (error.response?.status === 409) {
+        errorMessage = t('error.userExists')
+      }
+      else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message
+      }
+      else if (error.code === 'ERR_NETWORK') {
+        errorMessage = t('error.networkError')
+      }
+
+      setErrors({
+        password: errorMessage,
+      })
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -21,50 +60,7 @@ const Registration = () => {
     validationSchema: registrSchema(t),
     validateOnChange: true,
     validateOnBlur: true,
-
-    onSubmit: async (values, { setSubmitting, setErrors }) => {
-      try {
-        console.log('Sending data:',
-          { username: values.username, password: values.password })
-        // Отправляем запрос на сервер
-
-        const { username, password } = values
-        const response = await authAPI.registr(username, password)
-
-        console.log('Server response:', response)
-
-        // Сохраняем в Redux и LocalStorage
-        dispatch(loginSuccess({
-          token: response.token,
-          username: response.username,
-        }))
-
-        // Редирект в чат
-        navigate('/chat')
-      }
-      catch (error) {
-        console.error('registration failed:', error)
-        // Показываем ошибку пользователю
-        let errorMessage = t('error.errorBase')
-
-        if (error.response?.status === 409) {
-          errorMessage = t('error.userExists')
-        }
-        else if (error.response?.data?.message) {
-          errorMessage = error.response.data.message
-        }
-        else if (error.code === 'ERR_NETWORK') {
-          errorMessage = t('error.networkError')
-        }
-
-        setErrors({
-          password: errorMessage,
-        })
-      }
-      finally {
-        setSubmitting(false)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (

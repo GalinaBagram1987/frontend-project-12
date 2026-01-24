@@ -28,48 +28,39 @@ const Chat = () => {
 
   useEffect(() => {
     if (!token) {
-      console.log('Токен не найден, пропускаем загрузку чата')
       return
     }
-    console.log('Токен есть, загружаем данные чата:', token)
     dispatch(fetchChatData())
     // Подключаем сокет с токеном только один раз
     if (!socketRef.current) {
       socket.auth = { token }
       socket.connect()
       socketRef.current = socket
-      console.log('WebSocket соединение установлено')
     }
 
     const subscribeEvents = () => {
     // подписаться на новые сообщения
       socket.on('newMessage', (payload) => {
-        console.log('Получено новое сообщение:', payload) // Логируем поступающее сообщение
         dispatch(addMessageFromServer(payload))
       })
       // подпишитесь на новый канал
       socket.on('newChannel', (payload) => {
-        console.log(payload) // { id: 6, name: "new channel", removable: true }
         dispatch(addChannelFromServer(payload))
       })
       // подписаться на удаление канала
       socket.on('removeChannel', (payload) => {
-        console.log(payload) // { id: 6 };
         dispatch(removeChannelFromServer(payload.id))
       })
       // подписаться на переименование канала
       socket.on('renameChannel', (payload) => {
-        console.log(payload) // { id: 7, name: "new name channel", removable: true }
         dispatch(renameChannelFromServer(payload))
       })
       // подписаться на удаление сообщения
       socket.on('removeMessage', (payload) => {
-        console.log(payload)
         dispatch(removeMessageFromServer(payload.id))
       })
       // подписаться на переименование сообщения
       socket.on('renameMessage', (payload) => {
-        console.log(payload)
         dispatch(renameMessageFromServer(payload))
       })
     }
@@ -118,14 +109,11 @@ const Chat = () => {
 
   // выбираем текущий кканал
   const currentChannel = channels.find(channel => channel.id === currentChannelId)
-  console.log(currentChannel)
   // Фильтруем сообщения для текущего канала
   const currentMessages = messages.filter(
     message => message.channelId === currentChannelId)
-  console.log(currentMessages)
   // забираем из сторадже имя юзера
   const curUsername = currentUserName
-  console.log('curUsername', curUsername)
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

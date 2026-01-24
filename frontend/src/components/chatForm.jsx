@@ -13,6 +13,40 @@ const ChatForm = () => {
   const curentUsername = currentUserName
   // выбираем текущий кканал
   const currentChannel = channels.find(channel => channel.id === currentChannelId)
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    if (!currentChannel || !token) {
+      setSubmitting(false)
+      return
+    }
+    try {
+      const cleanMessage = filter.clean(values.body.trim(), '*')
+
+      const newMessage = {
+        body: cleanMessage,
+        channelId: currentChannelId,
+        username: curentUsername,
+      }
+      console.log('newMessage', newMessage)
+      // Отправляем запрос на сервер
+      const response = await dispatch(addMessage(newMessage)).unwrap()
+      if (response) {
+        formik.resetForm()
+      }
+    }
+    catch (error) {
+      console.error('Ошибка отправки сообщения:', error)
+      // Показываем ошибку пользователю
+      formik.setErrors({
+        body: t('message.mesErrorSend'),
+        error,
+      })
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       body: '',
@@ -24,38 +58,7 @@ const ChatForm = () => {
       }
       return errors
     },
-    onSubmit: async (values, { setSubmitting }) => {
-      if (!currentChannel || !token) {
-        setSubmitting(false)
-        return
-      }
-      try {
-        const cleanMessage = filter.clean(values.body.trim(), '*')
-
-        const newMessage = {
-          body: cleanMessage,
-          channelId: currentChannelId,
-          username: curentUsername,
-        }
-        console.log('newMessage', newMessage)
-        // Отправляем запрос на сервер
-        const response = await dispatch(addMessage(newMessage)).unwrap()
-        if (response) {
-          formik.resetForm()
-        }
-      }
-      catch (error) {
-        console.error('Ошибка отправки сообщения:', error)
-        // Показываем ошибку пользователю
-        formik.setErrors({
-          body: t('message.mesErrorSend'),
-          error,
-        })
-      }
-      finally {
-        setSubmitting(false)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (

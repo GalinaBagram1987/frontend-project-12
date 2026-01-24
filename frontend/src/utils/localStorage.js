@@ -65,7 +65,6 @@ export const storage = {
   isAuthenticated: () => {
     const token = storage.getToken()
     const userData = storage.getUserData()
-    console.log('isAuthenticated check - token:', !!token, 'userData:', !!userData)
     return !!token && !!userData
   },
 }

@@ -11,6 +11,37 @@ const AddChannelForm = ({ onClose }) => {
   const dispatch = useDispatch()
   const channels = useSelector(state => state.chat.channels)
 
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    const cleanChannel = filter.clean(values.newChannel.trim(), '*')
+    try {
+      const response = await dispatch(addChannel({ name: cleanChannel }))
+
+      console.log('Response from addChannel:', response)
+
+      formik.resetForm() // Сброс формы после успешной отправки
+      toast.success(t('toastify.addChannelOk'))
+      onClose?.() // Закрытие модального окна
+    }
+    catch (error) {
+      let errorMessage = error?.response?.data?.message
+
+      if (error?.response?.status === 409) {
+        errorMessage = t('error.channelExists')
+      }
+      else if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message
+      }
+      else if (error?.code === 'ERR_NETWORK') {
+        errorMessage = t('error.networkError')
+      }
+
+      setErrors({ newChannel: errorMessage })
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       newChannel: '',
@@ -33,38 +64,7 @@ const AddChannelForm = ({ onClose }) => {
     validateOnChange: true,
     validateOnBlur: true,
 
-    onSubmit: async (values, { setSubmitting, setErrors }) => {
-      const cleanChannel = filter.clean(values.newChannel.trim(), '*')
-      try {
-        const response = await dispatch(addChannel({ name: cleanChannel }))
-
-        console.log('Response from addChannel:', response)
-
-        formik.resetForm() // Сброс формы после успешной отправки
-        toast.success(t('toastify.addChannelOk'))
-        onClose?.() // Закрытие модального окна
-      }
-      catch (error) {
-        console.log('Add channel failed:', error)
-
-        let errorMessage = error?.response?.data?.message
-
-        if (error?.response?.status === 409) {
-          errorMessage = t('error.channelExists')
-        }
-        else if (error?.response?.data?.message) {
-          errorMessage = error.response.data.message
-        }
-        else if (error?.code === 'ERR_NETWORK') {
-          errorMessage = t('error.networkError')
-        }
-
-        setErrors({ newChannel: errorMessage })
-      }
-      finally {
-        setSubmitting(false)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   return (

@@ -11,6 +11,41 @@ const DropRename = ({ channelId, currentName = '', onClose }) => {
   const dispatch = useDispatch()
   const channels = useSelector(state => state.chat.channels)
 
+  const handleSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
+    try {
+      const response = await dispatch(renameChannel({ id: channelId, name: values.newNameChannel })).unwrap()
+      console.log('Response from renameChannel:', response)
+
+      resetForm() // Сброс формы после успешной отправки
+      toast.success(t('toastify.remaneChannekOk'))
+      onClose?.() // Закрытие модального окна
+    }
+    catch (error) {
+      console.log('Rename channel failed:', error)
+
+      let errorMessage = t('error.unknownError')
+
+      // 1. Ошибка из rejectWithValue
+      if (error.payload) {
+        errorMessage = error.payload?.message || error.payload
+      }
+      // 2. Сетевая ошибка
+      else if (error?.code === 'ERR_NETWORK') {
+        errorMessage = t('error.networkError')
+      }
+      // 3. Любая другая ошибка
+      else if (error?.message) {
+        errorMessage = error.message
+      }
+
+      setErrors({ newNameChannel: errorMessage })
+      toast.error(`Не удалось переименовать канал: ${errorMessage}`)
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       newNameChannel: currentName,
@@ -37,40 +72,7 @@ const DropRename = ({ channelId, currentName = '', onClose }) => {
     validateOnChange: true,
     validateOnBlur: true,
 
-    onSubmit: async (values, { setSubmitting, setErrors, resetForm }) => {
-      try {
-        const response = await dispatch(renameChannel({ id: channelId, name: values.newNameChannel })).unwrap()
-        console.log('Response from renameChannel:', response)
-
-        resetForm() // Сброс формы после успешной отправки
-        toast.success(t('toastify.remaneChannekOk'))
-        onClose?.() // Закрытие модального окна
-      }
-      catch (error) {
-        console.log('Rename channel failed:', error)
-
-        let errorMessage = t('error.unknownError')
-
-        // 1. Ошибка из rejectWithValue
-        if (error.payload) {
-          errorMessage = error.payload?.message || error.payload
-        }
-        // 2. Сетевая ошибка
-        else if (error?.code === 'ERR_NETWORK') {
-          errorMessage = t('error.networkError')
-        }
-        // 3. Любая другая ошибка
-        else if (error?.message) {
-          errorMessage = error.message
-        }
-
-        setErrors({ newNameChannel: errorMessage })
-        toast.error(`Не удалось переименовать канал: ${errorMessage}`)
-      }
-      finally {
-        setSubmitting(false)
-      }
-    },
+    onSubmit: handleSubmit,
   })
 
   const handleClose = () => {

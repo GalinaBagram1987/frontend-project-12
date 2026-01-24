@@ -7,7 +7,7 @@ import Page404 from './pages/page404.jsx'
 import Registration from './pages/registration.jsx'
 import { useDispatch } from 'react-redux'
 import { PrivateRoute } from './components/privateRoute.jsx'
-import ToastProvider from './components/toastProvider.jsx'
+import ToastProvider from './toastWindows/toastProvider.jsx'
 import { storage } from './utils/localStorage.js'
 import { loginSuccess } from './store/authSlice.js'
 

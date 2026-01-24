@@ -12,7 +12,7 @@ import i18n from './i18n/i18nIndex.js'
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
 
 const rollbarConfig = {
-  accessToken: '01835758e5f54ed98756beb10aadff96', // свой
+  accessToken: import.meta.env.VITE_TOKEN, // свой
   captureUncaught: true,
   captureUnhandledRejections: true,
   environment: 'development',

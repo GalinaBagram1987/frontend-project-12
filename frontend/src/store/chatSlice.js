@@ -8,8 +8,6 @@ const fetchChatDataThunk = createAsyncThunk(
     // здесь _ обозначает, что аргументы не используются.
     try {
       const [channelsResponse, messagesResponse] = await Promise.all([chatAPI.getChannels(), chatAPI.getMessages()])
-      console.log('channels Response', channelsResponse)
-      console.log('messages Response', messagesResponse)
       return {
         channels: channelsResponse,
         messages: messagesResponse,

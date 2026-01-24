@@ -16,7 +16,6 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       const { token, username } = action.payload
-      console.log('loginSuccess received:', { token, username })
       if (token && username) {
         state.token = token
         state.user = username
@@ -26,8 +25,6 @@ const authSlice = createSlice({
         storage.setToken(token)
         storage.setUserData(username)
       }
-      console.log('Auth state updated:', { token, username })
-      console.log('state.user', state.user)
     },
 
     logout: (state) => {

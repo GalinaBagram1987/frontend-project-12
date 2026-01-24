@@ -12,6 +12,39 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate() // Хук для навигации
 
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    try {
+      // Отправляем запрос на сервер
+      const response = await authAPI.login(values.username.trim(), values.password)
+      //  Сохраняем в Redux и LocalStorage
+      dispatch(loginSuccess({
+        token: response.token,
+        username: response.username,
+      }))
+      navigate('/chat')
+      // throw { response: { status: 401 } };
+    }
+    catch (error) {
+      let errorMessage = 'Ошибка авторизации'
+      if (error.response?.status === 401) {
+        errorMessage = t('error.errorPassword')
+      }
+      else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message
+      }
+      else if (error.code === 'ERR_NETWORK') {
+        errorMessage = t('error.networkError')
+      }
+      // Показываем ошибку пользователю
+      setErrors({
+        password: errorMessage,
+      })
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -21,42 +54,9 @@ const Login = () => {
     validationSchema: loginSchema(t),
     validateOnChange: true,
     validateOnBlur: true,
-
-    onSubmit: async (values, { setSubmitting, setErrors }) => {
-      try {
-        // Отправляем запрос на сервер
-        const response = await authAPI.login(values.username.trim(), values.password)
-        //  Сохраняем в Redux и LocalStorage
-        dispatch(loginSuccess({
-          token: response.token,
-          username: response.username,
-        }))
-        navigate('/chat')
-        // throw { response: { status: 401 } };
-      }
-      catch (error) {
-        console.log('Ошибка, isSubmitting:', false)
-        let errorMessage = 'Ошибка авторизации'
-        if (error.response?.status === 401) {
-          errorMessage = t('error.errorPassword')
-        }
-        else if (error.response?.data?.message) {
-          errorMessage = error.response.data.message
-        }
-        else if (error.code === 'ERR_NETWORK') {
-          errorMessage = t('error.networkError')
-        }
-        // Показываем ошибку пользователю
-        setErrors({
-          password: errorMessage,
-        })
-      }
-      finally {
-        console.log('finally, ставим isSubmitting:', false)
-        setSubmitting(false)
-      }
-    },
+    onSubmit: handleSubmit,
   })
+
   const handleFormSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
