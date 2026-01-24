@@ -112,8 +112,6 @@ const Chat = () => {
   // Фильтруем сообщения для текущего канала
   const currentMessages = messages.filter(
     message => message.channelId === currentChannelId)
-  // забираем из сторадже имя юзера
-  const curUsername = currentUserName
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
