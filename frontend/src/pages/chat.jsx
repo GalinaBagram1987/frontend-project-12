@@ -113,6 +113,10 @@ const Chat = () => {
   const currentMessages = messages.filter(
     message => message.channelId === currentChannelId)
 
+  // забираем из сторадже имя юзера
+  const curUsername = currentUserName
+  console.log(curUsername)
+
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-wight flex-md-row">
